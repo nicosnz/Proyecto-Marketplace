@@ -1,0 +1,10 @@
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+@theme{
+    --color-primario:#ebf400;
+    --font-primario:'Montserrat'
+}
+
+body{
+    background-color: black;
+}

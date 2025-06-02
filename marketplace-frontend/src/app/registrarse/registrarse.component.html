@@ -1,0 +1,40 @@
+<div class="min-h-screen flex items-center justify-center bg-black p-4">
+  <form class="bg-primario p-8 rounded-2xl shadow-md w-full max-w-md space-y-6 font-primario">
+    <h2 class="text-2xl font-bold text-center text-gray-800">Crear una cuenta</h2>
+
+    <div>
+      <label for="name" class="block text-sm font-medium text-gray-700">Nombre completo</label>
+      <input type="text" id="name" name="name" required
+        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" />
+    </div>
+
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+      <input type="email" id="email" name="email" required
+        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" />
+    </div>
+
+    <div>
+      <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+      <input type="password" id="password" name="password" required
+        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" />
+    </div>
+
+    <div>
+      <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirmar contraseña</label>
+      <input type="password" id="confirm-password" name="confirm-password" required
+        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" />
+    </div>
+
+    <button type="submit" routerLink="/home"
+      class="w-full bg-black cursor-pointer text-white py-2 rounded-lg hover:bg-zinc-500 transition duration-300">
+      Registrarse
+    </button>
+
+    <p class="text-center text-sm text-gray-600">
+      ¿Ya tienes una cuenta?
+      <a href="/iniciar-sesion" class="text-black hover:underline">Iniciar sesión</a>
+    </p>
+  </form>
+</div>
+
