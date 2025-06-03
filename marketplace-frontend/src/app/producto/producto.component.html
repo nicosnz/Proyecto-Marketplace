@@ -1,0 +1,10 @@
+<div class="bg-primario w-64 h-96 rounded-xl p-6">
+    <img src="OIP.jpg" alt="img" width="256" class="rounded-xl">
+    
+    <h2 class="text-black font-primario pt-2">{{producto?.productoNombre}}</h2>
+    <p class="pt-2 text-black font-primario">{{producto?.precio}}$</p>
+    <div class="flex justify-center">
+
+        <button class="bg-black text-white p-4 rounded-xl w-full hover:bg-zinc-800 cursor-pointer font-primario" (click)="print()">Agregar Al carrito</button>
+    </div>
+</div>

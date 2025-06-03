@@ -1,35 +1,50 @@
 <div class="min-h-screen flex items-center justify-center bg-black p-4">
-  <form class="bg-primario p-8 rounded-2xl shadow-md w-full max-w-md space-y-6 font-primario">
+  <form class="bg-primario p-8 rounded-2xl shadow-md w-full max-w-md space-y-6 font-primario"[formGroup]="formGroup">
     <h2 class="text-2xl font-bold text-center text-gray-800">Crear una cuenta</h2>
 
     <div>
-      <label for="name" class="block text-sm font-medium text-gray-700">Nombre completo</label>
-      <input type="text" id="name" name="name" required
-        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" />
+      <label for="name" class="block text-sm font-medium text-gray-700"
+              [class.text-red-700]="formGroup.controls.nombre.invalid && formGroup.controls.nombre.touched"
+              >Nombre completo</label>
+      <input type="text" id="name" name="name" required formControlName="nombre"
+        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" 
+        [class.border-red-500]="formGroup.controls.nombre.invalid && formGroup.controls.nombre.touched"
+        [class.border-gray-300]="!(formGroup.controls.nombre.invalid && formGroup.controls.nombre.touched)"
+        />
+        
     </div>
 
     <div>
       <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
-      <input type="email" id="email" name="email" required
+      <input type="email" id="email" name="email" required formControlName="email"
         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" />
     </div>
 
     <div>
       <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-      <input type="password" id="password" name="password" required
+      <input type="password" id="password" name="password" required formControlName="contraseña"
         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" />
     </div>
 
     <div>
       <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirmar contraseña</label>
-      <input type="password" id="confirm-password" name="confirm-password" required
+      <input type="password" id="confirm-password" name="confirm-password" required formControlName="repetirContraseña"
         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" />
     </div>
 
-    <button type="submit" routerLink="/home"
-      class="w-full bg-black cursor-pointer text-white py-2 rounded-lg hover:bg-zinc-500 transition duration-300">
+    <!-- <button type="submit"  [disabled]="formGroup.valid" (click)="clickeo()"
+      class="w-full bg-black cursor-pointer text-white py-2 rounded-lg hover:bg-zinc-500 transition duration-300" >
+      Registrarse
+    </button> -->
+    <button
+      [disabled]="formGroup.invalid" (click)="clickeo()"
+      class="bg-black text-white p-4 rounded-xl w-full cursor-pointer font-primario
+            hover:bg-zinc-800
+            disabled:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
+    >
       Registrarse
     </button>
+
 
     <p class="text-center text-sm text-gray-600">
       ¿Ya tienes una cuenta?

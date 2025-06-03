@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+
+<div class="flex">
+  <aside class="w-64 bg-gray-100 p-4">
+    <!-- Sidebar -->
+    <h2 class="text-xl font-semibold mb-4">Filtros</h2>
+    <button class="block w-full mb-2">Categoría</button>
+    <button class="block w-full mb-2">Precio</button>
+  </aside>
+
+  <main class="flex-1 flex flex-wrap gap-4 p-4">
+    @for (producto of productos; track producto.productoId) {
+      <app-producto [producto]="producto"></app-producto>
+    }
+  </main>
+</div>
