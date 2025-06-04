@@ -171,3 +171,4 @@ C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\obj\D
 C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\obj\Debug\net8.0\marketplace-backend.pdb
 C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\obj\Debug\net8.0\marketplace-backend.genruntimeconfig.cache
 C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\obj\Debug\net8.0\ref\marketplace-backend.dll
+C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

@@ -23,5 +23,23 @@ namespace marketplace_backend.Repositorios
                 .ToListAsync();
             return usuarios.Any();
         }
+        public async Task<Persona> RegistrarNuevoUsuario(Persona nuevaPersona)
+        {
+            var persona = await _context.Personas.FromSqlInterpolated($"EXEC sp_InsertarPersona @Nombre = {nuevaPersona.Nombre}, @Email = {nuevaPersona.Email}, @PasswordHash = {nuevaPersona.PasswordHash}")
+                .AsNoTracking()
+                .ToListAsync();
+            return persona.FirstOrDefault();
+        }
+        public async Task<Persona?> ObtenerUsuarioPorEmailAsync(string email)
+        {
+            var resultado = await _context.Personas
+                .FromSqlInterpolated($"EXEC dbo.sp_IniciarSesion @Email = {email}")
+                .AsNoTracking()
+                .ToListAsync();
+
+            return resultado.FirstOrDefault();
+        }
+
+
     }
 }

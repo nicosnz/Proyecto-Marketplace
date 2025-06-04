@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
 using marketplace_backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace marketplace_backend.Controllers
@@ -25,13 +27,15 @@ namespace marketplace_backend.Controllers
             var productos = await _productoService.ObtenerProductosDisponiblesAsync();
             return Ok(productos);
         }
-        [HttpGet("{usuarioID}")]
-        public async Task<ActionResult<IEnumerable<VwProductosCatalogo>>> ObtenerProductosDisponiblesPorUsuario(int usuarioID)
+
+        [Authorize]
+        [HttpGet("mis-productos")]
+        public async Task<ActionResult<IEnumerable<VwProductosCatalogo>>> ObtenerProductosDisponiblesPorUsuario()
         {
             try
             {
-
-                var productos = await _productoService.ObtenerProductosPorUsuarioAsync(usuarioID);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value); 
+                var productos = await _productoService.ObtenerProductosPorUsuarioAsync(userId);
                 return Ok(productos);
             }
             catch (ProductosNotFound ex)
@@ -43,16 +47,17 @@ namespace marketplace_backend.Controllers
                 return NotFound(new { mensaje = ex.Message });
             }
         }
+        [Authorize]
 
-        [HttpGet("noUsuario/{usuarioID}")]
+        [HttpGet("catalogo")]
 
 
-        public async Task<ActionResult<IEnumerable<VwProductosCatalogo>>> ObtenerProductosMenosUsuario(int usuarioID)
+        public async Task<ActionResult<IEnumerable<VwProductosCatalogo>>> ObtenerProductosMenosUsuario()
         {
             try
             {
-
-                var productos = await _productoService.ObtenerProductosMenosUsuarioAsync(usuarioID);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value); 
+                var productos = await _productoService.ObtenerProductosMenosUsuarioAsync(userId);
                 return Ok(productos);
             }
             catch (ProductosNotFound ex)
