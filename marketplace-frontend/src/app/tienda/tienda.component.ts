@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { ProductoComponent } from "../producto/producto.component";
 import { ProductosApiService } from '../services/productos-api.service';
-import { IProducto } from '../services/models/IProductos';
+import { IProducto, IProducto2 } from '../services/models/IProductos';
 
 @Component({
   selector: 'app-tienda',
@@ -12,7 +12,7 @@ import { IProducto } from '../services/models/IProductos';
 })
 export class TiendaComponent implements OnInit {
   private readonly _productsApi = inject(ProductosApiService);
-  productos:IProducto[] = []
+  productos:IProducto2[] = []
   ngOnInit():void{
     this._productsApi.getProducts().subscribe((data)=>this.productos = data);
   }

@@ -8,5 +8,8 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
-
+ get isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
+  
 }

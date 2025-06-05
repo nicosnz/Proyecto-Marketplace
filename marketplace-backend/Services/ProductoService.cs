@@ -47,6 +47,18 @@ namespace marketplace_backend.Services
             }
             return productosNoUsuario;
         }
+        public async Task<Producto> EditarProducto(Producto producto)
+        {
+            var productoNuevo = _productoRepository.EditarProducto(producto);
+            return await productoNuevo;
+            
+        }
+        public async Task<Producto> AñadirProducto(Producto producto, int usuarioID)
+        {
+            var productoNuevo = _productoRepository.AñadirProducto(producto, usuarioID);
+            return await productoNuevo;
+        }
+
 
         
     }

@@ -42,11 +42,9 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddSwaggerGen(c =>
 {
-    // ... otras configuraciones
 
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tu API", Version = "v1" });
 
-    // 🔐 Configurar JWT Auth para Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",

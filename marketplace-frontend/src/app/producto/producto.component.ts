@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IProducto } from '../services/models/IProductos';
+import { IProducto, IProducto2 } from '../services/models/IProductos';
 
 @Component({
   selector: 'app-producto',
@@ -8,9 +8,6 @@ import { IProducto } from '../services/models/IProductos';
   styleUrl: './producto.component.scss'
 })
 export class ProductoComponent {
-  @Input({required:true}) producto?:IProducto;
-  print(){
-    console.log(this.producto)
-  }
-
+  @Input({required:true}) producto?:IProducto2;
+  
 }

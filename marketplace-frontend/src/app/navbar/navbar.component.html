@@ -1,20 +1,39 @@
 <nav class="grid grid-cols-3 bg-primario h-20 text-white p-5 ">
-    <div>logo</div>
+    <div class="flex">
+        <button class="hover:opacity-80 cursor-pointer transition duration-200" routerLink="/home" >
+
+            <img src="perfilIcono.ico" class="w-8 h-8 mr-2" alt="Icono">
+        </button>
+    </div>
 
 
     <ul class="hidden md:flex space-x-10 text-2xl font-primario">
         <li><a href="/home" class="hover:text-zinc-500">Inicio</a></li>
         <li><a href="/tienda" class="hover:text-zinc-500">Productos</a></li>
     </ul>
-  
-    <div class="flex space-x-4 justify-center font-primario">
-        <button routerLink="/iniciar-sesion" type="button" class="text-xl px-4 py-2 cursor-pointer bg-black text-white rounded-xl flex items-center justify-center hover:bg-zinc-500">
-            Iniciar Sesion
-        </button>
-        <button routerLink="/registrarse" type="button" class="text-xl px-4 py-2 cursor-pointer border border-black text-black rounded-xl flex items-center justify-center hover:bg-zinc-500">
-            Registrarse
-        </button>
-    </div>
+    @if (!isLoggedIn) { 
+        <div class="flex space-x-4 justify-center font-primario">
+            <button routerLink="/iniciar-sesion" type="button" class="text-xl px-4 py-2 cursor-pointer bg-black text-white rounded-xl flex items-center justify-center hover:bg-zinc-500">
+                Iniciar Sesion
+            </button>
+            <button routerLink="/registrarse" type="button" class="text-xl px-4 py-2 cursor-pointer border border-black text-black rounded-xl flex items-center justify-center hover:bg-zinc-500">
+                Registrarse
+            </button>
+        </div>
+    }
+    @else {
+        <div class="flex space-x-4 justify-center font-primario">
 
+            <button class="hover:opacity-80 cursor-pointer transition duration-200" routerLink="/perfil">
+                <img src="profile.jpg" class="w-13 h-13 rounded-full" alt="">
+            </button>
+            
+
+            <!-- <button (click)="logout()" type="button" class="text-xl px-4 py-2 cursor-pointer bg-black text-white rounded-xl flex items-center justify-center hover:bg-zinc-500">
+                Cerrar Sesion
+            </button> -->
+            
+        </div>
+    }
 
 </nav>

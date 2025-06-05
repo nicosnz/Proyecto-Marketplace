@@ -1,0 +1,28 @@
+<app-navbar></app-navbar>
+<form [formGroup]="formGroup" class="h-screen bg-black text-white p-10 flex flex-col gap-6 items-center">
+    <h1 class="text-4xl font-bold text-center">Añadir Producto</h1>
+
+    <!-- Campo Nombre -->
+    <label for="nombre" class="text-lg">Nombre:</label>
+    <input type="text" id="nombre" class="p-3 rounded-lg bg-white text-black max-w-md w-full" placeholder="Nombre del producto" formControlName="nombre" >
+
+    <!-- Campo Descripción -->
+    <label for="descripcion" class="text-lg">Descripción:</label>
+    <textarea id="descripcion" class="p-3 rounded-lg bg-white text-black max-w-md w-full h-32" placeholder="Descripción" formControlName="descripcion"></textarea>
+
+    <!-- Campo Precio -->
+    <label for="precio" class="text-lg">Precio ($):</label>
+    <input type="number" id="precio" class="p-3 rounded-lg bg-white text-black max-w-md w-full" placeholder="Precio" formControlName="precio">
+
+    <!-- Campo Stock -->
+    <label for="stock" class="text-lg">Stock:</label>
+    <input type="number" id="stock" class="p-3 rounded-lg bg-white text-black max-w-md w-full" placeholder="Cantidad en stock" formControlName="stock">
+
+    <!-- Botones -->
+    <div class="flex gap-4 mt-6">
+        <button class="bg-red-600 hover:bg-red-800 text-white px-6 py-3 rounded-lg">Cancelar</button>
+        <button class="bg-green-600 hover:bg-green-800 text-white px-6 py-3 rounded-lg">Confirmar</button>
+    </div>
+</form>
+
+

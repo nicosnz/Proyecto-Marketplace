@@ -1,0 +1,48 @@
+<app-navbar></app-navbar>
+<div class="flex h-screen">
+  <aside class="w-64 bg-black text-white p-4 font-primario">
+    <ul>
+      <li class="p-2 hover:bg-gray-900 cursor-pointer">Mis productos</li>
+      <li class="p-2 hover:bg-gray-900 cursor-pointer">Vendidos</li>
+      <li class="p-2 hover:bg-gray-900 cursor-pointer">Comprados</li>
+      <li class="p-2 bg-red-700 hover:bg-red-900 cursor-pointer rounded-xl" (click)="logout()">Cerrar Sesion</li>
+    </ul>
+  </aside>
+  <div class="w-1 bg-primario"></div>
+  <main class="flex-1 p-6 bg-black">
+    <h1 class="text-2xl font-primario text-white">Mis productos</h1>
+     <button class="bg-primario text-black font-primario py-2 mt-4 px-4 rounded-xl hover:bg-yellow-600 cursor-pointer" routerLink="/añadir-formulario">
+        + Añadir Producto
+    </button>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+        @for (producto of productos; track producto.productoId) {
+           <div class="bg-primario w-full h-96 rounded-xl p-6">
+               <div class="flex">
+
+                   <img src="OIP.jpg" alt="img" width="256" class="rounded-xl">
+                   <div class="ml-4">
+                        
+                        <h2 class="text-black font-primario pt-2">{{producto?.nombre}}</h2>
+                        <p class="pt-2 text-black font-primario">Descripcion: {{producto?.descripcion}}</p>
+                        <p class="pt-2 text-black font-primario">Precio: {{producto?.precio}}$</p>
+                        <p class="pt-2 text-black font-primario">Stock: {{producto?.stock}}</p>
+                        
+                    </div>
+                   <div class="flex flex-col h-full ml-auto mt-3 gap-2 ">
+                       <button class="bg-blue-600 hover:bg-blue-800 text-white rounded-full flex items-center justify-center w-10 h-10 cursor-pointer">
+                           <img src="edit_icon_128873.ico" class="w-6 h-6" alt="Icono">
+                       </button>
+
+                       <button class="bg-red-600 hover:bg-red-800 text-white rounded-full mt-4 flex items-center justify-center w-10 h-10 cursor-pointer">
+                            <img src="trash.ico" class="w-6 h-6" alt="Icono">
+                        </button>
+
+                    </div>
+
+                   
+               </div>
+            </div>
+        }
+    </div>
+  </main>
+</div>

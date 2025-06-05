@@ -11,6 +11,8 @@ namespace marketplace_backend.Interfaces
         Task<IEnumerable<VwProductosCatalogo>> ObtenerProductosDisponiblesAsync();
         Task<IEnumerable<Producto>> ObtenerProductosPorUsuarioAsync(int usuarioID);
         Task<IEnumerable<Producto>> ObtenerProductosMenosUsuarioAsync(int usuarioID);
+        Task<Producto> EditarProducto(Producto producto);
+        Task<Producto> AñadirProducto(Producto producto, int usuarioID);
 
 
     }
