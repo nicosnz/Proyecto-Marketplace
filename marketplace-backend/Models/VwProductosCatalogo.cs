@@ -17,7 +17,7 @@ public partial class VwProductosCatalogo
 
     public bool Activo { get; set; }
 
-    public int? CategoriaId { get; set; }
+    public int CategoriaId { get; set; }
 
     public string? CategoriaNombre { get; set; }
 

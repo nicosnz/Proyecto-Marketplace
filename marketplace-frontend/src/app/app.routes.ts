@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { MenuComponent } from './menu/menu.component';
-import { IniciarSesionComponent } from './iniciar-sesion/iniciar-sesion.component';
-import { RegistrarseComponent } from './registrarse/registrarse.component';
-import { TiendaComponent } from './tienda/tienda.component';
-import { PerfilUsuarioComponent } from './perfil-usuario/perfil-usuario.component';
-import { FormularioProductoComponent } from './formulario-producto/formulario-producto.component';
+import { MenuComponent } from './paginas/homePage/menu/menu.component';
+import { TiendaComponent } from './paginas/tiendaPage/tienda/tienda.component';
+import { FormularioProductoComponent } from './paginas/perfilUsuarioPage/formulario-producto/formulario-producto.component';
+import { IniciarSesionComponent } from './paginas/registro-iniciarSesion/iniciar-sesion/iniciar-sesion.component';
+import { RegistrarseComponent } from './paginas/registro-iniciarSesion/registrarse/registrarse.component';
+import { PerfilUsuarioComponent } from './paginas/perfilUsuarioPage/perfil-usuario/perfil-usuario.component';
 
 export const routes: Routes = [
     {path:'home', component:MenuComponent},

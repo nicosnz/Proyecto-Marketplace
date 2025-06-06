@@ -11,18 +11,15 @@ export interface IProducto{
     vendedorNombre:string;
 
 }
-export interface IProducto2{
-    productoId:number;
-    productoNombre:string;
-    descripcion:string;
-    precio:number;
-    stock:number;
-    activo:boolean;
-    categoriaId:number;
-    categoriaNombre:string;
-    vendedorId:number;
-    vendedorNombre:string;
-
+export interface IProducto2 {
+  productoId: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  stock: number;
+  categoriaId: number;
+  vendedorId: number;
+  imagenBase64: string | null;
 }
 export interface IProductoAñadir{
   nombre: string;

@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { NavbarComponent } from '../navbar/navbar.component';
+import { NavbarComponent } from '../../navBarPage/navbar/navbar.component';
 import { ProductoComponent } from "../producto/producto.component";
-import { ProductosApiService } from '../services/productos-api.service';
-import { IProducto, IProducto2 } from '../services/models/IProductos';
-import { FooterComponent } from '../footer/footer.component';
+import { ProductosApiService } from '../../../services/productos-api.service';
+import { IProducto, IProducto2 } from '../../../services/models/IProductos';
+import { FooterComponent } from '../../footerPage/footer/footer.component';
 
 @Component({
   selector: 'app-tienda',

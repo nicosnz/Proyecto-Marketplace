@@ -17,13 +17,15 @@ namespace marketplace_backend.Controllers
     public class ProductosController : ControllerBase
     {
         private readonly IProductoService _productoService;
+        private readonly IProductoImagenService _productoImagenService;
 
-        public ProductosController(IProductoService productoService)
+        public ProductosController(IProductoService productoService, IProductoImagenService productoImagenService)
         {
             _productoService = productoService;
+            _productoImagenService = productoImagenService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VwProductosCatalogo>>> ObtenerProductosDisponibles()
+        public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosDisponibles()
         {
             var productos = await _productoService.ObtenerProductosDisponiblesAsync();
             return Ok(productos);
@@ -72,7 +74,7 @@ namespace marketplace_backend.Controllers
         }
         [HttpPost("añadir")]
         [Authorize]
-        public async Task<IActionResult> AñadirProducto([FromBody] Productodto dto)
+        public async Task<IActionResult> AñadirProducto([FromForm] Productodto dto, [FromForm] IFormFile imagen )
         {
             try
             {
@@ -91,6 +93,22 @@ namespace marketplace_backend.Controllers
                 };
 
                 var productoCreado = await _productoService.AñadirProducto(nuevoProducto, userId.Value);
+                if (imagen != null && imagen.Length > 0)
+                {
+                    using var ms = new MemoryStream();
+                    await imagen.CopyToAsync(ms);
+
+                    var imagenMongo = new ProductoImagen
+                    {
+                        ProductoId = productoCreado.ProductoId, 
+                        FileName = imagen.FileName,
+                        ContentType = imagen.ContentType,
+                        Data = ms.ToArray()
+                    };
+
+                    await _productoImagenService.InsertarAsync(imagenMongo);
+                }
+
                 return Ok(productoCreado);
             }
             catch (Exception ex)

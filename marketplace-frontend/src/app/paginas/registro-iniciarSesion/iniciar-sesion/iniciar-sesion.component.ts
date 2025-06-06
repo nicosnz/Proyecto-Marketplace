@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AutentificacionService } from '../services/autentificacion.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IUsuarioLogin } from '../services/models/IUsuarios';
+import { AutentificacionService } from '../../../services/autentificacion.service';
+import { IUsuarioLogin } from '../../../services/models/IUsuarios';
 
 @Component({
   selector: 'app-iniciar-sesion',

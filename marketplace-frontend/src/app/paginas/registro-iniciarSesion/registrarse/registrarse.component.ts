@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';  
-import { AutentificacionService } from '../services/autentificacion.service';
-import { IUsuarioRegistrarse } from '../services/models/IUsuarios';
+import { AutentificacionService } from '../../../services/autentificacion.service';
+import { IUsuarioRegistrarse } from '../../../services/models/IUsuarios';
 
 @Component({
   selector: 'app-registrarse',

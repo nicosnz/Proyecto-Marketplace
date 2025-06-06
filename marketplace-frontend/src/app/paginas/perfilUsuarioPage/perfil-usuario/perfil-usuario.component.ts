@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { NavbarComponent } from '../navbar/navbar.component';
-import { ProductosApiService } from '../services/productos-api.service';
-import { IProducto } from '../services/models/IProductos';
+
 import { Router, RouterLink } from '@angular/router';
+import { NavbarComponent } from '../../navBarPage/navbar/navbar.component';
+import { ProductosApiService } from '../../../services/productos-api.service';
+import { IProducto } from '../../../services/models/IProductos';
 
 @Component({
   selector: 'app-perfil-usuario',

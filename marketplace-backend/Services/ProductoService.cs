@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
 
@@ -11,15 +12,37 @@ namespace marketplace_backend.Services
     {
         private readonly IProductoRepository _productoRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IProductoImagenRepository _productoImagenRepository;
 
-        public ProductoService(IProductoRepository productoRepository, IUsuarioRepository usuarioRepository)
+        public ProductoService(IProductoRepository productoRepository, IProductoImagenRepository productoImagenRepository, IUsuarioRepository usuarioRepository)
         {
             _productoRepository = productoRepository;
             _usuarioRepository = usuarioRepository;
+            _productoImagenRepository = productoImagenRepository;
         }
-        public async Task<IEnumerable<VwProductosCatalogo>> ObtenerProductosDisponiblesAsync()
+        public async Task<IEnumerable<ProductoConImagendto>> ObtenerProductosDisponiblesAsync()
         {
-            return await _productoRepository.ObtenerProductosDisponiblesAsync();
+            var productos = await _productoRepository.ObtenerProductosDisponiblesAsync();
+            var lista = new List<ProductoConImagendto>();
+            foreach (var prod in productos)
+            {
+            // Traer SOLO la primera imagen de Mongo por ProductoId
+                var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(prod.ProductoId)).FirstOrDefault();
+
+                lista.Add(new ProductoConImagendto
+                {
+                    ProductoId = prod.ProductoId,
+                    Nombre = prod.ProductoNombre,
+                    Descripcion = prod.Descripcion!,
+                    Precio = prod.Precio,
+                    Stock = prod.Stock,
+                    CategoriaId = prod.CategoriaId,
+                    VendedorId = prod.VendedorId,
+                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null
+                });
+            }
+            return lista;
+
         }
         public async Task<IEnumerable<Producto>> ObtenerProductosPorUsuarioAsync(int usuarioID)
         {

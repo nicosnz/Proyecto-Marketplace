@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,6 +77,8 @@ builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IProductoImagenRepository, ProductoImagenRepository>();
+builder.Services.AddScoped<IProductoImagenService, ProductoImagenService>();
 
 var origenesPermitidos = builder.Configuration.GetValue<string>("OrigenesPermitidos")!.Split(",");
 //cors
@@ -90,6 +93,16 @@ builder.Services.AddCors(opciones =>
 
 builder.Services.AddDbContext<MarketplaceDbContext>(opciones => 
     opciones.UseSqlServer("name=DefaultConnection"));
+
+builder.Services.AddSingleton<IMongoClient>(sp =>
+    new MongoClient(builder.Configuration["MongoDB:ConnectionString"]));
+
+builder.Services.AddSingleton(sp =>
+{
+    var client = sp.GetRequiredService<IMongoClient>();
+    var dbName = builder.Configuration["MongoDB:Database"];
+    return client.GetDatabase(dbName);
+});
 
 
 var app = builder.Build();

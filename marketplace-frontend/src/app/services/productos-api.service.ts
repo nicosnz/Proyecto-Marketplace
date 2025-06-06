@@ -17,8 +17,8 @@ export class ProductosApiService {
   getProducts(){
     return this.hhtpCliente.get<IProducto2[]>(this.URL2);
   }
-  postProducto(producto:IProductoAñadir){
-    return this.hhtpCliente.post<IProducto>(this.URL3,producto)
+  postProducto(formData:FormData){
+    return this.hhtpCliente.post<IProducto>(this.URL3,formData)
   }
   putProducto(producto:IProductoEditar){
     return this.hhtpCliente.put<IProducto>(this.URL4,producto)

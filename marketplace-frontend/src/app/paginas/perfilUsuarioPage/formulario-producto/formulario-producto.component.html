@@ -1,0 +1,79 @@
+<app-navbar></app-navbar>
+<div class="min-h-screen bg-gradient-to-br from-black via-black to-black flex items-center justify-center py-10 px-4">
+  <form [formGroup]="formGroup"
+        class="relative bg-white/95 rounded-3xl shadow-2xl p-10 w-full max-w-xl flex flex-col gap-8 ring-1 ring-indigo-200">
+
+    <h1 class="text-4xl md:text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-primario via-primario to-primario mb-2 tracking-tight drop-shadow-sm">
+      Añadir Producto
+    </h1>
+    <p class="text-center text-slate-500 mb-6">Completa los datos para publicar un nuevo producto</p>
+
+    <div class="relative">
+      <input type="text" id="nombre"
+             class="peer block w-full rounded-lg border border-slate-300 bg-transparent px-4 pt-6 pb-2 text-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-400 outline-none transition"
+             placeholder=" "
+             formControlName="nombre" />
+      <label for="nombre"
+             class="absolute left-4 top-2 text-slate-400 text-base font-medium pointer-events-none transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-focus:top-2 peer-focus:text-base peer-focus:text-indigo-700">
+        Nombre del producto
+      </label>
+    </div>
+
+    <div class="relative">
+      <textarea id="descripcion"
+                class="peer block w-full rounded-lg border border-slate-300 bg-transparent px-4 pt-6 pb-2 text-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-400 outline-none transition min-h-[90px] resize-none"
+                placeholder=" "
+                formControlName="descripcion"></textarea>
+      <label for="descripcion"
+             class="absolute left-4 top-2 text-slate-400 text-base font-medium pointer-events-none transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-focus:top-2 peer-focus:text-base peer-focus:text-indigo-700">
+        Descripción
+      </label>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-4">
+      <div class="relative flex-1">
+        <input type="number" id="precio"
+               class="peer block w-full rounded-lg border border-slate-300 bg-transparent px-4 pt-6 pb-2 text-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-400 outline-none transition"
+               placeholder=" "
+               formControlName="precio" min="0" />
+        <label for="precio"
+               class="absolute left-4 top-2 text-slate-400 text-base font-medium pointer-events-none transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-focus:top-2 peer-focus:text-base peer-focus:text-indigo-700">
+          Precio ($)
+        </label>
+      </div>
+      <div class="relative flex-1">
+        <input type="number" id="stock"
+               class="peer block w-full rounded-lg border border-slate-300 bg-transparent px-4 pt-6 pb-2 text-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-400 outline-none transition"
+               placeholder=" "
+               formControlName="stock" min="0" />
+        <label for="stock"
+               class="absolute left-4 top-2 text-slate-400 text-base font-medium pointer-events-none transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-focus:top-2 peer-focus:text-base peer-focus:text-indigo-700">
+          Stock
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <label for="imagen" class="block text-base font-semibold text-slate-700 mb-2">Imagen</label>
+      <input type="file" id="imagen"
+             class="block w-full text-base text-slate-700 border border-slate-300 rounded-lg cursor-pointer file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-base file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition"
+             (change)="onFileSelected($event)">
+      <p class="text-xs text-slate-400 mt-2">Formatos permitidos: JPG, PNG. Tamaño máximo: 2MB.</p>
+    </div>
+
+    <div class="flex gap-4 justify-center mt-4">
+      <button type="button"
+              class="bg-gradient-to-r cursor-pointer from-slate-200 to-slate-300 hover:from-slate-300 hover:to-slate-400 text-slate-700 px-6 py-2 rounded-xl font-semibold shadow transition"
+              routerLink="/perfil">
+        Cancelar
+      </button>
+      <button type="submit"
+              class="bg-gradient-to-r cursor-pointer from-primario to-primariohover:from-fuchsia-600 hover:to-yellow-500 text-white px-8 py-2 rounded-xl font-semibold shadow transition disabled:bg-slate-300 disabled:cursor-not-allowed"
+              [disabled]="formGroup.invalid"
+              (click)="registrarProducto()">
+        Confirmar
+      </button>
+    </div>
+  </form>
+</div>
+<app-footer></app-footer>

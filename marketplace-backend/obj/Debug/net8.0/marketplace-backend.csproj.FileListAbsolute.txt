@@ -172,3 +172,9 @@ C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\obj\D
 C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\obj\Debug\net8.0\marketplace-backend.genruntimeconfig.cache
 C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\obj\Debug\net8.0\ref\marketplace-backend.dll
 C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\bin\Debug\net8.0\DnsClient.dll
+C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\bin\Debug\net8.0\MongoDB.Bson.dll
+C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\bin\Debug\net8.0\MongoDB.Driver.dll
+C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\bin\Debug\net8.0\SharpCompress.dll
+C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\bin\Debug\net8.0\Snappier.dll
+C:\Users\LENOVO\Documents\Programacion\Market-Proyecto\marketplace-backend\bin\Debug\net8.0\ZstdSharp.dll
