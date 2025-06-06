@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { ProductosApiService } from '../services/productos-api.service';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-menu',
-  imports: [NavbarComponent],
+  imports: [NavbarComponent,FooterComponent],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })

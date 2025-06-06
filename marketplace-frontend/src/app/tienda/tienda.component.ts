@@ -3,10 +3,11 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { ProductoComponent } from "../producto/producto.component";
 import { ProductosApiService } from '../services/productos-api.service';
 import { IProducto, IProducto2 } from '../services/models/IProductos';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-tienda',
-  imports: [NavbarComponent, ProductoComponent],
+  imports: [NavbarComponent, ProductoComponent,FooterComponent],
   templateUrl: './tienda.component.html',
   styleUrl: './tienda.component.scss'
 })

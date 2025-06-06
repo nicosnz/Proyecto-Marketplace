@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { NavbarComponent } from "../navbar/navbar.component";
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ProductosApiService } from '../services/productos-api.service';
 import { IProductoAñadir } from '../services/models/IProductos';
 
 @Component({
   selector: 'app-formulario-producto',
-  imports: [NavbarComponent,ReactiveFormsModule],
+  imports: [NavbarComponent,ReactiveFormsModule,RouterLink],
   templateUrl: './formulario-producto.component.html',
   styleUrl: './formulario-producto.component.scss'
 })
@@ -22,24 +22,27 @@ export class FormularioProductoComponent {
     precio : ['',Validators.required],
     stock : ['',Validators.required],
   })
-  nuevoProducto: IProductoAñadir = {
-  nombre: this.formGroup.value.nombre!,
-  descripcion: this.formGroup.value.descripcion!,
-  precio: this.formGroup.value.precio as number!,
-  stock: 0,
-  categoriaId: 1
-};
+  
 
-registrarProducto() {
-  this._productsApi.postProducto(this.nuevoProducto).subscribe({
+  registrarProducto() {
+    let nuevoProducto: IProductoAñadir = {
+    nombre: this.formGroup.value.nombre!,
+    descripcion: this.formGroup.value.descripcion!,
+    precio: Number(this.formGroup.value.precio),
+    stock: Number(this.formGroup.value.stock),
+    categoriaId: 1
+  };
+  this._productsApi.postProducto(nuevoProducto).subscribe({
     next: (producto) => {
       console.log('Producto creado:', producto);
-      // Navegar, mostrar alerta o resetear formulario
+      this.router.navigateByUrl("/perfil")
     },
     error: (err) => {
       console.error('Error al crear producto:', err);
     }
   });
+  // console.log(nuevoProducto);
+  
 }
 
 
