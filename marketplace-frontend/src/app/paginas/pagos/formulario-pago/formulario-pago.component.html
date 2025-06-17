@@ -1,0 +1,134 @@
+<app-navbar></app-navbar>
+<div class="max-w-4xl mx-auto my-10 bg-gray-900 rounded-xl shadow-lg p-4 md:p-8">
+  @if (step === 1) {
+    <div class="flex flex-col md:flex-row gap-8">
+      <!-- Formulario de envío (izquierda) -->
+      <form [formGroup]="formDireccion" 
+            (ngSubmit)="continuar()" 
+            novalidate
+            class="flex-1 bg-gray-900 rounded-xl p-0 md:p-6">
+        <h2 class="text-2xl font-bold text-white mb-6">Detalles de Envío</h2>
+        <div class="mb-4">
+          <label class="block text-gray-200 mb-1">País</label>
+          <input formControlName="pais" type="text"
+            class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="formDireccion.get('pais')?.invalid && formDireccion.get('pais')?.touched"
+            required>
+          @if (formDireccion.get('pais')?.invalid && formDireccion.get('pais')?.touched) {
+            <div class="text-red-400 text-xs mt-1">El país es obligatorio</div>
+          }
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-200 mb-1">Ciudad</label>
+          <input formControlName="ciudad" type="text"
+            class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="formDireccion.get('ciudad')?.invalid && formDireccion.get('ciudad')?.touched"
+            required>
+          @if (formDireccion.get('ciudad')?.invalid && formDireccion.get('ciudad')?.touched) {
+            <div class="text-red-400 text-xs mt-1">La ciudad es obligatoria</div>
+          }
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-200 mb-1">Estado</label>
+          <input formControlName="estado" type="text"
+            class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="formDireccion.get('estado')?.invalid && formDireccion.get('estado')?.touched"
+            required>
+          @if (formDireccion.get('estado')?.invalid && formDireccion.get('estado')?.touched) {
+            <div class="text-red-400 text-xs mt-1">El estado es obligatorio</div>
+          }
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-200 mb-1">Dirección</label>
+          <input formControlName="direccion" type="text"
+            class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="formDireccion.get('direccion')?.invalid && formDireccion.get('direccion')?.touched"
+            required>
+          @if (formDireccion.get('direccion')?.invalid && formDireccion.get('direccion')?.touched) {
+            <div class="text-red-400 text-xs mt-1">La dirección es obligatoria</div>
+          }
+        </div>
+        <button type="submit" [disabled]="formDireccion.invalid"
+          class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded transition-colors disabled:opacity-50">
+          Continuar
+        </button>
+      </form>
+
+      <!-- Resumen de la orden (derecha) -->
+      <div class="w-full md:w-80 bg-gray-800 rounded-xl p-6 flex flex-col gap-6 shadow-inner h-fit">
+        <h3 class="text-xl font-bold text-white mb-2">Resumen</h3>
+        <ul class="mb-2">
+          @for (producto of productosAcomprar; track producto.producto.productoId) {
+            <li class="flex justify-between text-gray-300 text-sm py-1">
+              <span>{{producto.producto.nombre}} <span class="ml-1 text-gray-400">x{{producto.cantidad}}</span></span>
+              <span>${{producto.total}}</span>
+            </li>
+          }
+        </ul>
+        <div class="flex justify-between border-t border-gray-600 pt-4">
+          <span class="text-lg font-semibold text-gray-200">Total</span>
+          <span class="text-xl font-bold text-green-400">${{ totalCarrito }}</span>
+        </div>
+      </div>
+    </div>
+  }
+
+
+  @if (step === 2) {
+    <form [formGroup]="formPago" (ngSubmit)="finalizar()" novalidate>
+      <h2 class="text-2xl font-bold text-white mb-6">Detalles de Pago</h2>
+      <div class="mb-4">
+        <label class="block text-gray-200 mb-1">Nombre en la tarjeta</label>
+        <input formControlName="nombreTarjeta" type="text"
+          class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [class.border-red-500]="formPago.get('nombreTarjeta')?.invalid && formPago.get('nombreTarjeta')?.touched"
+          required>
+        @if (formPago.get('nombreTarjeta')?.invalid && formPago.get('nombreTarjeta')?.touched) {
+          <div class="text-red-400 text-xs mt-1">El nombre es obligatorio</div>
+        }
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-200 mb-1">Número de tarjeta</label>
+        <input formControlName="numeroTarjeta" type="text" maxlength="16"
+          class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [class.border-red-500]="formPago.get('numeroTarjeta')?.invalid && formPago.get('numeroTarjeta')?.touched"
+          required>
+        @if (formPago.get('numeroTarjeta')?.invalid && formPago.get('numeroTarjeta')?.touched) {
+          <div class="text-red-400 text-xs mt-1">Debe ser un número válido de 16 dígitos</div>
+        }
+      </div>
+      <div class="flex gap-4 mb-4">
+        <div class="flex-1">
+          <label class="block text-gray-200 mb-1">Expiración (MM/AA)</label>
+          <input formControlName="expiracion" type="text" maxlength="5"
+            class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="formPago.get('expiracion')?.invalid && formPago.get('expiracion')?.touched"
+            required>
+          @if (formPago.get('expiracion')?.invalid && formPago.get('expiracion')?.touched) {
+            <div class="text-red-400 text-xs mt-1">Formato inválido (MM/AA)</div>
+          }
+        </div>
+        <div class="flex-1">
+          <label class="block text-gray-200 mb-1">CVC</label>
+          <input formControlName="cvc" type="text" maxlength="4"
+            class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="formPago.get('cvc')?.invalid && formPago.get('cvc')?.touched"
+            required>
+          @if (formPago.get('cvc')?.invalid && formPago.get('cvc')?.touched) {
+            <div class="text-red-400 text-xs mt-1">CVC inválido</div>
+          }
+        </div>
+      </div>
+      <div class="flex gap-2 mt-6">
+        <button type="button" (click)="step = 1"
+          class="w-1/2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded transition-colors">
+          Atrás
+        </button>
+        <button type="submit" [disabled]="formPago.invalid"
+          class="w-1/2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded transition-colors disabled:opacity-50">
+          Finalizar
+        </button>
+      </div>
+    </form>
+  }
+</div>

@@ -11,6 +11,7 @@ export class AutentificacionService {
   hhtpCliente = inject(HttpClient);
   private readonly URL = "http://localhost:5038/api/Usuario/login";
   private readonly URL2 = "http://localhost:5038/api/Usuario/registrar";
+  
   login(data:IUsuarioLogin):Observable<IAutentificacionResponse>{
     return this.hhtpCliente.post<IAutentificacionResponse>(this.URL,data).pipe(tap((response)=>{
         if(response){

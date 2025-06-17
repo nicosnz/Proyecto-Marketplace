@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { IProducto, IProducto2 } from '../../../services/models/IProductos';
+import { CarritoService } from '../../../services/carrito.service';
 
 @Component({
   selector: 'app-producto',
@@ -9,5 +10,9 @@ import { IProducto, IProducto2 } from '../../../services/models/IProductos';
 })
 export class ProductoComponent {
   @Input({required:true}) producto?:IProducto2;
+  private _carritoService = inject(CarritoService);
+  agregarCarrito(){
+    this._carritoService.añadirCarrito(this.producto!);
+  }
   
 }

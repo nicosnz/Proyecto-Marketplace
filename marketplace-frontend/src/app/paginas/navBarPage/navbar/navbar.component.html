@@ -1,19 +1,16 @@
 <nav class="flex justify-between items-center bg-primario h-20 text-white px-6 py-4">
 
-  <!-- IZQUIERDA: Logo o botón inicio -->
   <div class="flex items-center">
     <button class="hover:opacity-80 cursor-pointer transition duration-200" routerLink="/home">
       <img src="perfilIcono.ico" class="w-8 h-8 mr-2" alt="Icono">
     </button>
   </div>
 
-  <!-- CENTRO: Menú -->
   <ul class="hidden md:flex space-x-10 text-2xl font-primario">
-    <li><a href="/home" class="hover:text-zinc-500">Inicio</a></li>
-    <li><a href="/tienda" class="hover:text-zinc-500">Productos</a></li>
+    <li><button routerLink="/home" class="hover:text-zinc-500">Inicio</button></li>
+    <li><button routerLink="/tienda" class="hover:text-zinc-500">Productos</button></li>
   </ul>
 
-  <!-- DERECHA: Autenticación o perfil + carrito -->
   @if (!isLoggedIn) {
     <div class="flex items-center space-x-4 font-primario">
       <button routerLink="/iniciar-sesion" class="text-xl px-4 py-2 bg-black text-white rounded-xl hover:bg-zinc-500">
@@ -27,16 +24,72 @@
   @else {
     <div class="flex items-center space-x-6 font-primario">
       <!-- Carrito -->
-      <button class="relative hover:opacity-80 transition cursor-pointer" routerLink="/carrito">
+      <button class="relative hover:opacity-80 transition cursor-pointer" (click)="abrirCarrito()">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13l-1.5-6M7 13H5.4M16 16a2 2 0 11-4 0 2 2 0 014 0zm-6 0a2 2 0 11-4 0 2 2 0 014 0z"/>
         </svg>
         <!-- Badge de cantidad (opcional) -->
-        <!-- <span *ngIf="carritoTotal > 0" class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-          {{ carritoTotal }}
-        </span> -->
+        
+        <span  class="absolute top-0 right-0 -mt-1 -mr-1 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+          {{contador}}
+        </span>
       </button>
+      @if (carritoAbierto) {
+        <div 
+          (click)="cerrarCarrito()"
+          class="fixed inset-0  z-30"
+        ></div>
 
+        <div
+          class="fixed top-0 right-0 h-full w-96 max-w-full bg-white shadow-2xl z-40 flex flex-col transition-transform duration-300"
+          style="margin-right:0"
+        >
+          <div class="flex justify-between items-center p-4 border-b  text-black">
+            <h3 class="font-bold text-lg">Carrito de compras</h3>
+            <button (click)="cerrarCarrito()" aria-label="Cerrar" class="text-2xl font-bold hover:text-red-600">&times;</button>
+          </div>
+          
+          <div class="flex-1 overflow-y-auto p-4 text-black">
+            <ul>
+              @for (producto of productosCarrito; track producto.producto.productoId) {
+                <li class="flex items-center justify-between gap-4 py-4 px-3 mb-3 bg-gray-100 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                  <!-- Imagen del producto si existe -->
+                  @if (producto.producto.imagenBase64) {
+                    <img 
+                      [src]="producto.producto.imagenBase64" 
+                      alt="{{ producto.producto.nombre }}" 
+                      class="w-12 h-12 object-cover rounded-md border border-gray-300"
+                    />
+                  }
+                  <div class="flex-1 flex flex-col min-w-0">
+                    <span class="font-semibold truncate text-base">{{ producto.producto.nombre }}</span>
+                    <span class="text-gray-500 text-sm">x{{ producto.cantidad }} unidad{{ producto.cantidad > 1 ? 'es' : '' }}</span>
+                    <span class="text-gray-700 font-medium mt-1 text-sm">${{ producto.total }}</span>
+                  </div>
+                  <button 
+                    (click)="eliminarCarrito(producto.producto)"
+                    class="ml-3 text-red-500 hover:text-red-700 transition-colors p-2 rounded-full hover:bg-red-100"
+                    aria-label="Eliminar producto"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <!-- Pie de carrito -->
+          <div class="p-4 border-t text-black">
+            <div class="flex justify-between font-bold text-lg">
+              <span>Subtotal</span>
+              <span>${{ totalCarrito }}</span>
+            </div>
+            <button class="mt-4 w-full bg-primario text-white py-2 rounded" routerLink="/carrito">Ir a pagar</button>
+          </div>
+        </div>
+      }
       <!-- Perfil -->
       <button routerLink="/perfil" class="hover:opacity-80 transition cursor-pointer">
         <img src="profile.jpg" class="w-12 h-12 rounded-full object-cover" alt="Perfil">

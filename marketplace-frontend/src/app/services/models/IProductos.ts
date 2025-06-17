@@ -35,5 +35,11 @@ export interface IProductoEditar{
   precio: number;
   stock: number;
   categoriaId?: number;
+
 }
 
+export interface ICarritoProductos{
+  producto:IProducto2;
+  cantidad:number;
+  total:number;
+}

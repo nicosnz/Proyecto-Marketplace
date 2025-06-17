@@ -27,18 +27,28 @@ namespace marketplace_backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosDisponibles()
         {
-            var productos = await _productoService.ObtenerProductosDisponiblesAsync();
+            var productos = await _productoService.ObtenerProductosDisponibles();
             return Ok(productos);
         }
+        [HttpGet("categorias")]
+        public async Task<ActionResult<IEnumerable<Categoria>>> ObtenerCategorias()
+        {
+            var categorias = await _productoService.ObtenerCategorias();
+            return Ok(categorias);
+        }
+
 
         [Authorize]
         [HttpGet("mis-productos")]
-        public async Task<ActionResult<IEnumerable<VwProductosCatalogo>>> ObtenerProductosDisponiblesPorUsuario()
+        public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosDisponiblesPorUsuario()
         {
             try
             {
-                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                var productos = await _productoService.ObtenerProductosPorUsuarioAsync(userId);
+                var userId = ObtenerUsuarioIdDesdeToken();
+                 if (userId == null)
+                    return Unauthorized(new { mensaje = "Token inválido" });
+                
+                var productos = await _productoService.ObtenerProductosPorUsuario((int)userId);
                 return Ok(productos);
             }
             catch (ProductosNotFound ex)
@@ -55,12 +65,14 @@ namespace marketplace_backend.Controllers
         [HttpGet("catalogo")]
 
 
-        public async Task<ActionResult<IEnumerable<VwProductosCatalogo>>> ObtenerProductosMenosUsuario()
+        public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosMenosUsuario()
         {
             try
             {
-                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                var productos = await _productoService.ObtenerProductosMenosUsuarioAsync(userId);
+                var userId = ObtenerUsuarioIdDesdeToken();
+                if (userId == null)
+                    return Unauthorized(new { mensaje = "Token inválido" });
+                var productos = await _productoService.ObtenerProductosMenosUsuario((int)userId);
                 return Ok(productos);
             }
             catch (ProductosNotFound ex)
@@ -74,7 +86,7 @@ namespace marketplace_backend.Controllers
         }
         [HttpPost("añadir")]
         [Authorize]
-        public async Task<IActionResult> AñadirProducto([FromForm] Productodto dto, [FromForm] IFormFile imagen )
+        public async Task<ActionResult> AñadirProducto([FromForm] Productodto dto, [FromForm] IFormFile imagen )
         {
             try
             {
@@ -118,9 +130,9 @@ namespace marketplace_backend.Controllers
         }
 
 
-        [HttpPut("editar")]
+        [HttpPut("editar/{id}")]
         [Authorize]
-        public async Task<IActionResult> EditarProducto([FromBody] ProductoEditar dto)
+        public async Task<ActionResult> EditarProducto([FromBody] ProductoEditar dto, [FromRoute]int id)
         {
             try
             {
@@ -130,12 +142,13 @@ namespace marketplace_backend.Controllers
 
                 var producto = new Producto
                 {
-                    ProductoId = dto.ProductoId,
+                    ProductoId = id,
                     Nombre = dto.Nombre,
                     Descripcion = dto.Descripcion,
                     Precio = dto.Precio,
                     Stock = dto.Stock,
-                    VendedorId = userId.Value
+                    VendedorId = userId.Value,
+                    CategoriaId = dto.CategoriaId
                 };
 
                 var productoEditado = await _productoService.EditarProducto(producto);
@@ -144,6 +157,35 @@ namespace marketplace_backend.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        [HttpDelete("eliminar/{id}")]
+        [Authorize]
+        public async Task<IActionResult> EliminarProducto(int id)
+        {
+            bool eliminado = await _productoService.EliminarProducto(id);
+            if (eliminado)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return NotFound($"No se encontró el producto con id {id} o no pudo eliminarse.");
+            }
+        }
+        [HttpGet("producto/{id}")]
+        [Authorize]
+        public async Task<IActionResult> ObtenerProducto(int id)
+        {
+            var producto = await _productoService.ObtenerProducto(id);
+            if (producto != null)
+            {
+                return Ok(producto);
+            }
+            else
+            {
+                return NotFound($"No se encontró el producto con id {id}.");
             }
         }
 

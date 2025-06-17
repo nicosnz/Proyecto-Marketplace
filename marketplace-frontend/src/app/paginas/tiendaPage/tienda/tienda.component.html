@@ -48,11 +48,21 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-    @for (producto of productos; track producto.productoId) {
-      <app-producto [producto]="producto"></app-producto>
-    }
-  </div>
+  @if (isLoggedIn) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      @for (producto of productos2; track producto.productoId) {
+        <app-producto [producto]="producto"></app-producto>
+      }
+    </div>  
+  }
+  @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      @for (producto of productos; track producto.productoId) {
+        <app-producto [producto]="producto"></app-producto>
+      }
+    </div>
+
+  }
 
   </main>
 </div>

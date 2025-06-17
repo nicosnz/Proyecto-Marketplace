@@ -4,9 +4,9 @@
         class="relative bg-white/95 rounded-3xl shadow-2xl p-10 w-full max-w-xl flex flex-col gap-8 ring-1 ring-indigo-200">
 
     <h1 class="text-4xl md:text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-primario via-primario to-primario mb-2 tracking-tight drop-shadow-sm">
-      Añadir Producto
+      {{ modoEditar ? 'Editar Producto' : 'Añadir Producto' }}
     </h1>
-    <p class="text-center text-slate-500 mb-6">Completa los datos para publicar un nuevo producto</p>
+    <p class="text-center text-slate-500 mb-6">{{modoEditar? 'Edita el producto existente':'Completa los datos para publicar un nuevo producto'}}</p>
 
     <div class="relative">
       <input type="text" id="nombre"
@@ -52,6 +52,20 @@
         </label>
       </div>
     </div>
+    <div class="relative">
+      <select id="categoria"
+              class="peer block w-full rounded-lg border border-slate-300 bg-transparent px-4 pt-8 pb-2 text-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-400 outline-none transition"
+              formControlName="categoriaId">
+        <option value="" disabled selected>Selecciona una categoría</option>
+        @for (categoria of categorias; track categoria.categoriaId) {
+          <option [value]="categoria.categoriaId">{{ categoria.nombre }}</option>
+        }
+      </select>
+      <label for="categoria"
+            class="absolute left-4 top-2 text-slate-400 text-base font-medium pointer-events-none transition-all duration-200 peer-focus:top-2 peer-focus:text-base peer-focus:text-indigo-700">
+        Categoría
+      </label>
+    </div>
 
     <div>
       <label for="imagen" class="block text-base font-semibold text-slate-700 mb-2">Imagen</label>
@@ -67,12 +81,23 @@
               routerLink="/perfil">
         Cancelar
       </button>
-      <button type="submit"
+      @if (modoEditar) {
+        <button type="submit"
               class="bg-gradient-to-r cursor-pointer from-primario to-primariohover:from-fuchsia-600 hover:to-yellow-500 text-white px-8 py-2 rounded-xl font-semibold shadow transition disabled:bg-slate-300 disabled:cursor-not-allowed"
               [disabled]="formGroup.invalid"
-              (click)="registrarProducto()">
+              (click)="actualizarProducto()">
         Confirmar
-      </button>
+      </button>  
+      }
+      @else {
+
+        <button type="submit"
+                class="bg-gradient-to-r cursor-pointer from-primario to-primariohover:from-fuchsia-600 hover:to-yellow-500 text-white px-8 py-2 rounded-xl font-semibold shadow transition disabled:bg-slate-300 disabled:cursor-not-allowed"
+                [disabled]="formGroup.invalid"
+                (click)="registrarProducto()">
+          Confirmar
+        </button>
+      }
     </div>
   </form>
 </div>

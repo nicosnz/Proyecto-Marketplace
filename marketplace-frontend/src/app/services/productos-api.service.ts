@@ -1,27 +1,46 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { IProducto, IProducto2, IProductoAñadir, IProductoEditar } from './models/IProductos';
+import { IProducto, IProducto2, IProductoEditar } from './models/IProductos';
+import { ICategoria } from './models/ICategoria';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductosApiService {
-  hhtpCliente = inject(HttpClient);
+  httpCliente = inject(HttpClient);
   private readonly URL = "http://localhost:5038/api/Productos/mis-productos";
   private readonly URL2 = "http://localhost:5038/api/Productos";
   private readonly URL3 = "http://localhost:5038/api/Productos/añadir";
   private readonly URL4 = "http://localhost:5038/api/Productos/editar";
+  private readonly URL5 = "http://localhost:5038/api/Productos/eliminar";
+  private readonly URL6 = "http://localhost:5038/api/Productos/producto";
+  private readonly URL7 = "http://localhost:5038/api/Productos/catalogo";
+  private readonly URL8 = "http://localhost:5038/api/Productos/categorias";
   getMyProducts(){
-    return this.hhtpCliente.get<IProducto[]>(this.URL);
+    return this.httpCliente.get<IProducto2[]>(this.URL);
+  }
+  getProduct(idProducto:number){
+    return this.httpCliente.get<IProducto>(`${this.URL6}/${idProducto}`);
+
+  }
+  getCategorias(){
+    return this.httpCliente.get<ICategoria[]>(this.URL8)
   }
   getProducts(){
-    return this.hhtpCliente.get<IProducto2[]>(this.URL2);
+    return this.httpCliente.get<IProducto2[]>(this.URL2); 
+  }
+  getProductsCatalogo(){
+    return this.httpCliente.get<IProducto2[]>(this.URL7); 
   }
   postProducto(formData:FormData){
-    return this.hhtpCliente.post<IProducto>(this.URL3,formData)
+    return this.httpCliente.post<IProducto>(this.URL3,formData)
   }
   putProducto(producto:IProductoEditar){
-    return this.hhtpCliente.put<IProducto>(this.URL4,producto)
+    return this.httpCliente.put<IProductoEditar>(`${this.URL4}/${producto.productoId}`,producto)
+  
+  }
+  deleteProducto(idProducto:number){
+    return this.httpCliente.delete(`${this.URL5}/${idProducto}`);
   }
 
 }

@@ -13,9 +13,14 @@ import { FooterComponent } from '../../footerPage/footer/footer.component';
 })
 export class TiendaComponent implements OnInit {
   private readonly _productsApi = inject(ProductosApiService);
+  get isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
   productos:IProducto2[] = []
+  productos2:IProducto2[] = []
   ngOnInit():void{
-    this._productsApi.getProducts().subscribe((data)=>this.productos = data);
+    this._productsApi.getProducts().subscribe((data)=>this.productos=data);
+    this._productsApi.getProductsCatalogo().subscribe((data)=> this.productos2 = data)
   }
   
   
