@@ -7,3 +7,8 @@ export interface IUsuarioRegistrarse{
     email:string;
     passwordHash:string;
 }
+export interface IUsuarioCompra{
+    pais:string;
+    ciudad:string;
+    direccion:String;
+}

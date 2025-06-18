@@ -79,6 +79,8 @@ builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IProductoImagenRepository, ProductoImagenRepository>();
 builder.Services.AddScoped<IProductoImagenService, ProductoImagenService>();
+builder.Services.AddScoped<IOrdenesRepository, OrdenesRepository>();
+builder.Services.AddScoped<IOrdenesService,OrdenesService>();
 
 var origenesPermitidos = builder.Configuration.GetValue<string>("OrigenesPermitidos")!.Split(",");
 //cors

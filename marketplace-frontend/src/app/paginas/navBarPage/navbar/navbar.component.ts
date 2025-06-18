@@ -41,6 +41,7 @@ export class NavbarComponent implements OnInit {
     this._carritoService.totalCarritoObservable.subscribe({
       next:(total)=>{
         this.totalCarrito = total;
+        
       }
     })
   }

@@ -14,8 +14,8 @@ namespace marketplace_backend.Interfaces
 
         Task<IEnumerable<ProductoConImagendto>> ObtenerProductosPorUsuario(int usuarioID);
         Task<IEnumerable<ProductoConImagendto>> ObtenerProductosMenosUsuario(int usuarioID);
-        Task<Producto> EditarProducto(Producto producto);
-        Task<Producto> AñadirProducto(Producto producto, int usuarioID);
+        Task<Producto> EditarProducto(ProductoEditar dto,int id,int usuarioID);
+        Task<Producto> AñadirProducto(Productodto dto, int usuarioID,IFormFile imagen);
         Task<bool> EliminarProducto(int productoID);
         Task<Producto> ObtenerProducto(int productoID); 
 

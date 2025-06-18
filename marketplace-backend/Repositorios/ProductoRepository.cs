@@ -39,7 +39,6 @@ namespace marketplace_backend.Repositorios
         }
         public async Task<Producto> EditarProducto(Producto producto)
         {
-            Console.WriteLine(producto.CategoriaId.GetType());
             var productoEditado = await _context.Productos.FromSqlInterpolated($"EXEC EditarProducto @ProductoID = {producto.ProductoId}, @Nombre = {producto.Nombre}, @Descripcion = {producto.Descripcion}, @Precio = {producto.Precio}, @Stock = {producto.Stock}, @CategoriaId = {producto.CategoriaId}")
                 .AsNoTracking()
                 .ToListAsync();

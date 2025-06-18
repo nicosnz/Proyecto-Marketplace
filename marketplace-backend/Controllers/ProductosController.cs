@@ -17,12 +17,10 @@ namespace marketplace_backend.Controllers
     public class ProductosController : ControllerBase
     {
         private readonly IProductoService _productoService;
-        private readonly IProductoImagenService _productoImagenService;
 
-        public ProductosController(IProductoService productoService, IProductoImagenService productoImagenService)
+        public ProductosController(IProductoService productoService)
         {
             _productoService = productoService;
-            _productoImagenService = productoImagenService;
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosDisponibles()
@@ -45,9 +43,9 @@ namespace marketplace_backend.Controllers
             try
             {
                 var userId = ObtenerUsuarioIdDesdeToken();
-                 if (userId == null)
+                if (userId == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
-                
+
                 var productos = await _productoService.ObtenerProductosPorUsuario((int)userId);
                 return Ok(productos);
             }
@@ -58,6 +56,12 @@ namespace marketplace_backend.Controllers
             catch (UsuarioNotFound ex)
             {
                 return NotFound(new { mensaje = ex.Message });
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine("error en productos1");
+                return BadRequest(new { mensaje = ex.Message });
+
             }
         }
         [Authorize]
@@ -94,33 +98,8 @@ namespace marketplace_backend.Controllers
                 if (userId == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
 
-                var nuevoProducto = new Producto
-                {
-                    Nombre = dto.Nombre,
-                    Descripcion = dto.Descripcion,
-                    Precio = dto.Precio,
-                    Stock = dto.Stock,
-                    CategoriaId = dto.CategoriaId,
-                    VendedorId = userId.Value 
-                };
-
-                var productoCreado = await _productoService.AñadirProducto(nuevoProducto, userId.Value);
-                if (imagen != null && imagen.Length > 0)
-                {
-                    using var ms = new MemoryStream();
-                    await imagen.CopyToAsync(ms);
-
-                    var imagenMongo = new ProductoImagen
-                    {
-                        ProductoId = productoCreado.ProductoId, 
-                        FileName = imagen.FileName,
-                        ContentType = imagen.ContentType,
-                        Data = ms.ToArray()
-                    };
-
-                    await _productoImagenService.InsertarAsync(imagenMongo);
-                }
-
+                var productoCreado = await _productoService.AñadirProducto(dto, userId.Value,imagen);
+                
                 return Ok(productoCreado);
             }
             catch (Exception ex)
@@ -140,18 +119,8 @@ namespace marketplace_backend.Controllers
                 if (userId == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
 
-                var producto = new Producto
-                {
-                    ProductoId = id,
-                    Nombre = dto.Nombre,
-                    Descripcion = dto.Descripcion,
-                    Precio = dto.Precio,
-                    Stock = dto.Stock,
-                    VendedorId = userId.Value,
-                    CategoriaId = dto.CategoriaId
-                };
-
-                var productoEditado = await _productoService.EditarProducto(producto);
+               
+                var productoEditado = await _productoService.EditarProducto(dto,id,(int)userId);
                 return Ok(productoEditado);
             }
             catch (Exception ex)

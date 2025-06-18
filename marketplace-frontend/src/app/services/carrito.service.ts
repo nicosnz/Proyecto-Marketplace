@@ -12,6 +12,7 @@ export class CarritoService {
   contadorObservable = new BehaviorSubject<number>(0)
   carritoObservable = new BehaviorSubject<ICarritoProductos[]>([])
   totalCarritoObservable = new BehaviorSubject<number>(0)
+
   añadirCarrito(producto:IProducto2){
     let idProducto = producto.productoId;
     let indiceProducto = this._productosCarrito.findIndex(p=>p.producto.productoId === idProducto);
@@ -19,6 +20,8 @@ export class CarritoService {
       this._productosCarrito.push({producto:producto,cantidad:1,total:producto.precio})
       this.totalCarrito = this.totalCarrito + producto.precio
       this.actualizarContador()
+      console.log(this._productosCarrito);
+      
     }
     else{
       let productoDetalle = this._productosCarrito[indiceProducto];
@@ -26,10 +29,14 @@ export class CarritoService {
       productoDetalle.total = productoDetalle.cantidad * productoDetalle.producto.precio
       this.totalCarrito = this.totalCarrito + productoDetalle.producto.precio
       this.actualizarContador()
+      console.log(this._productosCarrito);
+      
     }
+
     
     
   }
+  
   eliminarDelCarrito(producto:IProducto2){
     let idProducto = producto.productoId
     let indiceProducto = this._productosCarrito.findIndex(p=>p.producto.productoId === idProducto);

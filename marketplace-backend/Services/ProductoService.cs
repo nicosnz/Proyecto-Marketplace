@@ -114,16 +114,53 @@ namespace marketplace_backend.Services
 
 
         }
-        public async Task<Producto> EditarProducto(Producto producto)
+        public async Task<Producto> EditarProducto(ProductoEditar dto, int id, int usuarioID)
         {
+             var producto = new Producto
+                {
+                    ProductoId = id,
+                    Nombre = dto.Nombre,
+                    Descripcion = dto.Descripcion,
+                    Precio = dto.Precio,
+                    Stock = dto.Stock,
+                    VendedorId = usuarioID,
+                    CategoriaId = dto.CategoriaId
+                };
+
             var productoNuevo = _productoRepository.EditarProducto(producto);
             return await productoNuevo;
 
         }
-        public async Task<Producto> AñadirProducto(Producto producto, int usuarioID)
+        public async Task<Producto> AñadirProducto(Productodto dto, int usuarioID,IFormFile imagen)
         {
-            var productoNuevo = _productoRepository.AñadirProducto(producto, usuarioID);
-            return await productoNuevo;
+            var nuevoProducto = new Producto
+                {
+                    Nombre = dto.Nombre,
+                    Descripcion = dto.Descripcion,
+                    Precio = dto.Precio,
+                    Stock = dto.Stock,
+                    CategoriaId = dto.CategoriaId,
+                    VendedorId = usuarioID
+                };
+
+            var productoNuevo = await _productoRepository.AñadirProducto(nuevoProducto, usuarioID);
+
+            if (imagen != null && imagen.Length > 0)
+            {
+                using var ms = new MemoryStream();
+                await imagen.CopyToAsync(ms);
+
+                var imagenMongo = new ProductoImagen
+                {
+                    ProductoId = productoNuevo.ProductoId,
+                    FileName = imagen.FileName,
+                    ContentType = imagen.ContentType,
+                    Data = ms.ToArray()
+                };
+
+                await _productoImagenRepository.InsertarAsync(imagenMongo);
+            }
+            return productoNuevo;
         }
         public async Task<bool> EliminarProducto(int productoID)
         {
