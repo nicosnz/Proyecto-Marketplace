@@ -17,7 +17,7 @@ export const routes: Routes = [
     {path:'perfil',component:PerfilUsuarioComponent},
     {path:'añadir-formulario',component:FormularioProductoComponent},
     {path:'añadir-formulario/:id',component:FormularioProductoComponent},
-    {path:'producto-detalle',component:ProductoDetalleComponent},
+    {path:'producto-detalle/:id',component:ProductoDetalleComponent},
     {path:'formulario-pago',component:FormularioPagoComponent},
     {path:'carrito',component:DetalleOrdenComponent},
 

@@ -1,10 +1,11 @@
 import { Component, Input, inject } from '@angular/core';
 import { IProducto, IProducto2 } from '../../../services/models/IProductos';
 import { CarritoService } from '../../../services/carrito.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-producto',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './producto.component.html',
   styleUrl: './producto.component.scss'
 })

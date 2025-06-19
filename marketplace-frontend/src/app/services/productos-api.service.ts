@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { IProducto, IProducto2, IProductoEditar } from './models/IProductos';
 import { ICategoria } from './models/ICategoria';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,16 @@ export class ProductosApiService {
   private readonly URL6 = "http://localhost:5038/api/Productos/producto";
   private readonly URL7 = "http://localhost:5038/api/Productos/catalogo";
   private readonly URL8 = "http://localhost:5038/api/Productos/categorias";
-  getMyProducts(){
+  private readonly URL9 = "http://localhost:5038/api/Productos/categoria";
+  getMyProducts():Observable<IProducto2[]>{
     return this.httpCliente.get<IProducto2[]>(this.URL);
   }
   getProduct(idProducto:number){
     return this.httpCliente.get<IProducto>(`${this.URL6}/${idProducto}`);
 
+  }
+  getProductosPorCategoria(idCategoria:number){
+    return this.httpCliente.get<IProducto2[]>(`${this.URL9}/${idCategoria}`);
   }
   getCategorias(){
     return this.httpCliente.get<ICategoria[]>(this.URL8)

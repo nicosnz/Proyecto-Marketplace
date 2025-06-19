@@ -37,6 +37,13 @@ namespace marketplace_backend.Repositorios
                 .ToListAsync();
 
         }
+        public async Task<IEnumerable<Producto>> ObtenerProductosPorCategoria(int categoriaID,int usuarioID)
+        {
+            return await _context.Productos
+                .FromSqlInterpolated($"EXEC sp_ObtenerProductoPorCategoria @categoriaId = {categoriaID}, @vendedorId = {usuarioID}")
+                .ToListAsync();
+        }
+
         public async Task<Producto> EditarProducto(Producto producto)
         {
             var productoEditado = await _context.Productos.FromSqlInterpolated($"EXEC EditarProducto @ProductoID = {producto.ProductoId}, @Nombre = {producto.Nombre}, @Descripcion = {producto.Descripcion}, @Precio = {producto.Precio}, @Stock = {producto.Stock}, @CategoriaId = {producto.CategoriaId}")

@@ -88,6 +88,34 @@ namespace marketplace_backend.Controllers
                 return NotFound(new { mensaje = ex.Message });
             }
         }
+        [Authorize]
+
+        [HttpGet("categoria/{id}")]
+
+
+        public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosPorCategoria(int id)
+        {
+            try
+            {
+                var userId = ObtenerUsuarioIdDesdeToken();
+                if (userId == null)
+                    return Unauthorized(new { mensaje = "Token inválido" });
+                var productos = await _productoService.ObtenerProductosPorCategoria(id,(int)userId);
+                foreach (var item in productos)
+                {
+                    Console.WriteLine(item.Nombre);
+                }
+                return Ok(productos);
+            }
+            catch (ProductosNotFound ex)
+            {
+                return NotFound(new { mensaje = ex.Message });
+            }
+            catch (UsuarioNotFound ex)
+            {
+                return NotFound(new { mensaje = ex.Message });
+            }
+        }
         [HttpPost("añadir")]
         [Authorize]
         public async Task<ActionResult> AñadirProducto([FromForm] Productodto dto, [FromForm] IFormFile imagen )

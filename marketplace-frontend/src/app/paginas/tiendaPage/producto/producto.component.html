@@ -21,7 +21,7 @@
   <!-- Contenido -->
   <div class="p-5 flex flex-col justify-between h-48">
     <div>
-      <a 
+      <a [routerLink]="['/producto-detalle',producto?.productoId]" 
         class="block text-lg text-gray-900 font-semibold font-primario truncate tracking-tight hover:text-yellow-500 transition"
       >
         {{ producto?.nombre }}

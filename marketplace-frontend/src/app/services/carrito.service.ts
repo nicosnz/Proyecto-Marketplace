@@ -53,4 +53,11 @@ export class CarritoService {
     this.carritoObservable.next(this._productosCarrito);
     this.totalCarritoObservable.next(this.totalCarrito);
   }
+  limpiarCarrito(){
+    this.contador = 0;
+    this.totalCarrito = 0;
+    this.contadorObservable.next(this.contador);
+    this.carritoObservable.next([]);
+    this.totalCarritoObservable.next(this.totalCarrito);
+  }
 }

@@ -86,7 +86,7 @@
               <span>Subtotal</span>
               <span>${{ totalCarrito }}</span>
             </div>
-            <button class="mt-4 w-full bg-primario text-white py-2 rounded" routerLink="/carrito">Ir a pagar</button>
+            <button class="mt-4 w-full bg-primario text-white py-2 rounded" routerLink="/carrito" [disabled]="!contador">Ir a pagar</button>
           </div>
         </div>
       }

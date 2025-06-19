@@ -45,6 +45,7 @@ namespace marketplace_backend.Controllers
             catch (System.Exception ex)
             {
                 Console.WriteLine("error en ordenes");
+                Console.WriteLine(ex.ToString()); // Esto mostrará el stacktrace completo
                 return BadRequest(new { mensaje = ex.Message });
 
             }

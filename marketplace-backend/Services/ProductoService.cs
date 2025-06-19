@@ -114,18 +114,53 @@ namespace marketplace_backend.Services
 
 
         }
+        public async Task<IEnumerable<ProductoConImagendto>> ObtenerProductosPorCategoria(int categoriaID, int usuarioID)
+        {
+            if (!await _usuarioRepository.ExisteUsuarioAsync(usuarioID))
+            {
+                throw new UsuarioNotFound();
+            }
+            var productoPorCategoria = await _productoRepository.ObtenerProductosPorCategoria(categoriaID,usuarioID);
+            if (!productoPorCategoria.Any())
+            {
+                throw new ProductosNotFound();
+            }
+
+            var lista = new List<ProductoConImagendto>();
+
+            foreach (var prod in productoPorCategoria)
+            {
+                var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(prod.ProductoId)).FirstOrDefault();
+
+                lista.Add(new ProductoConImagendto
+                {
+                    ProductoId = prod.ProductoId,
+                    Nombre = prod.Nombre,
+                    Descripcion = prod.Descripcion!,
+                    Precio = prod.Precio,
+                    Stock = prod.Stock,
+                    CategoriaId = (int)prod.CategoriaId!,
+                    VendedorId = prod.VendedorId,
+                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null
+                });
+            }
+            return lista;
+
+            
+        }
+
         public async Task<Producto> EditarProducto(ProductoEditar dto, int id, int usuarioID)
         {
-             var producto = new Producto
-                {
-                    ProductoId = id,
-                    Nombre = dto.Nombre,
-                    Descripcion = dto.Descripcion,
-                    Precio = dto.Precio,
-                    Stock = dto.Stock,
-                    VendedorId = usuarioID,
-                    CategoriaId = dto.CategoriaId
-                };
+            var producto = new Producto
+            {
+                ProductoId = id,
+                Nombre = dto.Nombre,
+                Descripcion = dto.Descripcion,
+                Precio = dto.Precio,
+                Stock = dto.Stock,
+                VendedorId = usuarioID,
+                CategoriaId = dto.CategoriaId
+            };
 
             var productoNuevo = _productoRepository.EditarProducto(producto);
             return await productoNuevo;

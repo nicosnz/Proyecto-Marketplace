@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -20,9 +21,9 @@ namespace marketplace_backend.Repositorios
         public async Task<int> InsertarOrden(int compradorId, string direccion, string pais, string ciudad)
         {
             var ordenId = await _context.Database
-               .SqlQuery<int>($"EXEC sp_InsertarOrden @CompradorID={compradorId}, @Direccion={direccion}, @Ciudad={ciudad}, @Pais={pais}")
-               .SingleAsync();
-            return ordenId;
+               .SqlQuery<OrdenIdResultado>($"EXEC sp_InsertarOrden @CompradorID={compradorId}, @Direccion={direccion}, @Ciudad={ciudad}, @Pais={pais}")
+               .ToListAsync();
+            return ordenId.First().OrdenId;
 
         }
         public async Task MarcarOrdenComoPagada(int ordenId)

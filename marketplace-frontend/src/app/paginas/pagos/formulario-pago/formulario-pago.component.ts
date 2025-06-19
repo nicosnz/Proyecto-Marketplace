@@ -59,11 +59,11 @@ export class FormularioPagoComponent implements OnInit {
             ciudad:this.formDireccion.value.ciudad!,
             direccion:this.formDireccion.value.direccion!
           }
-      console.log(this.formDireccion.value, this.formPago.value);
       this._ordenesService.postOrden(this.productosAcomprar,usuario).subscribe({ 
         next: (respuesta) => {
         console.log(respuesta);
           this._router.navigateByUrl('/home');
+          this._carritoService.limpiarCarrito();
         },
         error: (err) => {
           console.error( err);
