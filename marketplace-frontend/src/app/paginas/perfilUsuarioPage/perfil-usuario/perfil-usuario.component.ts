@@ -1,3 +1,4 @@
+import { OrdenesService } from './../../../services/ordenes.service';
 import { IProducto, IProducto2 } from './../../../services/models/IProductos';
 import { Component, inject } from '@angular/core';
 
@@ -5,6 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { NavbarComponent } from '../../navBarPage/navbar/navbar.component';
 import { ProductosApiService } from '../../../services/productos-api.service';
 import { FooterComponent } from "../../footerPage/footer/footer.component";
+import { IMisCompras, IMisVentas, OrdenConProductos } from '../../../services/models/IOrdenes';
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -14,13 +16,25 @@ import { FooterComponent } from "../../footerPage/footer/footer.component";
 })
 export class PerfilUsuarioComponent {
   private router = inject(Router);
+  private readonly _OrdenesService = inject(OrdenesService);
   mostrar_modal = false;
   productoAeliminar:number|any;
+  seccionSeleccionada: 'info' | 'mis-productos' | 'vendidos' | 'comprados' = 'info';
+  misCompras:IMisCompras[] = []
+  misVentas:IMisVentas[]=[]
+  ordenes: OrdenConProductos[] = [];
 
   private readonly _productsApi = inject(ProductosApiService);
   productos:IProducto2[] = []
   ngOnInit():void{
     this._productsApi.getMyProducts().subscribe((data)=>this.productos = data);
+    this._OrdenesService.getMisCompras().subscribe((data)=>{
+      this.misCompras = data;
+      this.ordenes = this.agruparComprasPorOrden(this.misCompras);
+
+    });
+    this._OrdenesService.getMisVentas().subscribe((data)=>this.misVentas=data);
+    
   }
   logout(){
     localStorage.removeItem('token');
@@ -49,4 +63,22 @@ export class PerfilUsuarioComponent {
   editarProducto(producto:IProducto2){
     this.router.navigate(['/añadir-formulario', producto.productoId]);
   }
+  agruparComprasPorOrden(compras: IMisCompras[]): OrdenConProductos[] {
+    const ordenesMap = new Map<number, OrdenConProductos>();
+    for (const compra of compras) {
+      if (!ordenesMap.has(compra.ordenId)) {
+        ordenesMap.set(compra.ordenId, {
+          ordenId: compra.ordenId,
+          fechaOrden: compra.fechaOrden,
+          productos: [],
+          total: 0,
+        });
+      }
+      const orden = ordenesMap.get(compra.ordenId)!;
+      orden.productos.push(compra);
+      orden.total += compra.cantidad * compra.precioUnitario;
+    }
+    return Array.from(ordenesMap.values());
+}
+
 }

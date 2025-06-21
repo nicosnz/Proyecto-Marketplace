@@ -12,6 +12,8 @@ namespace marketplace_backend.Interfaces
         Task MarcarOrdenComoPagada(int ordenId);
 
         Task AgregarProductoADetalleOrden(int ordenId, ProductoCarrito[] productoCarritos);
+        Task<IEnumerable<DetalleComprasUsuario>> ObtenerComprasUsuario(int usuarioID);
+        Task<IEnumerable<ProductosVendidosUsuario>> ObtenerProductosVendidosUsuario(int usuarioID);
 
     }
 }

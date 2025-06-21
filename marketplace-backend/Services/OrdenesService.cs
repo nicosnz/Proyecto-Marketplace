@@ -7,7 +7,7 @@ using marketplace_backend.Interfaces;
 
 namespace marketplace_backend.Services
 {
-    public class OrdenesService:IOrdenesService
+    public class OrdenesService : IOrdenesService
     {
         private readonly IOrdenesRepository _ordenesRepository;
         public OrdenesService(IOrdenesRepository ordenesRepository)
@@ -17,7 +17,7 @@ namespace marketplace_backend.Services
         public async Task<int> InsertarOrden(int compradorId, string direccion, string pais, string ciudad)
         {
             var ordenId = await _ordenesRepository.InsertarOrden(compradorId, direccion, pais, ciudad);
-            return ordenId; 
+            return ordenId;
         }
         public async Task MarcarOrdenComoPagada(int ordenId)
         {
@@ -27,8 +27,17 @@ namespace marketplace_backend.Services
         {
             foreach (var item in productoCarritos)
             {
-                await _ordenesRepository.AgregarProductoADetalleOrden(ordenId, item.Producto.ProductoId, item.Cantidad);    
+                await _ordenesRepository.AgregarProductoADetalleOrden(ordenId, item.Producto.ProductoId, item.Cantidad);
             }
         }
+        public async Task<IEnumerable<DetalleComprasUsuario>> ObtenerComprasUsuario(int usuarioID)
+        {
+            return await _ordenesRepository.ObtenerComprasUsuario(usuarioID);
+        }
+        public async Task<IEnumerable<ProductosVendidosUsuario>> ObtenerProductosVendidosUsuario(int usuarioID)
+        {
+            return await _ordenesRepository.ObtenerProductosVendidosUsuario(usuarioID);
+        }
+
     }
 }

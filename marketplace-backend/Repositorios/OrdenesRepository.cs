@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace marketplace_backend.Repositorios
 {
-    public class OrdenesRepository:IOrdenesRepository
+    public class OrdenesRepository : IOrdenesRepository
     {
         private readonly MarketplaceDbContext _context;
 
@@ -34,6 +34,20 @@ namespace marketplace_backend.Repositorios
         {
             await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC sp_AgregarProductoADetalleOrden @OrdenID={ordenId}, @ProductoID={productoId}, @Cantidad={cantidad}");
         }
+        public async Task<IEnumerable<DetalleComprasUsuario>> ObtenerComprasUsuario(int usuarioID)
+        {
+            return await _context.Set<DetalleComprasUsuario>()
+                .FromSqlInterpolated($"EXEC ObtenerDetallesComprasUsuario @UsuarioId = {usuarioID}")
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<ProductosVendidosUsuario>> ObtenerProductosVendidosUsuario(int usuarioID)
+        {
+            return await _context.Set<ProductosVendidosUsuario>()
+                .FromSqlInterpolated($"EXEC ObtenerProductosVendidosPorUsuario @UsuarioId = {usuarioID}")
+                .ToListAsync();
+        }
+
+
 
 
     }

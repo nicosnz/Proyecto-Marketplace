@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using marketplace_backend.dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace marketplace_backend.Models;
@@ -47,6 +48,10 @@ public partial class MarketplaceDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<DetalleComprasUsuario>().HasNoKey();
+        modelBuilder.Entity<ProductosVendidosUsuario>().HasNoKey();
         modelBuilder.Entity<Categoria>(entity =>
         {
             entity.HasKey(e => e.CategoriaId).HasName("PK__Categori__F353C1C5CCBE0510");
