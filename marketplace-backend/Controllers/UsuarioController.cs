@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -26,7 +27,7 @@ namespace marketplace_backend.Controllers
             _configuration = configuration;
         }
 
-        
+
         [HttpPost("registrar")]
         public async Task<IActionResult> RegistrarUsuario([FromBody] UsuarioRegistraseDto usuarioDto)
         {
@@ -41,7 +42,7 @@ namespace marketplace_backend.Controllers
 
                 var resultado = await _usuarioService.RegistrarNuevoUsuario(nuevoUsuario);
 
-                var token = GenerarToken(resultado); 
+                var token = GenerarToken(resultado);
 
                 return Ok(new
                 {
@@ -67,7 +68,7 @@ namespace marketplace_backend.Controllers
             try
             {
                 var usuario = await _usuarioService.IniciarSesionAsync(loginDto.Email, loginDto.PasswordHash);
-                var token = GenerarToken(usuario); 
+                var token = GenerarToken(usuario);
                 return Ok(new { token });
             }
             catch (ApplicationException ex)
@@ -75,6 +76,22 @@ namespace marketplace_backend.Controllers
                 return Unauthorized(new { mensaje = ex.Message });
             }
         }
+        [Authorize]
+        [HttpGet("infoUsuario")]
+        public async Task<IActionResult> ObtenerInfoUsuario()
+        {
+            try
+            {
+                int usuarioID = (int)ObtenerUsuarioIdDesdeToken()!;
+                var usuario = await _usuarioService.ObtenerInfoUsuario(usuarioID);
+                return Ok(usuario);
+            }
+            catch (ApplicationException ex)
+            {
+                return Unauthorized(new { mensaje = ex.Message });
+            }
+        }
+
         private string GenerarToken(Persona usuario)
         {
             var claims = new[]
@@ -97,6 +114,12 @@ namespace marketplace_backend.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+        private int? ObtenerUsuarioIdDesdeToken()
+        {
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+            return claim != null ? int.Parse(claim.Value) : (int?)null;
+        }
+
     }
 
     

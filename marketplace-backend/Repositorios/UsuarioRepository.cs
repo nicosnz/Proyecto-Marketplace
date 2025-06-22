@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,16 @@ namespace marketplace_backend.Repositorios
 
             return resultado.FirstOrDefault();
         }
+        public async Task<UsuarioInfodto> ObtenerInfoUsuario(int usuarioID)
+        {
+            var resultado = await _context.Set<UsuarioInfodto>()
+                .FromSqlInterpolated($"EXEC dbo.sp_ObtenerInfoUsuario @usuarioId = {usuarioID}")
+                .AsNoTracking()
+                .ToListAsync();
+
+            return resultado.FirstOrDefault();
+        }
+
 
 
     }

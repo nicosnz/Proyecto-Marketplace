@@ -18,7 +18,7 @@ namespace marketplace_backend.Interfaces
         Task<Producto> EditarProducto(ProductoEditar dto,int id,int usuarioID);
         Task<Producto> AñadirProducto(Productodto dto, int usuarioID,IFormFile imagen);
         Task<bool> EliminarProducto(int productoID);
-        Task<Producto> ObtenerProducto(int productoID); 
+        Task<ProductoConImagendto> ObtenerProducto(int productoID); 
 
 
 

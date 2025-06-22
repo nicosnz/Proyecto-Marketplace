@@ -97,6 +97,7 @@ namespace marketplace_backend.Services
             foreach (var prod in productosNoUsuario)
             {
                 var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(prod.ProductoId)).FirstOrDefault();
+                var vendedor = await _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
 
                 lista.Add(new ProductoConImagendto
                 {
@@ -107,6 +108,7 @@ namespace marketplace_backend.Services
                     Stock = prod.Stock,
                     CategoriaId = (int)prod.CategoriaId!,
                     VendedorId = prod.VendedorId,
+                    nombreVendedor = vendedor.Nombre,
                     ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null
                 });
             }
@@ -203,10 +205,23 @@ namespace marketplace_backend.Services
             return isActualizado;
 
         }
-        public async Task<Producto> ObtenerProducto(int productoID)
+        public async Task<ProductoConImagendto> ObtenerProducto(int productoID)
         {
             var productoObtenido = await _productoRepository.ObtenerProducto(productoID);
-            return productoObtenido;
+            var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(productoObtenido.ProductoId)).FirstOrDefault();
+            var productoConImagen = new ProductoConImagendto
+            {
+                ProductoId = productoObtenido.ProductoId,
+                Nombre = productoObtenido.Nombre,
+                Descripcion = productoObtenido.Descripcion!,
+                Precio = productoObtenido.Precio,
+                Stock = productoObtenido.Stock,
+                CategoriaId = (int)productoObtenido.CategoriaId!,
+                VendedorId = productoObtenido.VendedorId,
+                nombreVendedor = productoObtenido.Vendedor.Nombre,
+                ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null
+            };
+            return productoConImagen;
         } 
 
 

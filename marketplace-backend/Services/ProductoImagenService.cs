@@ -19,7 +19,6 @@ namespace marketplace_backend.Services
 
         public Task InsertarAsync(ProductoImagen imagen)
         {
-            // Aquí podrías agregar validaciones o lógica de negocio extra si lo necesitas
             return _repo.InsertarAsync(imagen);
         }
 

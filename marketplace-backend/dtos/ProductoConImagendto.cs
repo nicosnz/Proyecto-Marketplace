@@ -15,6 +15,8 @@ namespace marketplace_backend.dtos
         public int Stock { get; set; }
         public int CategoriaId { get; set; }
         public int VendedorId { get; set; }
+        
+        public string? nombreVendedor { get; set; }
         public string? ImagenBase64 { get; set; }
     }
 }

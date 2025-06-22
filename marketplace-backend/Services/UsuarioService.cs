@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
 using Microsoft.AspNetCore.DataProtection;
@@ -45,7 +46,12 @@ namespace marketplace_backend.Services
             if (passwordDesencriptada != password)
                 throw new ApplicationException("Credenciales inválidas.");
 
-            return persona; 
+            return persona;
+        }
+        public async Task<UsuarioInfodto> ObtenerInfoUsuario(int usuarioID)
+        {
+            var persona = await _usuarioRepository.ObtenerInfoUsuario(usuarioID);
+            return persona;
         }
 
     }

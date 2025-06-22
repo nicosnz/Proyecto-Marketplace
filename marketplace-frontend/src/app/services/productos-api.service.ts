@@ -15,7 +15,7 @@ export class ProductosApiService {
   private readonly URL_AÑADIR_PRODUCTOS = `${environment.urlApi}/Productos/añadir`;
   private readonly URL_EDITAR_PRODUCTO = `${environment.urlApi}/Productos/añadir`;
   private readonly URL_ELIMINAR_PRODUCTO = `${environment.urlApi}/Productos/eliminar`;
-  private readonly URL_PRODUCTO = `${environment.urlApi}/Producots/producto`;
+  private readonly URL_PRODUCTO = `${environment.urlApi}/Productos/producto`;
   private readonly URL_PRODUCTOS_CATALOGO = `${environment.urlApi}/Productos/catalogo`;
   private readonly URL_CATEGORIAS = `${environment.urlApi}/Productos/categorias`;
   private readonly URL_PRODUCTOS_POR_CATEGORIA = `${environment.urlApi}/Productos/categoria`;
@@ -29,7 +29,7 @@ export class ProductosApiService {
     return this.httpCliente.post<IProducto>(this.URL_AÑADIR_PRODUCTOS,formData)
   }
   getProduct(idProducto:number){
-    return this.httpCliente.get<IProducto>(`${this.URL_PRODUCTO}/${idProducto}`);
+    return this.httpCliente.get<IProducto2>(`${this.URL_PRODUCTO}/${idProducto}`);
 
   }
   getProductosPorCategoria(idCategoria:number){

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using marketplace_backend.dtos;
 using marketplace_backend.Models;
 
 namespace marketplace_backend.Interfaces
@@ -10,6 +11,7 @@ namespace marketplace_backend.Interfaces
     {
         Task<Persona> RegistrarNuevoUsuario(Persona nuevaPersona);
         Task<Persona> IniciarSesionAsync(string email, string password);
+        Task<UsuarioInfodto> ObtenerInfoUsuario(int usuarioID);
 
 
         

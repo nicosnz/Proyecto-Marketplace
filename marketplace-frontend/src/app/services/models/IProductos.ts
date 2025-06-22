@@ -19,6 +19,7 @@ export interface IProducto2 {
   stock: number;
   categoriaId: number;
   vendedorId: number;
+  nombreVendedor: string,
   imagenBase64: string | null;
 }
 export interface IProductoAñadir{

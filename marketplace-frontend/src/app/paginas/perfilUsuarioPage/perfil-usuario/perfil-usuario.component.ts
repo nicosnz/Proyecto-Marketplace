@@ -7,6 +7,8 @@ import { NavbarComponent } from '../../navBarPage/navbar/navbar.component';
 import { ProductosApiService } from '../../../services/productos-api.service';
 import { FooterComponent } from "../../footerPage/footer/footer.component";
 import { IMisCompras, IMisVentas, OrdenConProductos } from '../../../services/models/IOrdenes';
+import { UsuariosApiService } from '../../../services/usuarios-api.service';
+import { IUsuarioInfo } from '../../../services/models/IUsuarios';
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -17,12 +19,14 @@ import { IMisCompras, IMisVentas, OrdenConProductos } from '../../../services/mo
 export class PerfilUsuarioComponent {
   private router = inject(Router);
   private readonly _OrdenesService = inject(OrdenesService);
+  private readonly _usuarioService = inject(UsuariosApiService);
   mostrar_modal = false;
   productoAeliminar:number|any;
   seccionSeleccionada: 'info' | 'mis-productos' | 'vendidos' | 'comprados' = 'info';
   misCompras:IMisCompras[] = []
   misVentas:IMisVentas[]=[]
   ordenes: OrdenConProductos[] = [];
+  infoUsuario:IUsuarioInfo|any;
 
   private readonly _productsApi = inject(ProductosApiService);
   productos:IProducto2[] = []
@@ -34,6 +38,8 @@ export class PerfilUsuarioComponent {
 
     });
     this._OrdenesService.getMisVentas().subscribe((data)=>this.misVentas=data);
+    this._usuarioService.getUsuario().subscribe((data)=>this.infoUsuario = data);
+    
     
   }
   logout(){

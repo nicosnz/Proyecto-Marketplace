@@ -12,3 +12,9 @@ export interface IUsuarioCompra{
     ciudad:string;
     direccion:String;
 }
+export interface IUsuarioInfo{
+    personaId:string;
+    nombre:string;
+    email:string;
+    fechaRegistro:Date;
+}

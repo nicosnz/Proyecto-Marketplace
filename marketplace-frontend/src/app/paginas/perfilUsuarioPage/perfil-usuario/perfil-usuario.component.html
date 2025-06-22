@@ -49,7 +49,42 @@
     <main class="flex-1 p-6 bg-black">
       @switch (seccionSeleccionada) {
         @case ('info') {
-          <p>por hacer</p>
+          @if (infoUsuario) {
+            <section class="flex flex-col justify-center items-center min-h-[80vh] w-full bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-8 bg-gray-900/80 rounded-3xl shadow-2xl p-10 w-full max-w-3xl border border-gray-800">
+                <!-- Imagen de perfil / icono -->
+                <div class="flex justify-center items-center w-full sm:w-auto">
+                  <div class="w-32 h-32 rounded-full bg-gradient-to-tr from-yellow-400 to-yellow-600 flex items-center justify-center shadow-lg border-4 border-yellow-300">
+                    <!-- Si tienes foto de usuario, pon <img src="..." ...> aquí -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9.001 9.001 0 0112 15c2.485 0 4.747.998 6.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <!-- Información -->
+                <div class="flex-1 flex flex-col items-center sm:items-start gap-4">
+                  <h2 class="text-3xl sm:text-4xl font-extrabold font-primario text-white tracking-tight rounded-xl px-3 py-1 bg-gray-800/60">
+                    {{ infoUsuario.nombre }}
+                  </h2>
+                  <div class="flex items-center gap-2 rounded-lg px-2 py-1 bg-gray-800/60">
+                    <svg class="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12c0 2.21-1.79 4-4 4s-4-1.79-4-4 1.79-4 4-4 4 1.79 4 4z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.364-7.364l-1.414 1.414M6.05 17.95l-1.414 1.414m12.728 0l-1.414-1.414M6.05 6.05L4.636 4.636" />
+                    </svg>
+                    <span class="text-lg text-gray-300">{{ infoUsuario.email }}</span>
+                  </div>
+                  <div class="flex items-center gap-2 rounded-lg px-2 py-1 bg-gray-800/60">
+                    <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-gray-300 text-base">Miembro desde:</span>
+                    <span class="text-yellow-300 font-semibold text-base">{{ infoUsuario.fechaRegistro }}</span>
+                  </div>
+                </div>
+              </div>
+          </section>
+
+          }
         }
         @case ('mis-productos') {
           <h1 class="text-2xl font-primario text-white">Mis productos</h1>

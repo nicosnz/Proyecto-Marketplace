@@ -15,7 +15,7 @@ import { NgClass } from '@angular/common';
   styleUrl: './producto-detalle.component.scss'
 })
 export class ProductoDetalleComponent implements OnInit {
-  producto?:IProducto;
+  producto?:IProducto2;
   private _productsService = inject(ProductosApiService)
   private _route = inject(ActivatedRoute)
   ngOnInit(){
