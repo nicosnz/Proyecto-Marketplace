@@ -26,6 +26,8 @@ namespace marketplace_backend.Services
             var lista = new List<ProductoConImagendto>();
             foreach (var prod in productos)
             {
+                var vendedor = await _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
+
                 var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(prod.ProductoId)).FirstOrDefault();
 
                 lista.Add(new ProductoConImagendto
@@ -37,7 +39,10 @@ namespace marketplace_backend.Services
                     Stock = prod.Stock,
                     CategoriaId = prod.CategoriaId,
                     VendedorId = prod.VendedorId,
-                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null
+                    nombreVendedor = vendedor.Nombre,
+                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
+
                 });
             }
             return lista;
@@ -75,7 +80,9 @@ namespace marketplace_backend.Services
                     Stock = prod.Stock,
                     CategoriaId = (int)prod.CategoriaId!,
                     VendedorId = prod.VendedorId,
-                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null
+                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
+
                 });
             }
             return lista;
@@ -109,7 +116,9 @@ namespace marketplace_backend.Services
                     CategoriaId = (int)prod.CategoriaId!,
                     VendedorId = prod.VendedorId,
                     nombreVendedor = vendedor.Nombre,
-                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null
+                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
+
                 });
             }
             return lista;
@@ -132,6 +141,8 @@ namespace marketplace_backend.Services
 
             foreach (var prod in productoPorCategoria)
             {
+                var vendedor = await _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
+
                 var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(prod.ProductoId)).FirstOrDefault();
 
                 lista.Add(new ProductoConImagendto
@@ -143,7 +154,10 @@ namespace marketplace_backend.Services
                     Stock = prod.Stock,
                     CategoriaId = (int)prod.CategoriaId!,
                     VendedorId = prod.VendedorId,
-                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null
+                    nombreVendedor = vendedor.Nombre,
+                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
+
                 });
             }
             return lista;
@@ -208,6 +222,9 @@ namespace marketplace_backend.Services
         public async Task<ProductoConImagendto> ObtenerProducto(int productoID)
         {
             var productoObtenido = await _productoRepository.ObtenerProducto(productoID);
+
+            var vendedor = await _usuarioRepository.ObtenerInfoUsuario(productoObtenido.VendedorId);
+
             var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(productoObtenido.ProductoId)).FirstOrDefault();
             var productoConImagen = new ProductoConImagendto
             {
@@ -218,8 +235,9 @@ namespace marketplace_backend.Services
                 Stock = productoObtenido.Stock,
                 CategoriaId = (int)productoObtenido.CategoriaId!,
                 VendedorId = productoObtenido.VendedorId,
-                nombreVendedor = productoObtenido.Vendedor.Nombre,
-                ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null
+                nombreVendedor = vendedor.Nombre,
+                ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
+                Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
             };
             return productoConImagen;
         } 

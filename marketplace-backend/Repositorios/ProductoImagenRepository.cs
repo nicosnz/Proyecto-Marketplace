@@ -8,7 +8,7 @@ using MongoDB.Driver;
 
 namespace marketplace_backend.Repositorios
 {
-    public class ProductoImagenRepository:IProductoImagenRepository
+    public class ProductoImagenRepository : IProductoImagenRepository
     {
         private readonly IMongoCollection<ProductoImagen> _coleccion;
 
@@ -35,6 +35,15 @@ namespace marketplace_backend.Repositorios
         public async Task EliminarAsync(string id)
         {
             await _coleccion.DeleteOneAsync(x => x.Id == id);
+        }
+        public async Task AgregarComentarioAsync(int productoId, Comentariodto comentario)
+        {
+            var filtro = Builders<ProductoImagen>.Filter.Eq(x => x.ProductoId, productoId);
+            var actualizacion = Builders<ProductoImagen>.Update.Push(x => x.Comentarios, comentario);
+
+            var resultado = await _coleccion.UpdateOneAsync(filtro, actualizacion);
+            Console.WriteLine(resultado.ModifiedCount); 
+            Console.WriteLine(resultado.MatchedCount); 
         }
     }
 }

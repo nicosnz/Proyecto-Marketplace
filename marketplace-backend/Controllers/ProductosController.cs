@@ -17,10 +17,12 @@ namespace marketplace_backend.Controllers
     public class ProductosController : ControllerBase
     {
         private readonly IProductoService _productoService;
+        private readonly IProductoImagenService _productoServiceImagen;
 
-        public ProductosController(IProductoService productoService)
+        public ProductosController(IProductoService productoService,IProductoImagenService productoImagenService)
         {
             _productoService = productoService;
+            _productoServiceImagen = productoImagenService;
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosDisponibles()
@@ -88,10 +90,9 @@ namespace marketplace_backend.Controllers
                 return NotFound(new { mensaje = ex.Message });
             }
         }
-        [Authorize]
 
         [HttpGet("categoria/{id}")]
-
+        [Authorize]
 
         public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosPorCategoria(int id)
         {
@@ -172,7 +173,6 @@ namespace marketplace_backend.Controllers
             }
         }
         [HttpGet("producto/{id}")]
-        [Authorize]
         public async Task<IActionResult> ObtenerProducto(int id)
         {
             var producto = await _productoService.ObtenerProducto(id);
@@ -184,6 +184,15 @@ namespace marketplace_backend.Controllers
             {
                 return NotFound($"No se encontró el producto con id {id}.");
             }
+        }
+        [HttpPost("producto/añadirComentario/{id}")]
+        public async Task<IActionResult> AñadirComentario(int id,Comentariodto comentariodto)
+        {
+            Console.WriteLine("POST AñadirComentario ejecutado con id: " + id);
+            var userId = (int)ObtenerUsuarioIdDesdeToken()!;
+            await _productoServiceImagen.AgregarComentarioAsync(id, comentariodto,userId);
+
+            return Ok();
         }
 
 

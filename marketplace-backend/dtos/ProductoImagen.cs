@@ -18,6 +18,7 @@ namespace marketplace_backend.dtos
         public string FileName { get; set; } = default!;
         public string ContentType { get; set; } = default!;
         public byte[] Data { get; set; } = default!;
+        public List<Comentariodto> Comentarios { get; set; } = new List<Comentariodto>();
 
     }
 }

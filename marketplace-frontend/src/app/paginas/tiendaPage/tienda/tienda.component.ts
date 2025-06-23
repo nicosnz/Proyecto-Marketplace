@@ -18,31 +18,39 @@ export class TiendaComponent implements OnInit {
   get isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
-  productos:IProducto2[] = []
-  productos2:IProducto2[] = []
+  productosGenerales:IProducto2[] = []
+  productosCatalogo:IProducto2[] = []
   categorias:ICategoria[] = []
   productosPorCategoria:IProducto2[] = []
   ngOnInit():void{
-    this._productsApi.getProducts().subscribe((data)=>this.productos=data);
-    this._productsApi.getProductsCatalogo().subscribe((data)=> this.productos2 = data);
+    this._productsApi.getProducts().subscribe((data)=>this.productosGenerales=data);
+    this._productsApi.getProductsCatalogo().subscribe((data)=> this.productosCatalogo = data);
     this._productsApi.getCategorias().subscribe((data)=>this.categorias = data);
   }
   buscarPorCategoria(categoria:ICategoria){
     this._productsApi.getProductosPorCategoria(categoria.categoriaId).subscribe((data)=>{
       this.productosPorCategoria = data
     console.log(this.productosPorCategoria)
-    this.productos2 = this.productosPorCategoria;});
+    this.productosCatalogo = this.productosPorCategoria;});
     
   }
   searchTerm: string = '';
   get productosFiltrados(): IProducto2[] {
-    if (!this.searchTerm) return this.productos2;
+    if (!this.searchTerm) return this.productosCatalogo;
     const term = this.searchTerm.toLowerCase();
-    return this.productos2.filter(p =>
+    return this.productosCatalogo.filter(p =>
       p.nombre.toLowerCase().startsWith(term) ||
       (p.descripcion && p.descripcion.toLowerCase().startsWith(term))
     );
-}
+  }
+  get productosFiltradosSinToken(): IProducto2[] {
+    if (!this.searchTerm) return this.productosGenerales;
+    const term = this.searchTerm.toLowerCase();
+    return this.productosGenerales.filter(p =>
+      p.nombre.toLowerCase().startsWith(term) ||
+      (p.descripcion && p.descripcion.toLowerCase().startsWith(term))
+    );
+  }
   
   
   

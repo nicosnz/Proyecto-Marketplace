@@ -54,20 +54,33 @@
       }
       @else {
         <div class="col-span-full flex flex-col items-center py-10">
-        <svg class="w-16 h-16 text-yellow-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"/>
-        </svg>
-        <p class="text-white text-xl font-semibold">No se encontró ningún producto que coincida con tu búsqueda.</p>
-        <p class="text-white text-xl font-semibold">{{searchTerm}}</p>
-      </div>
+          <svg class="w-16 h-16 text-yellow-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"/>
+          </svg>
+          <p class="text-white text-xl font-semibold">No se encontró ningún producto que coincida con tu búsqueda.</p>
+          <p class="text-white text-xl font-semibold">"{{searchTerm}}"</p>
+        </div>
       }
     </div>  
   }
   @else {
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-      @for (producto of productos; track producto.productoId) {
-        <app-producto [producto]="producto"></app-producto>
+      @if (productosFiltradosSinToken.length>0) {
+
+        @for (producto of productosFiltradosSinToken; track producto.productoId) {
+          <app-producto [producto]="producto"></app-producto>
+        }
+      }
+      @else {
+        <div class="col-span-full flex flex-col items-center py-10">
+          <svg class="w-16 h-16 text-yellow-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"/>
+          </svg>
+          <p class="text-white text-xl font-semibold">No se encontró ningún producto que coincida con tu búsqueda.</p>
+          <p class="text-white text-xl font-semibold">"{{searchTerm}}"</p>
+        </div>
       }
     </div>
 

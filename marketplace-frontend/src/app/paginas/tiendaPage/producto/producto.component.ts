@@ -1,7 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
 import { IProducto, IProducto2 } from '../../../services/models/IProductos';
 import { CarritoService } from '../../../services/carrito.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-producto',
@@ -12,8 +12,19 @@ import { RouterLink } from '@angular/router';
 export class ProductoComponent {
   @Input({required:true}) producto?:IProducto2;
   private _carritoService = inject(CarritoService);
+  private readonly _router = inject(Router)
+
+  get isLoggedIn(): boolean {
+      return !!localStorage.getItem('token');
+  }
   agregarCarrito(){
-    this._carritoService.añadirCarrito(this.producto!);
+    if(this.isLoggedIn){
+      this._carritoService.añadirCarrito(this.producto!);
+
+    }
+    else{
+      this._router.navigateByUrl("/iniciar-sesion")
+    }
   }
   
 }

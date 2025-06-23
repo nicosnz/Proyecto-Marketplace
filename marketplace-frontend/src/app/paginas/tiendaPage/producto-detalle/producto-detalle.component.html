@@ -1,67 +1,69 @@
 @if (producto) {
-
-<div class="flex flex-col min-h-screen">
+<div class="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
   <app-navbar></app-navbar>
-  <section class="flex-1 py-12 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 antialiased ">
+
+  <!-- Producto y detalles -->
+  <section class="flex-1 py-12">
     <div class="max-w-6xl mx-auto px-4 2xl:px-0">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start bg-white dark:bg-slate-900 rounded-3xl shadow-xl p-6 md:p-10">
         <!-- Imagen destacada -->
-        @if (producto.imagenBase64) {
-              <img 
-                [src]="'data:image/jpeg;base64,' + producto.imagenBase64" 
-                alt="Producto" 
-                class="w-96 h-96 object-contain rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300"
-              />
-            } 
-            @else {
-              <img 
-                src="OIP.jpg"
-                alt="Sin imagen"
-                class="w-96 h-96 object-contain rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300"
-              />
-            }
+        <div class="flex flex-col items-center justify-center">
+          @if (producto.imagenBase64) {
+            <img 
+              [src]="'data:image/jpeg;base64,' + producto.imagenBase64" 
+              alt="Producto" 
+              class="w-96 h-96 object-contain rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300"
+            />
+          } 
+          @else {
+            <img 
+              src="OIP.jpg"
+              alt="Sin imagen"
+              class="w-96 h-96 object-contain rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300"
+            />
+          }
+        </div>
         <!-- Detalles producto -->
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-8 justify-center">
           <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-2 tracking-tight">
             {{ producto.nombre }}
           </h1>
           <div class="flex flex-wrap gap-4 md:gap-6 items-center text-sm">
-            
-            <span class="text-gray-500 dark:text-gray-400" *ngIf="producto?.stock !== undefined">
-              <span class="font-semibold">Stock:</span>
-              <span [ngClass]="{'text-green-600': producto.stock > 0, 'text-red-600': producto.stock === 0}">
-                {{ producto.stock > 0 ? 'Disponible' : 'Agotado' }}
+            @if (producto.stock !== undefined) {
+              <span class="text-gray-500 dark:text-gray-400" >
+                <span class="font-semibold">Stock:</span>
+                <span [ngClass]="{'text-green-600': producto.stock > 0, 'text-red-600': producto.stock === 0}">
+                  {{ producto.stock > 0 ? 'Disponible' : 'Agotado' }}
+                </span>
               </span>
-            </span>
+            }
           </div>
           <!-- Precio -->
           <div>
             <span class="text-5xl font-extrabold text-purple-700 dark:text-purple-300 drop-shadow">
               ${{ producto.precio }}
             </span>
-            <span class="ml-2 text-sm text-gray-500 dark:text-gray-400" *ngIf="producto?.envioGratis">Envío gratis</span>
+            <span
+              class="ml-3 inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-blue-100 via-purple-100 to-white dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 rounded-full shadow-sm border border-purple-200 dark:border-slate-700 text-base font-medium text-purple-800 dark:text-purple-200"
+              title="Vendedor"
+            >
+              <svg class="w-5 h-5 text-purple-400 dark:text-purple-200" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 1114 0H3z" clip-rule="evenodd" />
+              </svg>
+              <span class="truncate max-w-[120px]">{{ producto.nombreVendedor }}</span>
+            </span>
           </div>
           <!-- Botones acción -->
           <div class="flex gap-4 mt-4">
             <button
-              class="flex items-center gap-2 px-7 py-3 rounded-lg bg-gradient-to-tr from-purple-600 to-blue-500 text-white font-bold shadow-lg hover:scale-105 transition-transform text-lg"
-              
+              class="flex items-center gap-2 px-7 py-3 rounded-lg bg-primario from-purple-600 to-blue-500 text-white font-bold shadow-lg hover:scale-105 transition-transform text-lg cursor-pointer"
+              (click)="agregarCarrito()"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"/>
               </svg>
               Añadir al carrito
-            </button>
-            <button
-              class="flex items-center gap-2 px-7 py-3 rounded-lg border-2 border-purple-400 text-purple-700 dark:text-purple-200 font-bold bg-white dark:bg-gray-800 hover:bg-purple-50 dark:hover:bg-gray-700 transition text-lg"
-              
-            >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"/>
-              </svg>
-              Favorito
             </button>
           </div>
           <!-- Descripción -->
@@ -71,11 +73,79 @@
               {{ producto?.descripcion }}
             </p>
           </div>
-          
         </div>
       </div>
     </div>
   </section>
-  <app-footer></app-footer>
+
+  <!-- Separador moderno -->
+  <div class="flex justify-center items-center w-full my-0 py-0">
+    <div class="w-24 h-1 bg-gradient-to-r from-purple-400 via-blue-300 to-teal-400 rounded-full opacity-70"></div>
   </div>
+
+  <!-- Sección de comentarios centrada y ancha -->
+  <section class="py-14 flex justify-center bg-white dark:bg-slate-900">
+    <div class="w-full max-w-4xl mx-auto bg-slate-800 rounded-3xl shadow-xl px-8 py-10">
+      <h2 class="text-2xl font-bold mb-8 text-white tracking-tight">Comentarios</h2>
+      <form [formGroup]="formGroup" (ngSubmit)="agregarComentario()" class="flex flex-col sm:flex-row gap-4 items-start w-full mb-7">
+        <div class="flex-shrink-0 hidden sm:block">
+          <div class="h-12 w-12 rounded-full bg-gradient-to-br from-purple-400 to-blue-500 flex items-center justify-center text-white font-bold text-xl shadow">
+            <span>{{  'U' }}</span>
+          </div>
+        </div>
+        <div class="flex-1 w-full max-w-2xl">
+          <textarea
+            id="comentario"
+            formControlName="comentario"
+            rows="3"
+            placeholder="Agrega un comentario público..."
+            class="w-full rounded-lg p-3 bg-slate-700 text-white border-2 border-slate-600 focus:border-blue-400 focus:bg-slate-600 transition placeholder-slate-400 resize-y shadow min-h-[48px]"
+            style="min-width: 220px; max-width: 100%;"
+          ></textarea>
+          @if (formGroup.get('comentario')?.invalid && formGroup.get('comentario')?.touched) {
+            <div class="mt-1">
+              @if (formGroup.get('comentario')?.errors?.['required']) {
+                <small class="text-red-400">El comentario es obligatorio.</small>
+              }
+              @if (formGroup.get('comentario')?.errors?.['maxLength']) {
+                <small class="text-yellow-400">Máximo 500 caracteres.</small>
+              }
+            </div>
+          }
+        </div>
+        <button
+          type="submit"
+          [disabled]="formGroup.invalid"
+          class="self-end px-6 py-2 font-semibold rounded-lg bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-md disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition hover:scale-105"
+        >
+          Comentar
+        </button>
+      </form>
+
+      <!-- Lista de comentarios más ancha y moderna -->
+      <div class="space-y-5">
+        @if (!producto.comentarios || producto.comentarios.length === 0) {
+          <p class="text-gray-400 text-center italic">No hay comentarios aún.</p>
+        }
+        @for (item of producto.comentarios; track item.usuarioId) {
+          <div class="flex gap-3 items-start bg-slate-700 p-5 rounded-2xl shadow transition hover:scale-[1.01] hover:shadow-lg">
+            <div class="flex-shrink-0">
+              <div class="h-10 w-10 rounded-full bg-gradient-to-br from-purple-400 to-blue-500 flex items-center justify-center text-white font-bold text-lg shadow">
+                <span>{{ item.nombreUsuario?.[0] || 'U' }}</span>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="font-semibold text-white">{{ item.nombreUsuario || 'Usuario' }}</span>
+                
+              </div>
+              <p class="text-gray-200 leading-relaxed break-words text-base">{{ item.texto }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+  <app-footer></app-footer>
+</div>
 }

@@ -4,6 +4,7 @@ import { IProducto, IProducto2, IProductoEditar } from './models/IProductos';
 import { ICategoria } from './models/ICategoria';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { IComentarios } from './models/IComentarios';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class ProductosApiService {
   private readonly URL_PRODUCTOS_CATALOGO = `${environment.urlApi}/Productos/catalogo`;
   private readonly URL_CATEGORIAS = `${environment.urlApi}/Productos/categorias`;
   private readonly URL_PRODUCTOS_POR_CATEGORIA = `${environment.urlApi}/Productos/categoria`;
+  private readonly URL_AÑADIR_COMENTARIO = `${environment.urlApi}/Productos/producto/añadirComentario`;
   getMyProducts():Observable<IProducto2[]>{
     return this.httpCliente.get<IProducto2[]>(this.URL_PRODUCTOS_USUARIO);
   }
@@ -49,4 +51,14 @@ export class ProductosApiService {
     return this.httpCliente.delete(`${this.URL_ELIMINAR_PRODUCTO}/${idProducto}`);
   }
 
+  postComentario(idProducto: number, comentario: IComentarios) {
+    console.log("llego");
+    
+    return this.httpCliente.post(
+      `${this.URL_AÑADIR_COMENTARIO}/${idProducto}`,
+      comentario
+    );
+    // console.log(`${this.URL_AÑADIR_COMENTARIO}/${idProducto}`);
+    
+  }
 }

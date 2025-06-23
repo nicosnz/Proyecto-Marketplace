@@ -7,7 +7,7 @@ namespace marketplace_backend.dtos
 {
     public class ProductoConImagendto
     {
-        public int  Id { get; set; }
+        public int Id { get; set; }
         public int ProductoId { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
@@ -15,8 +15,10 @@ namespace marketplace_backend.dtos
         public int Stock { get; set; }
         public int CategoriaId { get; set; }
         public int VendedorId { get; set; }
-        
+
         public string? nombreVendedor { get; set; }
         public string? ImagenBase64 { get; set; }
+        public List<Comentariodto> Comentarios { get; set; } = new List<Comentariodto>();
+
     }
 }

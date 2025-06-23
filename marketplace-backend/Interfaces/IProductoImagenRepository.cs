@@ -16,6 +16,7 @@ namespace marketplace_backend.Interfaces
 
 
         Task EliminarAsync(string id);
+        Task AgregarComentarioAsync(int productoId, Comentariodto comentario);
         
     }
 }

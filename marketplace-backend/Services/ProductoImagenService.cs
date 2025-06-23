@@ -8,13 +8,15 @@ using marketplace_backend.Repositorios;
 
 namespace marketplace_backend.Services
 {
-    public class ProductoImagenService:IProductoImagenService
+    public class ProductoImagenService : IProductoImagenService
     {
+        private readonly IUsuarioRepository _usuarioRepository;
         private readonly IProductoImagenRepository _repo;
 
-        public ProductoImagenService(IProductoImagenRepository repo)
+        public ProductoImagenService(IProductoImagenRepository repo, IUsuarioRepository usuarioRepository)
         {
             _repo = repo;
+            _usuarioRepository = usuarioRepository;
         }
 
         public Task InsertarAsync(ProductoImagen imagen)
@@ -36,5 +38,17 @@ namespace marketplace_backend.Services
         {
             return _repo.EliminarAsync(id);
         }
+        public async Task AgregarComentarioAsync(int productoId, Comentariodto comentario,int userId)
+        {
+            var persona = await _usuarioRepository.ObtenerInfoUsuario(userId);
+            var comentarioNuevo = new Comentariodto
+            {
+                usuarioId = userId,
+                nombreUsuario = persona.Nombre,
+                texto = comentario.texto
+            };
+            await _repo.AgregarComentarioAsync(productoId, comentarioNuevo);
+        }
+
     }
 }

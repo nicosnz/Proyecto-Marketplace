@@ -1,3 +1,4 @@
+import { IComentarios } from './IComentarios';
 export interface IProducto{
     productoId:number;
     nombre:string;
@@ -21,6 +22,7 @@ export interface IProducto2 {
   vendedorId: number;
   nombreVendedor: string,
   imagenBase64: string | null;
+  comentarios:IComentarios[];
 }
 export interface IProductoAñadir{
   nombre: string;
