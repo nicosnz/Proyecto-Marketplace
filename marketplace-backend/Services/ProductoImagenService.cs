@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Repositorios;
@@ -19,36 +18,36 @@ namespace marketplace_backend.Services
             _usuarioRepository = usuarioRepository;
         }
 
-        public Task InsertarAsync(ProductoImagen imagen)
+        public void Insertar(ProductoImagen imagen)
         {
-            return _repo.InsertarAsync(imagen);
+            _repo.Insertar(imagen);
         }
 
-        public Task<List<ProductoImagen>> ObtenerPorProductoIdAsync(int productoId)
+        public List<ProductoImagen> ObtenerPorProductoId(int productoId)
         {
-            return _repo.ObtenerPorProductoIdAsync(productoId);
+            return _repo.ObtenerPorProductoId(productoId);
         }
 
-        public Task<ProductoImagen?> ObtenerPorIdAsync(string id)
+        public ProductoImagen ObtenerPorId(string id)
         {
-            return _repo.ObtenerPorIdAsync(id);
+            return _repo.ObtenerPorId(id);
         }
 
-        public Task EliminarAsync(string id)
+        public void Eliminar(string id)
         {
-            return _repo.EliminarAsync(id);
+            _repo.Eliminar(id);
         }
-        public async Task AgregarComentarioAsync(int productoId, Comentariodto comentario,int userId)
+
+        public void AgregarComentario(int productoId, Comentariodto comentario, int userId)
         {
-            var persona = await _usuarioRepository.ObtenerInfoUsuario(userId);
+            var persona = _usuarioRepository.ObtenerInfoUsuario(userId);
             var comentarioNuevo = new Comentariodto
             {
                 usuarioId = userId,
                 nombreUsuario = persona.Nombre,
                 texto = comentario.texto
             };
-            await _repo.AgregarComentarioAsync(productoId, comentarioNuevo);
+            _repo.AgregarComentario(productoId, comentarioNuevo);
         }
-
     }
 }

@@ -26,16 +26,6 @@ public partial class MarketplaceDbContext : DbContext
 
     public virtual DbSet<Producto> Productos { get; set; }
 
-    public virtual DbSet<VwOrdenDetalleProducto> VwOrdenDetalleProductos { get; set; }
-
-    public virtual DbSet<VwOrdenesCancelada> VwOrdenesCanceladas { get; set; }
-
-    public virtual DbSet<VwOrdenesDetalleBasico> VwOrdenesDetalleBasicos { get; set; }
-
-    public virtual DbSet<VwOrdenesPagada> VwOrdenesPagadas { get; set; }
-
-    public virtual DbSet<VwOrdenesPendiente> VwOrdenesPendientes { get; set; }
-
     public virtual DbSet<VwProductosCatalogo> VwProductosCatalogos { get; set; }
 
     public virtual DbSet<VwProductosMasVendido> VwProductosMasVendidos { get; set; }
@@ -166,95 +156,8 @@ public partial class MarketplaceDbContext : DbContext
                 .HasConstraintName("FK_Productos_Personas");
         });
 
-        modelBuilder.Entity<VwOrdenDetalleProducto>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("vw_OrdenDetalleProductos");
-
-            entity.Property(e => e.DetalleId).HasColumnName("DetalleID");
-            entity.Property(e => e.OrdenId).HasColumnName("OrdenID");
-            entity.Property(e => e.PrecioUnitario).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.ProductoDescripcion).HasMaxLength(500);
-            entity.Property(e => e.ProductoId).HasColumnName("ProductoID");
-            entity.Property(e => e.ProductoNombre).HasMaxLength(150);
-            entity.Property(e => e.Subtotal).HasColumnType("decimal(21, 2)");
-            entity.Property(e => e.VendedorId).HasColumnName("VendedorID");
-            entity.Property(e => e.VendedorNombre).HasMaxLength(100);
-        });
-
-        modelBuilder.Entity<VwOrdenesCancelada>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("vw_OrdenesCanceladas");
-
-            entity.Property(e => e.Ciudad).HasMaxLength(100);
-            entity.Property(e => e.CompradorEmail).HasMaxLength(150);
-            entity.Property(e => e.CompradorId).HasColumnName("CompradorID");
-            entity.Property(e => e.CompradorNombre).HasMaxLength(100);
-            entity.Property(e => e.Direccion).HasMaxLength(255);
-            entity.Property(e => e.Estado).HasMaxLength(20);
-            entity.Property(e => e.FechaOrden).HasColumnType("datetime");
-            entity.Property(e => e.OrdenId).HasColumnName("OrdenID");
-            entity.Property(e => e.Pais).HasMaxLength(100);
-            entity.Property(e => e.Total).HasColumnType("decimal(12, 2)");
-        });
-
-        modelBuilder.Entity<VwOrdenesDetalleBasico>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("vw_OrdenesDetalleBasico");
-
-            entity.Property(e => e.Ciudad).HasMaxLength(100);
-            entity.Property(e => e.CompradorEmail).HasMaxLength(150);
-            entity.Property(e => e.CompradorId).HasColumnName("CompradorID");
-            entity.Property(e => e.CompradorNombre).HasMaxLength(100);
-            entity.Property(e => e.Direccion).HasMaxLength(255);
-            entity.Property(e => e.Estado).HasMaxLength(20);
-            entity.Property(e => e.EstadoEnvio).HasMaxLength(20);
-            entity.Property(e => e.FechaOrden).HasColumnType("datetime");
-            entity.Property(e => e.OrdenId).HasColumnName("OrdenID");
-            entity.Property(e => e.Pais).HasMaxLength(100);
-            entity.Property(e => e.Total).HasColumnType("decimal(12, 2)");
-        });
-
-        modelBuilder.Entity<VwOrdenesPagada>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("vw_OrdenesPagadas");
-
-            entity.Property(e => e.Ciudad).HasMaxLength(100);
-            entity.Property(e => e.CompradorEmail).HasMaxLength(150);
-            entity.Property(e => e.CompradorId).HasColumnName("CompradorID");
-            entity.Property(e => e.CompradorNombre).HasMaxLength(100);
-            entity.Property(e => e.Direccion).HasMaxLength(255);
-            entity.Property(e => e.Estado).HasMaxLength(20);
-            entity.Property(e => e.FechaOrden).HasColumnType("datetime");
-            entity.Property(e => e.OrdenId).HasColumnName("OrdenID");
-            entity.Property(e => e.Pais).HasMaxLength(100);
-            entity.Property(e => e.Total).HasColumnType("decimal(12, 2)");
-        });
-
-        modelBuilder.Entity<VwOrdenesPendiente>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("vw_OrdenesPendientes");
-
-            entity.Property(e => e.Ciudad).HasMaxLength(100);
-            entity.Property(e => e.CompradorEmail).HasMaxLength(150);
-            entity.Property(e => e.CompradorId).HasColumnName("CompradorID");
-            entity.Property(e => e.CompradorNombre).HasMaxLength(100);
-            entity.Property(e => e.Direccion).HasMaxLength(255);
-            entity.Property(e => e.Estado).HasMaxLength(20);
-            entity.Property(e => e.FechaOrden).HasColumnType("datetime");
-            entity.Property(e => e.OrdenId).HasColumnName("OrdenID");
-            entity.Property(e => e.Pais).HasMaxLength(100);
-            entity.Property(e => e.Total).HasColumnType("decimal(12, 2)");
-        });
+        
+        
 
         modelBuilder.Entity<VwProductosCatalogo>(entity =>
         {

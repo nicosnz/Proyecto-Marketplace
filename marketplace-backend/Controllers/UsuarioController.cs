@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
@@ -27,9 +26,8 @@ namespace marketplace_backend.Controllers
             _configuration = configuration;
         }
 
-
         [HttpPost("registrar")]
-        public async Task<IActionResult> RegistrarUsuario([FromBody] UsuarioRegistraseDto usuarioDto)
+        public IActionResult RegistrarUsuario([FromBody] UsuarioRegistraseDto usuarioDto)
         {
             try
             {
@@ -40,9 +38,9 @@ namespace marketplace_backend.Controllers
                     PasswordHash = usuarioDto.PasswordHash
                 };
 
-                var resultado = await _usuarioService.RegistrarNuevoUsuario(nuevoUsuario);
+                var resultado = _usuarioService.RegistrarNuevoUsuario(nuevoUsuario);
 
-                var token = GenerarToken(resultado);
+                var token = _usuarioService.GenerarToken(resultado);
 
                 return Ok(new
                 {
@@ -63,12 +61,12 @@ namespace marketplace_backend.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UsuarioLoginDto loginDto)
+        public IActionResult Login([FromBody] UsuarioLoginDto loginDto)
         {
             try
             {
-                var usuario = await _usuarioService.IniciarSesionAsync(loginDto.Email, loginDto.PasswordHash);
-                var token = GenerarToken(usuario);
+                var usuario = _usuarioService.IniciarSesion(loginDto.Email, loginDto.PasswordHash);
+                var token = _usuarioService.GenerarToken(usuario);
                 return Ok(new { token });
             }
             catch (ApplicationException ex)
@@ -76,14 +74,15 @@ namespace marketplace_backend.Controllers
                 return Unauthorized(new { mensaje = ex.Message });
             }
         }
+
         [Authorize]
         [HttpGet("infoUsuario")]
-        public async Task<IActionResult> ObtenerInfoUsuario()
+        public IActionResult ObtenerInfoUsuario()
         {
             try
             {
                 int usuarioID = (int)ObtenerUsuarioIdDesdeToken()!;
-                var usuario = await _usuarioService.ObtenerInfoUsuario(usuarioID);
+                var usuario = _usuarioService.ObtenerInfoUsuario(usuarioID);
                 return Ok(usuario);
             }
             catch (ApplicationException ex)
@@ -92,35 +91,12 @@ namespace marketplace_backend.Controllers
             }
         }
 
-        private string GenerarToken(Persona usuario)
-        {
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, usuario.PersonaId.ToString()),
-                new Claim(ClaimTypes.Email, usuario.Email),
-                new Claim(ClaimTypes.Name, usuario.Nombre)
-            };
+        
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWTSettings:securityKey"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JWTSettings:ValidIssuer"],
-                audience: _configuration["JWTSettings:ValidAudience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(2),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
         private int? ObtenerUsuarioIdDesdeToken()
         {
             var claim = User.FindFirst(ClaimTypes.NameIdentifier);
             return claim != null ? int.Parse(claim.Value) : (int?)null;
         }
-
     }
-
-    
 }

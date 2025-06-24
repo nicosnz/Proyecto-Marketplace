@@ -11,5 +11,5 @@ public partial class Categoria
 
     public bool Activo { get; set; }
 
-    public virtual ICollection<Producto> Productos { get; set; } = new List<Producto>();
+    public List<Producto> Productos { get; set; } = new List<Producto>();
 }

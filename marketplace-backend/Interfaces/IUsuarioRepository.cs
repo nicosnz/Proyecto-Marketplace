@@ -9,10 +9,10 @@ namespace marketplace_backend.Interfaces
 {
     public interface IUsuarioRepository
     {
-        Task<bool> ExisteUsuarioAsync(int usuarioID);
-        Task<Persona> RegistrarNuevoUsuario(Persona nuevaPersona); 
-        Task<Persona?> ObtenerUsuarioPorEmailAsync(string email);
-        Task<UsuarioInfodto> ObtenerInfoUsuario(int usuarioID);
+        bool ExisteUsuario(int usuarioID);
+        Persona RegistrarNuevoUsuario(Persona nuevaPersona); 
+        Persona ObtenerUsuarioPorEmail(string email);
+        UsuarioInfodto ObtenerInfoUsuario(int usuarioID);
 
     }
 }

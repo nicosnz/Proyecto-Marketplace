@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
+using System.Text;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 
 namespace marketplace_backend.Services
 {
@@ -14,29 +17,31 @@ namespace marketplace_backend.Services
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IDataProtector _dataProtector;
-        public UsuarioService(IUsuarioRepository usuarioRepository, IDataProtectionProvider dataProtection)
+        private readonly IConfiguration _configuration;
+
+        public UsuarioService(IUsuarioRepository usuarioRepository, IDataProtectionProvider dataProtection, IConfiguration configuration)
         {
             _usuarioRepository = usuarioRepository;
             _dataProtector = dataProtection.CreateProtector("pwd");
+            _configuration = configuration;
         }
-        public async Task<Persona> RegistrarNuevoUsuario(Persona nuevaPersona)
+        public Persona RegistrarNuevoUsuario(Persona nuevaPersona)
         {
             try
             {
                 var textoCifrado = _dataProtector.Protect(nuevaPersona.PasswordHash);
                 nuevaPersona.PasswordHash = textoCifrado;
-                return await _usuarioRepository.RegistrarNuevoUsuario(nuevaPersona);
-
+                return _usuarioRepository.RegistrarNuevoUsuario(nuevaPersona);
             }
             catch (SqlException ex) when (ex.Message.Contains("El email ya existe"))
             {
                 throw new ApplicationException("Ya existe un usuario con ese correo.");
             }
-
         }
-        public async Task<Persona> IniciarSesionAsync(string email, string password)
+
+        public Persona IniciarSesion(string email, string password)
         {
-            var persona = await _usuarioRepository.ObtenerUsuarioPorEmailAsync(email);
+            var persona = _usuarioRepository.ObtenerUsuarioPorEmail(email);
 
             if (persona == null)
                 throw new ApplicationException("El usuario no existe o está inactivo.");
@@ -48,11 +53,35 @@ namespace marketplace_backend.Services
 
             return persona;
         }
-        public async Task<UsuarioInfodto> ObtenerInfoUsuario(int usuarioID)
+
+        public UsuarioInfodto ObtenerInfoUsuario(int usuarioID)
         {
-            var persona = await _usuarioRepository.ObtenerInfoUsuario(usuarioID);
+            var persona = _usuarioRepository.ObtenerInfoUsuario(usuarioID);
             return persona;
         }
+        public string GenerarToken(Persona usuario)
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, usuario.PersonaId.ToString()),
+                new Claim(ClaimTypes.Email, usuario.Email),
+                new Claim(ClaimTypes.Name, usuario.Nombre)
+            };
 
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWTSettings:securityKey"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWTSettings:ValidIssuer"],
+                audience: _configuration["JWTSettings:ValidAudience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(2),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        
     }
 }

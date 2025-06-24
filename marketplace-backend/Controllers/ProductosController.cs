@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
@@ -19,28 +18,29 @@ namespace marketplace_backend.Controllers
         private readonly IProductoService _productoService;
         private readonly IProductoImagenService _productoServiceImagen;
 
-        public ProductosController(IProductoService productoService,IProductoImagenService productoImagenService)
+        public ProductosController(IProductoService productoService, IProductoImagenService productoImagenService)
         {
             _productoService = productoService;
             _productoServiceImagen = productoImagenService;
         }
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosDisponibles()
+        public ActionResult<List<ProductoConImagendto>> ObtenerProductosDisponibles()
         {
-            var productos = await _productoService.ObtenerProductosDisponibles();
+            var productos = _productoService.ObtenerProductosDisponibles();
             return Ok(productos);
         }
+
         [HttpGet("categorias")]
-        public async Task<ActionResult<IEnumerable<Categoria>>> ObtenerCategorias()
+        public ActionResult<List<Categoria>> ObtenerCategorias()
         {
-            var categorias = await _productoService.ObtenerCategorias();
+            var categorias = _productoService.ObtenerCategorias();
             return Ok(categorias);
         }
 
-
         [Authorize]
         [HttpGet("mis-productos")]
-        public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosDisponiblesPorUsuario()
+        public ActionResult<List<ProductoConImagendto>> ObtenerProductosDisponiblesPorUsuario()
         {
             try
             {
@@ -48,7 +48,7 @@ namespace marketplace_backend.Controllers
                 if (userId == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
 
-                var productos = await _productoService.ObtenerProductosPorUsuario((int)userId);
+                var productos = _productoService.ObtenerProductosPorUsuario((int)userId);
                 return Ok(productos);
             }
             catch (ProductosNotFound ex)
@@ -61,24 +61,20 @@ namespace marketplace_backend.Controllers
             }
             catch (System.Exception ex)
             {
-                Console.WriteLine("error en productos1");
                 return BadRequest(new { mensaje = ex.Message });
-
             }
         }
+
         [Authorize]
-
         [HttpGet("catalogo")]
-
-
-        public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosMenosUsuario()
+        public ActionResult<List<ProductoConImagendto>> ObtenerProductosMenosUsuario()
         {
             try
             {
                 var userId = ObtenerUsuarioIdDesdeToken();
                 if (userId == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
-                var productos = await _productoService.ObtenerProductosMenosUsuario((int)userId);
+                var productos = _productoService.ObtenerProductosMenosUsuario((int)userId);
                 return Ok(productos);
             }
             catch (ProductosNotFound ex)
@@ -93,15 +89,14 @@ namespace marketplace_backend.Controllers
 
         [HttpGet("categoria/{id}")]
         [Authorize]
-
-        public async Task<ActionResult<IEnumerable<ProductoConImagendto>>> ObtenerProductosPorCategoria(int id)
+        public ActionResult<List<ProductoConImagendto>> ObtenerProductosPorCategoria(int id)
         {
             try
             {
                 var userId = ObtenerUsuarioIdDesdeToken();
                 if (userId == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
-                var productos = await _productoService.ObtenerProductosPorCategoria(id,(int)userId);
+                var productos = _productoService.ObtenerProductosPorCategoria(id, (int)userId);
                 foreach (var item in productos)
                 {
                     Console.WriteLine(item.Nombre);
@@ -117,9 +112,10 @@ namespace marketplace_backend.Controllers
                 return NotFound(new { mensaje = ex.Message });
             }
         }
+
         [HttpPost("añadir")]
         [Authorize]
-        public async Task<ActionResult> AñadirProducto([FromForm] Productodto dto, [FromForm] IFormFile imagen )
+        public ActionResult AñadirProducto([FromForm] Productodto dto, [FromForm] IFormFile imagen)
         {
             try
             {
@@ -127,8 +123,7 @@ namespace marketplace_backend.Controllers
                 if (userId == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
 
-                var productoCreado = await _productoService.AñadirProducto(dto, userId.Value,imagen);
-                
+                var productoCreado = _productoService.AñadirProducto(dto, userId.Value, imagen);
                 return Ok(productoCreado);
             }
             catch (Exception ex)
@@ -137,10 +132,9 @@ namespace marketplace_backend.Controllers
             }
         }
 
-
         [HttpPut("editar/{id}")]
         [Authorize]
-        public async Task<ActionResult> EditarProducto([FromBody] ProductoEditar dto, [FromRoute]int id)
+        public ActionResult EditarProducto([FromBody] ProductoEditar dto, [FromRoute] int id)
         {
             try
             {
@@ -148,8 +142,7 @@ namespace marketplace_backend.Controllers
                 if (userId == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
 
-               
-                var productoEditado = await _productoService.EditarProducto(dto,id,(int)userId);
+                var productoEditado = _productoService.EditarProducto(dto, id, (int)userId);
                 return Ok(productoEditado);
             }
             catch (Exception ex)
@@ -160,9 +153,9 @@ namespace marketplace_backend.Controllers
 
         [HttpDelete("eliminar/{id}")]
         [Authorize]
-        public async Task<IActionResult> EliminarProducto(int id)
+        public IActionResult EliminarProducto(int id)
         {
-            bool eliminado = await _productoService.EliminarProducto(id);
+            bool eliminado = _productoService.EliminarProducto(id);
             if (eliminado)
             {
                 return NoContent();
@@ -172,10 +165,11 @@ namespace marketplace_backend.Controllers
                 return NotFound($"No se encontró el producto con id {id} o no pudo eliminarse.");
             }
         }
+
         [HttpGet("producto/{id}")]
-        public async Task<IActionResult> ObtenerProducto(int id)
+        public IActionResult ObtenerProducto(int id)
         {
-            var producto = await _productoService.ObtenerProducto(id);
+            var producto = _productoService.ObtenerProducto(id);
             if (producto != null)
             {
                 return Ok(producto);
@@ -185,23 +179,21 @@ namespace marketplace_backend.Controllers
                 return NotFound($"No se encontró el producto con id {id}.");
             }
         }
+
         [HttpPost("producto/añadirComentario/{id}")]
-        public async Task<IActionResult> AñadirComentario(int id,Comentariodto comentariodto)
+        public IActionResult AñadirComentario(int id, Comentariodto comentariodto)
         {
             Console.WriteLine("POST AñadirComentario ejecutado con id: " + id);
             var userId = (int)ObtenerUsuarioIdDesdeToken()!;
-            await _productoServiceImagen.AgregarComentarioAsync(id, comentariodto,userId);
+            _productoServiceImagen.AgregarComentario(id, comentariodto, userId);
 
             return Ok();
         }
-
 
         private int? ObtenerUsuarioIdDesdeToken()
         {
             var claim = User.FindFirst(ClaimTypes.NameIdentifier);
             return claim != null ? int.Parse(claim.Value) : (int?)null;
         }
-
-
     }
 }

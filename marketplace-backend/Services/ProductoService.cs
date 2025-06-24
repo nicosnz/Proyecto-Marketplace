@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
@@ -20,15 +19,15 @@ namespace marketplace_backend.Services
             _usuarioRepository = usuarioRepository;
             _productoImagenRepository = productoImagenRepository;
         }
-        public async Task<IEnumerable<ProductoConImagendto>> ObtenerProductosDisponibles()
+
+        public List<ProductoConImagendto> ObtenerProductosDisponibles()
         {
-            var productos = await _productoRepository.ObtenerTodosProductosDisponibles();
+            var productos = _productoRepository.ObtenerTodosProductosDisponibles();
             var lista = new List<ProductoConImagendto>();
             foreach (var prod in productos)
             {
-                var vendedor = await _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
-
-                var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(prod.ProductoId)).FirstOrDefault();
+                var vendedor = _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
+                var imagen = _productoImagenRepository.ObtenerPorProductoId(prod.ProductoId).FirstOrDefault();
 
                 lista.Add(new ProductoConImagendto
                 {
@@ -42,34 +41,32 @@ namespace marketplace_backend.Services
                     nombreVendedor = vendedor.Nombre,
                     ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
                     Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
-
                 });
             }
             return lista;
-
-        }
-        public async Task<IEnumerable<Categoria>> ObtenerCategorias()
-        {
-            return await _productoRepository.ObtenerCategorias();
         }
 
-        public async Task<IEnumerable<ProductoConImagendto>> ObtenerProductosPorUsuario(int usuarioID)
+        public List<Categoria> ObtenerCategorias()
         {
-            if (!await _usuarioRepository.ExisteUsuarioAsync(usuarioID))
+            return _productoRepository.ObtenerCategorias();
+        }
+
+        public List<ProductoConImagendto> ObtenerProductosPorUsuario(int usuarioID)
+        {
+            if (!_usuarioRepository.ExisteUsuario(usuarioID))
             {
                 throw new UsuarioNotFound();
             }
-            var productosUsuario = await _productoRepository.ObtenerProductosPorUsuario(usuarioID);
+            var productosUsuario = _productoRepository.ObtenerProductosPorUsuario(usuarioID);
             if (!productosUsuario.Any())
             {
                 throw new ProductosNotFound();
-
             }
             var lista = new List<ProductoConImagendto>();
 
             foreach (var prod in productosUsuario)
             {
-                var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(prod.ProductoId)).FirstOrDefault();
+                var imagen = _productoImagenRepository.ObtenerPorProductoId(prod.ProductoId).FirstOrDefault();
 
                 lista.Add(new ProductoConImagendto
                 {
@@ -82,18 +79,18 @@ namespace marketplace_backend.Services
                     VendedorId = prod.VendedorId,
                     ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
                     Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
-
                 });
             }
             return lista;
         }
-        public async Task<IEnumerable<ProductoConImagendto>> ObtenerProductosMenosUsuario(int usuarioID)
+
+        public List<ProductoConImagendto> ObtenerProductosMenosUsuario(int usuarioID)
         {
-            if (!await _usuarioRepository.ExisteUsuarioAsync(usuarioID))
+            if (!_usuarioRepository.ExisteUsuario(usuarioID))
             {
                 throw new UsuarioNotFound();
             }
-            var productosNoUsuario = await _productoRepository.ObtenerProductosMenosUsuario(usuarioID);
+            var productosNoUsuario = _productoRepository.ObtenerProductosMenosUsuario(usuarioID);
             if (!productosNoUsuario.Any())
             {
                 throw new ProductosNotFound();
@@ -103,8 +100,8 @@ namespace marketplace_backend.Services
 
             foreach (var prod in productosNoUsuario)
             {
-                var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(prod.ProductoId)).FirstOrDefault();
-                var vendedor = await _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
+                var imagen = _productoImagenRepository.ObtenerPorProductoId(prod.ProductoId).FirstOrDefault();
+                var vendedor = _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
 
                 lista.Add(new ProductoConImagendto
                 {
@@ -118,20 +115,18 @@ namespace marketplace_backend.Services
                     nombreVendedor = vendedor.Nombre,
                     ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
                     Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
-
                 });
             }
             return lista;
-
-
         }
-        public async Task<IEnumerable<ProductoConImagendto>> ObtenerProductosPorCategoria(int categoriaID, int usuarioID)
+
+        public List<ProductoConImagendto> ObtenerProductosPorCategoria(int categoriaID, int usuarioID)
         {
-            if (!await _usuarioRepository.ExisteUsuarioAsync(usuarioID))
+            if (!_usuarioRepository.ExisteUsuario(usuarioID))
             {
                 throw new UsuarioNotFound();
             }
-            var productoPorCategoria = await _productoRepository.ObtenerProductosPorCategoria(categoriaID,usuarioID);
+            var productoPorCategoria = _productoRepository.ObtenerProductosPorCategoria(categoriaID, usuarioID);
             if (!productoPorCategoria.Any())
             {
                 throw new ProductosNotFound();
@@ -141,9 +136,8 @@ namespace marketplace_backend.Services
 
             foreach (var prod in productoPorCategoria)
             {
-                var vendedor = await _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
-
-                var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(prod.ProductoId)).FirstOrDefault();
+                var vendedor = _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
+                var imagen = _productoImagenRepository.ObtenerPorProductoId(prod.ProductoId).FirstOrDefault();
 
                 lista.Add(new ProductoConImagendto
                 {
@@ -157,15 +151,12 @@ namespace marketplace_backend.Services
                     nombreVendedor = vendedor.Nombre,
                     ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
                     Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
-
                 });
             }
             return lista;
-
-            
         }
 
-        public async Task<Producto> EditarProducto(ProductoEditar dto, int id, int usuarioID)
+        public Producto EditarProducto(ProductoEditar dto, int id, int usuarioID)
         {
             var producto = new Producto
             {
@@ -179,27 +170,27 @@ namespace marketplace_backend.Services
             };
 
             var productoNuevo = _productoRepository.EditarProducto(producto);
-            return await productoNuevo;
-
+            return productoNuevo;
         }
-        public async Task<Producto> AñadirProducto(Productodto dto, int usuarioID,IFormFile imagen)
+
+        public Producto AñadirProducto(Productodto dto, int usuarioID, IFormFile imagen)
         {
             var nuevoProducto = new Producto
-                {
-                    Nombre = dto.Nombre,
-                    Descripcion = dto.Descripcion,
-                    Precio = dto.Precio,
-                    Stock = dto.Stock,
-                    CategoriaId = dto.CategoriaId,
-                    VendedorId = usuarioID
-                };
+            {
+                Nombre = dto.Nombre,
+                Descripcion = dto.Descripcion,
+                Precio = dto.Precio,
+                Stock = dto.Stock,
+                CategoriaId = dto.CategoriaId,
+                VendedorId = usuarioID
+            };
 
-            var productoNuevo = await _productoRepository.AñadirProducto(nuevoProducto, usuarioID);
+            var productoNuevo = _productoRepository.AñadirProducto(nuevoProducto, usuarioID);
 
             if (imagen != null && imagen.Length > 0)
             {
                 using var ms = new MemoryStream();
-                await imagen.CopyToAsync(ms);
+                imagen.CopyTo(ms);
 
                 var imagenMongo = new ProductoImagen
                 {
@@ -209,23 +200,24 @@ namespace marketplace_backend.Services
                     Data = ms.ToArray()
                 };
 
-                await _productoImagenRepository.InsertarAsync(imagenMongo);
+                _productoImagenRepository.Insertar(imagenMongo);
             }
             return productoNuevo;
         }
-        public async Task<bool> EliminarProducto(int productoID)
+
+        public bool EliminarProducto(int productoID)
         {
-            bool isActualizado = await _productoRepository.EliminarProducto(productoID);
+            bool isActualizado = _productoRepository.EliminarProducto(productoID);
             return isActualizado;
-
         }
-        public async Task<ProductoConImagendto> ObtenerProducto(int productoID)
+
+        public ProductoConImagendto ObtenerProducto(int productoID)
         {
-            var productoObtenido = await _productoRepository.ObtenerProducto(productoID);
+            var productoObtenido = _productoRepository.ObtenerProducto(productoID);
 
-            var vendedor = await _usuarioRepository.ObtenerInfoUsuario(productoObtenido.VendedorId);
+            var vendedor = _usuarioRepository.ObtenerInfoUsuario(productoObtenido.VendedorId);
 
-            var imagen = (await _productoImagenRepository.ObtenerPorProductoIdAsync(productoObtenido.ProductoId)).FirstOrDefault();
+            var imagen = _productoImagenRepository.ObtenerPorProductoId(productoObtenido.ProductoId).FirstOrDefault();
             var productoConImagen = new ProductoConImagendto
             {
                 ProductoId = productoObtenido.ProductoId,
@@ -240,10 +232,6 @@ namespace marketplace_backend.Services
                 Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
             };
             return productoConImagen;
-        } 
-
-
-
-        
+        }
     }
 }

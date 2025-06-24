@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
 using Microsoft.EntityFrameworkCore;
+
 namespace marketplace_backend.Repositorios
 {
-
     public class ProductoRepository : IProductoRepository
     {
         private readonly MarketplaceDbContext _context;
@@ -15,67 +14,66 @@ namespace marketplace_backend.Repositorios
         {
             _context = context;
         }
-        public async Task<IEnumerable<VwProductosCatalogo>> ObtenerTodosProductosDisponibles()
+
+        public List<VwProductosCatalogo> ObtenerTodosProductosDisponibles()
         {
-            return await _context.VwProductosCatalogos.ToListAsync();
-        }
-        public async Task<IEnumerable<Categoria>> ObtenerCategorias()
-        {
-            return await _context.Categorias.FromSqlInterpolated($"EXEC sp_ObtenerCategorias").ToListAsync();
+            return _context.VwProductosCatalogos.ToList();
         }
 
-        public async Task<IEnumerable<Producto>> ObtenerProductosPorUsuario(int usuarioID)
+        public List<Categoria> ObtenerCategorias()
         {
-            return await _context.Productos
+            return _context.Categorias.FromSqlInterpolated($"EXEC sp_ObtenerCategorias").ToList();
+        }
+
+        public List<Producto> ObtenerProductosPorUsuario(int usuarioID)
+        {
+            return _context.Productos
                 .FromSqlInterpolated($"EXEC sp_ObtenerProductosPorUsuario @usuarioId = {usuarioID}")
-                .ToListAsync();
+                .ToList();
         }
-        public async Task<IEnumerable<Producto>> ObtenerProductosMenosUsuario(int usuarioID)
+
+        public List<Producto> ObtenerProductosMenosUsuario(int usuarioID)
         {
-            return await _context.Productos
+            return _context.Productos
                 .FromSqlInterpolated($"EXEC sp_ObtenerProductosMenosUsuario @usuarioId = {usuarioID}")
-                .ToListAsync();
-
+                .ToList();
         }
-        public async Task<IEnumerable<Producto>> ObtenerProductosPorCategoria(int categoriaID,int usuarioID)
+
+        public List<Producto> ObtenerProductosPorCategoria(int categoriaID, int usuarioID)
         {
-            return await _context.Productos
+            return _context.Productos
                 .FromSqlInterpolated($"EXEC sp_ObtenerProductoPorCategoria @categoriaId = {categoriaID}, @vendedorId = {usuarioID}")
-                .ToListAsync();
+                .ToList();
         }
 
-        public async Task<Producto> EditarProducto(Producto producto)
+        public Producto EditarProducto(Producto producto)
         {
-            var productoEditado = await _context.Productos.FromSqlInterpolated($"EXEC EditarProducto @ProductoID = {producto.ProductoId}, @Nombre = {producto.Nombre}, @Descripcion = {producto.Descripcion}, @Precio = {producto.Precio}, @Stock = {producto.Stock}, @CategoriaId = {producto.CategoriaId}")
+            var productoEditado = _context.Productos.FromSqlInterpolated($"EXEC EditarProducto @ProductoID = {producto.ProductoId}, @Nombre = {producto.Nombre}, @Descripcion = {producto.Descripcion}, @Precio = {producto.Precio}, @Stock = {producto.Stock}, @CategoriaId = {producto.CategoriaId}")
                 .AsNoTracking()
-                .ToListAsync();
+                .ToList();
             return productoEditado.FirstOrDefault()!;
         }
-        public async Task<Producto> AñadirProducto(Producto producto, int usuarioID)
+
+        public Producto AñadirProducto(Producto producto, int usuarioID)
         {
-            var productoNuevo = await _context.Productos.FromSqlInterpolated($"EXEC sp_InsertarProducto @VendedorID = {usuarioID}, @CategoriaID = {producto.CategoriaId},@Nombre = {producto.Nombre}, @Descripcion = {producto.Descripcion}, @Precio = {producto.Precio}, @Stock = {producto.Stock}")
+            var productoNuevo = _context.Productos.FromSqlInterpolated($"EXEC sp_InsertarProducto @VendedorID = {usuarioID}, @CategoriaID = {producto.CategoriaId},@Nombre = {producto.Nombre}, @Descripcion = {producto.Descripcion}, @Precio = {producto.Precio}, @Stock = {producto.Stock}")
                 .AsNoTracking()
-                .ToListAsync();
+                .ToList();
             return productoNuevo.FirstOrDefault()!;
         }
 
-        public async Task<bool> EliminarProducto(int productoID)
+        public bool EliminarProducto(int productoID)
         {
-            int filas = await _context.Database.ExecuteSqlRawAsync("EXEC sp_DesactivarProducto @ProductoID = {0}", productoID);
+            int filas = _context.Database.ExecuteSqlRaw("EXEC sp_DesactivarProducto @ProductoID = {0}", productoID);
             return filas > 0;
-
         }
-        public async Task<Producto> ObtenerProducto(int productoID){
-            var productoObtenido= await _context.Productos.FromSqlInterpolated($"EXEC sp_ObtenerProducto @productoId = {productoID}")
+
+        public Producto ObtenerProducto(int productoID)
+        {
+            var productoObtenido = _context.Productos.FromSqlInterpolated($"EXEC sp_ObtenerProducto @productoId = {productoID}")
                 .AsNoTracking()
-                .ToListAsync();
+                .ToList();
             return productoObtenido.FirstOrDefault()!;
-        } 
-
-
-
-
-
-
+        }
     }
 }

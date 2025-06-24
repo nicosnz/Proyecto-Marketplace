@@ -17,7 +17,7 @@ public partial class Persona
 
     public bool Activo { get; set; }
 
-    public virtual ICollection<Ordene> Ordenes { get; set; } = new List<Ordene>();
+    public  List<Ordene> Ordenes { get; set; } = new List<Ordene>();
 
-    public virtual ICollection<Producto> Productos { get; set; } = new List<Producto>();
+    public  List<Producto> Productos { get; set; } = new List<Producto>();
 }

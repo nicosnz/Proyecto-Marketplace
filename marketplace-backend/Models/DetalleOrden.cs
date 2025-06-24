@@ -15,7 +15,7 @@ public partial class DetalleOrden
 
     public decimal PrecioUnitario { get; set; }
 
-    public virtual Ordene Orden { get; set; } = null!;
+    public Ordene Orden { get; set; } = null!;
 
-    public virtual Producto Producto { get; set; } = null!;
+    public Producto Producto { get; set; } = null!;
 }

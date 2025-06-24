@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
@@ -24,7 +23,7 @@ namespace marketplace_backend.Controllers
 
         [HttpPost("añadir")]
         [Authorize]
-        public async Task<ActionResult> AñadirOrden(OrdenDto orden)
+        public ActionResult AñadirOrden(OrdenDto orden)
         {
             try
             {
@@ -36,9 +35,9 @@ namespace marketplace_backend.Controllers
                 int idUsuario = (int)ObtenerUsuarioIdDesdeToken()!;
                 if (idUsuario == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
-                var ordenId = await _ordenesService.InsertarOrden(idUsuario, orden.Persona.Direccion, orden.Persona.Pais,orden.Persona.Ciudad);
-                await _ordenesService.AgregarProductoADetalleOrden(ordenId, orden.ProductoCarrito);
-                await _ordenesService.MarcarOrdenComoPagada(ordenId);
+                var ordenId = _ordenesService.InsertarOrden(idUsuario, orden.Persona.Direccion, orden.Persona.Pais, orden.Persona.Ciudad);
+                _ordenesService.AgregarProductoADetalleOrden(ordenId, orden.ProductoCarrito);
+                _ordenesService.MarcarOrdenComoPagada(ordenId);
                 return Ok();
 
             }
@@ -50,57 +49,51 @@ namespace marketplace_backend.Controllers
 
             }
         }
+
         [HttpGet("mis-compras")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<DetalleComprasUsuario>>> ObtenerComprasUsuario()
+        public ActionResult<List<DetalleComprasUsuario>> ObtenerComprasUsuario()
         {
             try
             {
-                
                 int idUsuario = (int)ObtenerUsuarioIdDesdeToken()!;
                 if (idUsuario == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
-                var comprasUsuario = await _ordenesService.ObtenerComprasUsuario(idUsuario);
+                var comprasUsuario = _ordenesService.ObtenerComprasUsuario(idUsuario);
                 return Ok(comprasUsuario);
-
             }
             catch (System.Exception ex)
             {
                 Console.WriteLine("error en ordenes");
                 Console.WriteLine(ex.ToString()); // Esto mostrará el stacktrace completo
                 return BadRequest(new { mensaje = ex.Message });
-
             }
-            
         }
+
         [HttpGet("mis-ventas")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<ProductosVendidosUsuario>>> ObtenerProductosVendidosUsuario()
+        public ActionResult<List<ProductosVendidosUsuario>> ObtenerProductosVendidosUsuario()
         {
             try
             {
-                
                 int idUsuario = (int)ObtenerUsuarioIdDesdeToken()!;
                 if (idUsuario == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
-                var ventasUsuario = await _ordenesService.ObtenerProductosVendidosUsuario(idUsuario);
+                var ventasUsuario = _ordenesService.ObtenerProductosVendidosUsuario(idUsuario);
                 return Ok(ventasUsuario);
-
             }
             catch (System.Exception ex)
             {
                 Console.WriteLine("error en ordenes");
                 Console.WriteLine(ex.ToString()); // Esto mostrará el stacktrace completo
                 return BadRequest(new { mensaje = ex.Message });
-
             }
-            
         }
+
         private int? ObtenerUsuarioIdDesdeToken()
         {
             var claim = User.FindFirst(ClaimTypes.NameIdentifier);
             return claim != null ? int.Parse(claim.Value) : (int?)null;
         }
-
     }
 }

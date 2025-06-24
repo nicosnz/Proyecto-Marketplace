@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using MongoDB.Driver;
@@ -17,33 +16,33 @@ namespace marketplace_backend.Repositorios
             _coleccion = database.GetCollection<ProductoImagen>("producto");
         }
 
-        public async Task InsertarAsync(ProductoImagen imagen)
+        public void Insertar(ProductoImagen imagen)
         {
-            await _coleccion.InsertOneAsync(imagen);
+            _coleccion.InsertOne(imagen);
         }
 
-        public async Task<List<ProductoImagen>> ObtenerPorProductoIdAsync(int productoId)
+        public List<ProductoImagen> ObtenerPorProductoId(int productoId)
         {
-            return await _coleccion.Find(x => x.ProductoId == productoId).ToListAsync();
+            return _coleccion.Find(x => x.ProductoId == productoId).ToList();
         }
 
-        public async Task<ProductoImagen?> ObtenerPorIdAsync(string id)
+        public ProductoImagen ObtenerPorId(string id)
         {
-            return await _coleccion.Find(x => x.Id == id).FirstOrDefaultAsync();
+            return _coleccion.Find(x => x.Id == id).FirstOrDefault();
         }
 
-        public async Task EliminarAsync(string id)
+        public void Eliminar(string id)
         {
-            await _coleccion.DeleteOneAsync(x => x.Id == id);
+            _coleccion.DeleteOne(x => x.Id == id);
         }
-        public async Task AgregarComentarioAsync(int productoId, Comentariodto comentario)
+
+        public void AgregarComentario(int productoId, Comentariodto comentario)
         {
             var filtro = Builders<ProductoImagen>.Filter.Eq(x => x.ProductoId, productoId);
             var actualizacion = Builders<ProductoImagen>.Update.Push(x => x.Comentarios, comentario);
 
-            var resultado = await _coleccion.UpdateOneAsync(filtro, actualizacion);
-            Console.WriteLine(resultado.ModifiedCount); 
-            Console.WriteLine(resultado.MatchedCount); 
+            var resultado = _coleccion.UpdateOne(filtro, actualizacion);
+            
         }
     }
 }

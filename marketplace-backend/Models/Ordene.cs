@@ -21,7 +21,7 @@ public partial class Ordene
 
     public string? Pais { get; set; }
 
-    public virtual Persona Comprador { get; set; } = null!;
+    public Persona Comprador { get; set; } = null!;
 
-    public virtual ICollection<DetalleOrden> DetalleOrdens { get; set; } = new List<DetalleOrden>();
+    public List<DetalleOrden> DetalleOrdens { get; set; } = new List<DetalleOrden>();
 }

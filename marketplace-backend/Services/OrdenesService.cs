@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 
@@ -14,30 +13,29 @@ namespace marketplace_backend.Services
         {
             _ordenesRepository = ordenesRepository;
         }
-        public async Task<int> InsertarOrden(int compradorId, string direccion, string pais, string ciudad)
+        public int InsertarOrden(int compradorId, string direccion, string pais, string ciudad)
         {
-            var ordenId = await _ordenesRepository.InsertarOrden(compradorId, direccion, pais, ciudad);
+            var ordenId = _ordenesRepository.InsertarOrden(compradorId, direccion, pais, ciudad);
             return ordenId;
         }
-        public async Task MarcarOrdenComoPagada(int ordenId)
+        public void MarcarOrdenComoPagada(int ordenId)
         {
-            await _ordenesRepository.MarcarOrdenComoPagada(ordenId);
+            _ordenesRepository.MarcarOrdenComoPagada(ordenId);
         }
-        public async Task AgregarProductoADetalleOrden(int ordenId, ProductoCarrito[] productoCarritos)
+        public void AgregarProductoADetalleOrden(int ordenId, ProductoCarrito[] productoCarritos)
         {
             foreach (var item in productoCarritos)
             {
-                await _ordenesRepository.AgregarProductoADetalleOrden(ordenId, item.Producto.ProductoId, item.Cantidad);
+                _ordenesRepository.AgregarProductoADetalleOrden(ordenId, item.Producto.ProductoId, item.Cantidad);
             }
         }
-        public async Task<IEnumerable<DetalleComprasUsuario>> ObtenerComprasUsuario(int usuarioID)
+        public List<DetalleComprasUsuario> ObtenerComprasUsuario(int usuarioID)
         {
-            return await _ordenesRepository.ObtenerComprasUsuario(usuarioID);
+            return _ordenesRepository.ObtenerComprasUsuario(usuarioID);
         }
-        public async Task<IEnumerable<ProductosVendidosUsuario>> ObtenerProductosVendidosUsuario(int usuarioID)
+        public List<ProductosVendidosUsuario> ObtenerProductosVendidosUsuario(int usuarioID)
         {
-            return await _ordenesRepository.ObtenerProductosVendidosUsuario(usuarioID);
+            return _ordenesRepository.ObtenerProductosVendidosUsuario(usuarioID);
         }
-
     }
 }

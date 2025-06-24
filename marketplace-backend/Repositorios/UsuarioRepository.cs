@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
@@ -16,41 +15,42 @@ namespace marketplace_backend.Repositorios
         {
             _context = context;
         }
-        public async Task<bool> ExisteUsuarioAsync(int usuarioID)
+
+        public bool ExisteUsuario(int usuarioID)
         {
-            var usuarios = await _context.Personas
+            var usuarioExiste = _context.Personas
                 .FromSqlInterpolated($"EXEC dbo.sp_ObtenerUsuario @UsuarioID = {usuarioID}")
                 .AsNoTracking()
-                .ToListAsync();
-            return usuarios.Any();
+                .ToList();
+            return usuarioExiste.Any();
         }
-        public async Task<Persona> RegistrarNuevoUsuario(Persona nuevaPersona)
+
+        public Persona RegistrarNuevoUsuario(Persona nuevaPersona)
         {
-            var persona = await _context.Personas.FromSqlInterpolated($"EXEC sp_InsertarPersona @Nombre = {nuevaPersona.Nombre}, @Email = {nuevaPersona.Email}, @PasswordHash = {nuevaPersona.PasswordHash}")
+            var persona = _context.Personas.FromSqlInterpolated($"EXEC sp_InsertarPersona @Nombre = {nuevaPersona.Nombre}, @Email = {nuevaPersona.Email}, @PasswordHash = {nuevaPersona.PasswordHash}")
                 .AsNoTracking()
-                .ToListAsync();
-            return persona.FirstOrDefault();
+                .ToList();
+            return persona.FirstOrDefault()!;
         }
-        public async Task<Persona?> ObtenerUsuarioPorEmailAsync(string email)
+
+        public Persona ObtenerUsuarioPorEmail(string email)
         {
-            var resultado = await _context.Personas
+            var resultado = _context.Personas
                 .FromSqlInterpolated($"EXEC dbo.sp_IniciarSesion @Email = {email}")
                 .AsNoTracking()
-                .ToListAsync();
+                .ToList();
 
-            return resultado.FirstOrDefault();
+            return resultado.FirstOrDefault()!;
         }
-        public async Task<UsuarioInfodto> ObtenerInfoUsuario(int usuarioID)
+
+        public UsuarioInfodto ObtenerInfoUsuario(int usuarioID)
         {
-            var resultado = await _context.Set<UsuarioInfodto>()
+            var resultado = _context.Set<UsuarioInfodto>()
                 .FromSqlInterpolated($"EXEC dbo.sp_ObtenerInfoUsuario @usuarioId = {usuarioID}")
                 .AsNoTracking()
-                .ToListAsync();
+                .ToList();
 
-            return resultado.FirstOrDefault();
+            return resultado.FirstOrDefault()!;
         }
-
-
-
     }
 }

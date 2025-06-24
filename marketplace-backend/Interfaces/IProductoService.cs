@@ -9,16 +9,15 @@ namespace marketplace_backend.Interfaces
 {
     public interface IProductoService
     {
-        Task<IEnumerable<ProductoConImagendto>> ObtenerProductosDisponibles();
-        Task<IEnumerable<Categoria>> ObtenerCategorias();
-
-        Task<IEnumerable<ProductoConImagendto>> ObtenerProductosPorUsuario(int usuarioID);
-        Task<IEnumerable<ProductoConImagendto>> ObtenerProductosMenosUsuario(int usuarioID);
-        Task<IEnumerable<ProductoConImagendto>> ObtenerProductosPorCategoria(int categoriaID,int usuarioID);
-        Task<Producto> EditarProducto(ProductoEditar dto,int id,int usuarioID);
-        Task<Producto> AñadirProducto(Productodto dto, int usuarioID,IFormFile imagen);
-        Task<bool> EliminarProducto(int productoID);
-        Task<ProductoConImagendto> ObtenerProducto(int productoID); 
+        List<ProductoConImagendto> ObtenerProductosDisponibles();
+        List<Categoria> ObtenerCategorias();
+        List<ProductoConImagendto> ObtenerProductosPorUsuario(int usuarioID);
+        List<ProductoConImagendto> ObtenerProductosMenosUsuario(int usuarioID);
+        List<ProductoConImagendto> ObtenerProductosPorCategoria(int categoriaID,int usuarioID);
+        Producto EditarProducto(ProductoEditar dto,int id,int usuarioID);
+        Producto AñadirProducto(Productodto dto, int usuarioID,IFormFile imagen);
+        bool EliminarProducto(int productoID);
+        ProductoConImagendto ObtenerProducto(int productoID); 
 
 
 

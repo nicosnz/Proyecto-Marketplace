@@ -8,15 +8,11 @@ namespace marketplace_backend.Interfaces
 {
     public interface IProductoImagenService
     {
-        Task InsertarAsync(ProductoImagen imagen);
-
-
-        Task<List<ProductoImagen>> ObtenerPorProductoIdAsync(int productoId);
-        Task<ProductoImagen?> ObtenerPorIdAsync(string id);
-
-
-        Task EliminarAsync(string id);
-        Task AgregarComentarioAsync(int productoId, Comentariodto comentario,int userId);
+        void Insertar(ProductoImagen imagen);
+        List<ProductoImagen> ObtenerPorProductoId(int productoId);
+        ProductoImagen ObtenerPorId(string id);
+        void Eliminar(string id);
+        void AgregarComentario(int productoId, Comentariodto comentario,int userId);
         
     
     }

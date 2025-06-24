@@ -8,12 +8,11 @@ namespace marketplace_backend.Interfaces
 {
     public interface IOrdenesService
     {
-        Task<int> InsertarOrden(int compradorId, string direccion, string pais, string ciudad);
-        Task MarcarOrdenComoPagada(int ordenId);
-
-        Task AgregarProductoADetalleOrden(int ordenId, ProductoCarrito[] productoCarritos);
-        Task<IEnumerable<DetalleComprasUsuario>> ObtenerComprasUsuario(int usuarioID);
-        Task<IEnumerable<ProductosVendidosUsuario>> ObtenerProductosVendidosUsuario(int usuarioID);
+        int InsertarOrden(int compradorId, string direccion, string pais, string ciudad);
+        void MarcarOrdenComoPagada(int ordenId);
+        void AgregarProductoADetalleOrden(int ordenId, ProductoCarrito[] productoCarritos);
+        List<DetalleComprasUsuario> ObtenerComprasUsuario(int usuarioID);
+        List<ProductosVendidosUsuario> ObtenerProductosVendidosUsuario(int usuarioID);
 
     }
 }

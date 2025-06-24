@@ -23,9 +23,9 @@ public partial class Producto
 
     public bool Activo { get; set; }
 
-    public virtual Categoria? Categoria { get; set; }
+    public  Categoria? Categoria { get; set; }
 
-    public virtual ICollection<DetalleOrden> DetalleOrdens { get; set; } = new List<DetalleOrden>();
+    public  List<DetalleOrden> DetalleOrdens { get; set; } = new List<DetalleOrden>();
 
-    public virtual Persona Vendedor { get; set; } = null!;
+    public  Persona Vendedor { get; set; } = null!;
 }

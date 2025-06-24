@@ -9,9 +9,10 @@ namespace marketplace_backend.Interfaces
 {
     public interface IUsuarioService
     {
-        Task<Persona> RegistrarNuevoUsuario(Persona nuevaPersona);
-        Task<Persona> IniciarSesionAsync(string email, string password);
-        Task<UsuarioInfodto> ObtenerInfoUsuario(int usuarioID);
+        Persona RegistrarNuevoUsuario(Persona nuevaPersona);
+        Persona IniciarSesion(string email, string password);
+        UsuarioInfodto ObtenerInfoUsuario(int usuarioID);
+        string GenerarToken(Persona usuario);
 
 
         
