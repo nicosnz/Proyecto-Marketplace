@@ -15,7 +15,7 @@ export class ProductosApiService {
   private readonly URL_PRODUCTOS_USUARIO = `${environment.urlApi}/Productos/mis-productos`;
   private readonly URL_PRODUCTOS = `${environment.urlApi}/Productos`;
   private readonly URL_AÑADIR_PRODUCTOS = `${environment.urlApi}/Productos/añadir`;
-  private readonly URL_EDITAR_PRODUCTO = `${environment.urlApi}/Productos/añadir`;
+  private readonly URL_EDITAR_PRODUCTO = `${environment.urlApi}/Productos/editar`;
   private readonly URL_ELIMINAR_PRODUCTO = `${environment.urlApi}/Productos/eliminar`;
   private readonly URL_PRODUCTO = `${environment.urlApi}/Productos/producto`;
   private readonly URL_PRODUCTOS_CATALOGO = `${environment.urlApi}/Productos/catalogo`;

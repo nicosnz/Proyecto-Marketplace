@@ -21,7 +21,15 @@ export class MenuComponent implements OnInit{
   }
   productosGenerales:IProducto[] = []
   categorias:ICategoria[] = []
-  
+  agregarProducto(){
+    if(this.isLoggedIn){
+      this.router.navigateByUrl("/añadir-formulario");
+
+    }
+    else{
+      this.router.navigateByUrl("/iniciar-sesion")
+    }
+  }
   
   ngOnInit(): void {
     this._productsApi.getProducts().subscribe((data)=>this.productosGenerales = data);

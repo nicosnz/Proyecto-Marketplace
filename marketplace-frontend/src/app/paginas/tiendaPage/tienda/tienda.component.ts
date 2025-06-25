@@ -11,8 +11,7 @@ import { NgClass } from '@angular/common';
 @Component({
   selector: 'app-tienda',
   imports: [NavbarComponent, ProductoComponent,FooterComponent,FormsModule,NgClass],
-  templateUrl: './tienda.component.html',
-  styleUrl: './tienda.component.scss'
+  templateUrl: './tienda.component.html'
 })
 export class TiendaComponent implements OnInit {
   private readonly _productsApi = inject(ProductosApiService);
@@ -47,18 +46,18 @@ export class TiendaComponent implements OnInit {
       });
     }
   }
-  searchTerm: string = '';
+  busqueda: string = '';
   get productosFiltrados(): IProducto[] {
-    if (!this.searchTerm) return this.productosCatalogo;
-    const term = this.searchTerm.toLowerCase();
+    if (!this.busqueda) return this.productosCatalogo;
+    const term = this.busqueda.toLowerCase();
     return this.productosCatalogo.filter(p =>
       p.nombre.toLowerCase().startsWith(term) ||
       (p.descripcion && p.descripcion.toLowerCase().startsWith(term))
     );
   }
   get productosFiltradosSinToken(): IProducto[] {
-    if (!this.searchTerm) return this.productosGenerales;
-    const term = this.searchTerm.toLowerCase();
+    if (!this.busqueda) return this.productosGenerales;
+    const term = this.busqueda.toLowerCase();
     return this.productosGenerales.filter(p =>
       p.nombre.toLowerCase().startsWith(term) ||
       (p.descripcion && p.descripcion.toLowerCase().startsWith(term))

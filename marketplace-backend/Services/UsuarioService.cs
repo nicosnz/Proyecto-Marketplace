@@ -25,23 +25,32 @@ namespace marketplace_backend.Services
             _dataProtector = dataProtection.CreateProtector("pwd");
             _configuration = configuration;
         }
-        public Persona RegistrarNuevoUsuario(Persona nuevaPersona)
+        public Persona RegistrarNuevoUsuario( UsuarioRegistrarseDto usuarioDto)
         {
-            var persona = _usuarioRepository.ObtenerUsuarioPorEmail(nuevaPersona.Email);
+             var nuevoUsuario = new Persona
+                {
+                    Nombre = usuarioDto.Nombre,
+                    Email = usuarioDto.Email,
+                    PasswordHash = usuarioDto.PasswordHash
+                };
+
+            var persona = _usuarioRepository.ObtenerUsuarioPorEmail(nuevoUsuario.Email);
 
             if (persona != null)
             {
                 throw new UsuarioDuplicado();
             }
-            var textoCifrado = _dataProtector.Protect(nuevaPersona.PasswordHash);
-            nuevaPersona.PasswordHash = textoCifrado;
-            return _usuarioRepository.RegistrarNuevoUsuario(nuevaPersona);
+            var textoCifrado = _dataProtector.Protect(nuevoUsuario.PasswordHash);
+            nuevoUsuario.PasswordHash = textoCifrado;
+            return _usuarioRepository.RegistrarNuevoUsuario(nuevoUsuario);
             
             
         }
 
-        public Persona IniciarSesion(string email, string password)
+        public Persona IniciarSesion(UsuarioLoginDto loginDto)
         {
+            var email = loginDto.Email;
+            var password = loginDto.PasswordHash;
             var persona = _usuarioRepository.ObtenerUsuarioPorEmail(email);
 
             if (persona == null)

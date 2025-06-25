@@ -42,7 +42,7 @@
     </div>
     <!-- Si quieres poner más info aquí, puedes seguir -->
   </div>
-    <button class="mt-4 bg-gray-900 text-white py-2 rounded-xl font-medium hover:bg-black transition-all duration-200 cursor-pointer" (click)="agregarCarrito()">
+    <button class="mt-4 bg-gray-900 text-white py-2 rounded-xl font-medium hover:bg-black transition-all duration-200 cursor-pointer" [disabled]="producto?.stock ===0" (click)="agregarCarrito()">
       + Agregar al carrito
     </button>
   </div>

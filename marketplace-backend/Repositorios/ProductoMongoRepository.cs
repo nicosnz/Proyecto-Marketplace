@@ -26,11 +26,7 @@ namespace marketplace_backend.Repositorios
             return _coleccion.Find(x => x.ProductoId == productoId).ToList();
         }
 
-        // public ProductoImagenConComentarios ObtenerProductoPorId(string id)
-        // {
-        //     return _coleccion.Find(x => x.Id == id).FirstOrDefault();
-        // }
-
+        
         public void Eliminar(string id)
         {
             _coleccion.DeleteOne(x => x.Id == id);

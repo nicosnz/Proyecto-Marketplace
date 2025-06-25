@@ -7,7 +7,16 @@
       {{ modoEditar ? 'Editar Producto' : 'Añadir Producto' }}
     </h1>
     <p class="text-center text-slate-500 mb-6">{{modoEditar? 'Edita el producto existente':'Completa los datos para publicar un nuevo producto'}}</p>
-
+    @if (mensajeError) {
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {{ mensajeError }}
+        </div>
+      }
+      @if (mensajeExito) {
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+          {{ mensajeExito }}
+        </div>
+      }
     <div class="relative">
       <input type="text" id="nombre"
              class="peer block w-full rounded-lg border border-slate-300 bg-transparent px-4 pt-6 pb-2 text-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-400 outline-none transition"

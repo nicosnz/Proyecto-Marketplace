@@ -30,14 +30,8 @@ namespace marketplace_backend.Controllers
         {
             try
             {
-                var nuevoUsuario = new Persona
-                {
-                    Nombre = usuarioDto.Nombre,
-                    Email = usuarioDto.Email,
-                    PasswordHash = usuarioDto.PasswordHash
-                };
-
-                var resultado = _usuarioService.RegistrarNuevoUsuario(nuevoUsuario);
+               
+                var resultado = _usuarioService.RegistrarNuevoUsuario(usuarioDto);
 
                 var token = _usuarioService.GenerarToken(resultado);
 
@@ -64,7 +58,7 @@ namespace marketplace_backend.Controllers
         {
             try
             {
-                var usuario = _usuarioService.IniciarSesion(loginDto.Email, loginDto.PasswordHash);
+                var usuario = _usuarioService.IniciarSesion(loginDto);
                 var token = _usuarioService.GenerarToken(usuario);
                 return Ok(new { mensaje = "Ingreso exitoso", token });
             }

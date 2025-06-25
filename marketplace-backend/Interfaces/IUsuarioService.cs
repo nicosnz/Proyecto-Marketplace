@@ -9,8 +9,8 @@ namespace marketplace_backend.Interfaces
 {
     public interface IUsuarioService
     {
-        Persona RegistrarNuevoUsuario(Persona nuevaPersona);
-        Persona IniciarSesion(string email, string password);
+        Persona RegistrarNuevoUsuario( UsuarioRegistrarseDto usuarioDto);
+        Persona IniciarSesion(UsuarioLoginDto loginDto);
         UsuarioInfoDto ObtenerInfoUsuario(int usuarioID);
         string GenerarToken(Persona usuario);
 

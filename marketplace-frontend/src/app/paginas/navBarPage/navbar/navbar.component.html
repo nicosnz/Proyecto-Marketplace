@@ -48,7 +48,10 @@
             <h3 class="font-bold text-lg">Carrito de compras</h3>
             <button (click)="cerrarCarrito()" aria-label="Cerrar" class="text-2xl font-bold hover:text-red-600">&times;</button>
           </div>
-          
+          @if (productosCarrito.length === 0) {
+            <h3 class="font-bold text-lg text-black">Tu carrito esta Vacio</h3>
+
+          }
           <div class="flex-1 overflow-y-auto p-4 text-black">
             <ul>
               @for (producto of productosCarrito; track producto.producto.productoId) {

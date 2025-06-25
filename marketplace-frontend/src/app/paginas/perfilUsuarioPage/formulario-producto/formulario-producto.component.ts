@@ -19,6 +19,8 @@ export class FormularioProductoComponent implements OnInit {
   private route = inject(ActivatedRoute);
   modoEditar = false;
   categorias:ICategoria[] = []
+  mensajeError:string|null = null
+  mensajeExito:string|null = null
 
   formGroup = this._formBuilder.nonNullable.group({
     nombre : ['',Validators.required],
@@ -75,12 +77,17 @@ export class FormularioProductoComponent implements OnInit {
     }
     this._productsApi.postProducto(formData).subscribe({
       next: (producto) => {
-        console.log('Producto creado:', producto);
-        
-        this.router.navigateByUrl("/perfil")
+        this.mensajeError = null;
+        this.mensajeExito = "Exito!";
+        setTimeout(() => {
+            this.mensajeExito = null;
+            this.router.navigateByUrl("/perfil")
+
+          }, 1000);
       },
       error: (err) => {
-        console.error('Error al crear producto:', err.error.errors);
+        this.mensajeExito = null;
+        this.mensajeError =  err.error.errors;
       }
     });
   
@@ -88,27 +95,29 @@ export class FormularioProductoComponent implements OnInit {
 
   actualizarProducto(){
     if (this.formGroup.valid) {
-    const productoEditado: IProductoEditar = {
-      productoId: this.productoId!, 
-      nombre: this.formGroup.value.nombre!,
-      descripcion: this.formGroup.value.descripcion,
-      precio: Number(this.formGroup.value.precio),
-      stock: Number(this.formGroup.value.stock),
-      categoriaId:Number(this.formGroup.value.categoriaId)
-    };
-    console.log('Valores del formulario:', this.formGroup.value);
-    console.log(productoEditado);
+      const productoEditado: IProductoEditar = {
+        productoId: this.productoId!, 
+        nombre: this.formGroup.value.nombre!,
+        descripcion: this.formGroup.value.descripcion,
+        precio: Number(this.formGroup.value.precio),
+        stock: Number(this.formGroup.value.stock),
+        categoriaId:Number(this.formGroup.value.categoriaId)
+      };
+      
 
-    this._productsApi.putProducto(productoEditado).subscribe({
-      next: (respuesta) => {
-        console.log(respuesta);
-        alert('Producto actualizado exitosamente');
-        this.router.navigate(['/perfil']); 
-      },
-      error: (err) => {
-        alert('Error al actualizar el producto');
-        console.error(err.error.mensaje);
-      }
+      this._productsApi.putProducto(productoEditado).subscribe({
+        next: (respuesta) => {
+          this.mensajeError = null;
+          this.mensajeExito = "Exito!";
+          setTimeout(() => {
+              this.mensajeExito = null;
+              this.router.navigateByUrl("/perfil")
+
+            }, 1000);
+        },
+        error: (err) => {
+          console.error(err.error.mensaje);
+        }
     });
     } else {
       this.formGroup.markAllAsTouched();

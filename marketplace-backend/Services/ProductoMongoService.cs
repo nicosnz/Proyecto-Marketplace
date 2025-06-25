@@ -28,11 +28,6 @@ namespace marketplace_backend.Services
             return _repo.ObtenerProductoPorId(productoId);
         }
 
-        // public ProductoImagenConComentarios ObtenerPorId(string id)
-        // {
-        //     return _repo.ObtenerPorId(id);
-        // }
-
         public void Eliminar(string id)
         {
             _repo.Eliminar(id);
