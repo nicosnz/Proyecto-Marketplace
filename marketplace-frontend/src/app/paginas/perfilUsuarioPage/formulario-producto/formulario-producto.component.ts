@@ -4,14 +4,13 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductosApiService } from '../../../services/productos-api.service';
 import { FooterComponent } from "../../footerPage/footer/footer.component";
-import { IProductoEditar } from '../../../services/models/IProductos';
 import { ICategoria } from '../../../services/models/ICategoria';
+import { IProductoEditar } from '../../../services/models/productos/IProductoEditar';
 
 @Component({
   selector: 'app-formulario-producto',
   imports: [NavbarComponent, ReactiveFormsModule, RouterLink, FooterComponent],
   templateUrl: './formulario-producto.component.html',
-  styleUrl: './formulario-producto.component.scss'
 })
 export class FormularioProductoComponent implements OnInit {
   private readonly _formBuilder = inject(FormBuilder);

@@ -77,8 +77,8 @@ builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-builder.Services.AddScoped<IProductoImagenRepository, ProductoImagenRepository>();
-builder.Services.AddScoped<IProductoImagenService, ProductoImagenService>();
+builder.Services.AddScoped<IProductoMongoRepository, ProductoMongoRepository>();
+builder.Services.AddScoped<IProductoMongoService, ProductoMongoService>();
 builder.Services.AddScoped<IOrdenesRepository, OrdenesRepository>();
 builder.Services.AddScoped<IOrdenesService,OrdenesService>();
 

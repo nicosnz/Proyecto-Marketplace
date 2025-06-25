@@ -2,41 +2,52 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';  
-import { AutentificacionService } from '../../../services/autentificacion.service';
-import { IUsuarioRegistrarse } from '../../../services/models/IUsuarios';
+import { IUsuarioRegistrarse } from '../../../services/models/usuarios/IUsuarioRegistrarse';
+import { AutentificacionApiService } from '../../../services/autentificacion-api.service';
+
 
 @Component({
   selector: 'app-registrarse',
   imports: [CommonModule,ReactiveFormsModule],
-  templateUrl: './registrarse.component.html',
-  styleUrl: './registrarse.component.scss'
+  templateUrl: './registrarse.component.html'
 })
 export class RegistrarseComponent {
   private readonly _formBuilder = inject(FormBuilder);
-  autentificacion = inject(AutentificacionService);
+  autentificacion = inject(AutentificacionApiService);
   private router = inject(Router);
+  mensajeError:string|null = null
+  mensajeExito:string|null = null
+
+
     
   formGroup = this._formBuilder.nonNullable.group({
     nombre : ['',Validators.required],
     email : ['',[Validators.required,Validators.email]],
-    contraseña : ['',Validators.required],
-    repetirContraseña : ['',Validators.required],
+    password : ['',Validators.required],
+    repetirPassword : ['',Validators.required],
   })
 
   registrarse(){
     const usuario:IUsuarioRegistrarse = {
       nombre:this.formGroup.value.nombre!,
       email:this.formGroup.value.email!,
-      passwordHash:this.formGroup.value.contraseña!
+      passwordHash:this.formGroup.value.password!
     }
     
     this.autentificacion.registrarse(usuario).subscribe({
       next: (respuesta) => {
-        console.log("Usuario registrado:", respuesta);
-        this.router.navigateByUrl('/home');
+        this.mensajeError = null;
+        this.mensajeExito = respuesta.mensaje;
+        this.formGroup.reset();
+        setTimeout(() => {
+          this.mensajeExito = null;
+          this.router.navigateByUrl('/home');
+        }, 1000);
       },
       error: (err) => {
-        console.error("Error al registrar:", err);
+        this.mensajeError = err.error.mensaje;
+        this.formGroup.reset();
+
       }
     });
   

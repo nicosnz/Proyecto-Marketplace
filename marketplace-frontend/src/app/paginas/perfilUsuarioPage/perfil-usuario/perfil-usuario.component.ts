@@ -1,35 +1,36 @@
-import { OrdenesService } from './../../../services/ordenes.service';
-import { IProducto, IProducto2 } from './../../../services/models/IProductos';
 import { Component, inject } from '@angular/core';
 
 import { Router, RouterLink } from '@angular/router';
 import { NavbarComponent } from '../../navBarPage/navbar/navbar.component';
 import { ProductosApiService } from '../../../services/productos-api.service';
 import { FooterComponent } from "../../footerPage/footer/footer.component";
-import { IMisCompras, IMisVentas, OrdenConProductos } from '../../../services/models/IOrdenes';
 import { UsuariosApiService } from '../../../services/usuarios-api.service';
-import { IUsuarioInfo } from '../../../services/models/IUsuarios';
+import { OrdenesServiceApiService } from '../../../services/ordenes-api.service';
+import { IComprasUsuario } from '../../../services/models/ordenes/IComprasUsuario';
+import { IVentasUsuario } from '../../../services/models/ordenes/IVentasUsuario';
+import { OrdenConProductos } from '../../../services/models/ordenes/IOrdenConProductos';
+import { IUsuarioInfo } from '../../../services/models/usuarios/IUsuarioInfo';
+import { IProducto } from '../../../services/models/productos/IProducto';
 
 @Component({
   selector: 'app-perfil-usuario',
   imports: [NavbarComponent, RouterLink, FooterComponent],
   templateUrl: './perfil-usuario.component.html',
-  styleUrl: './perfil-usuario.component.scss'
 })
 export class PerfilUsuarioComponent {
   private router = inject(Router);
-  private readonly _OrdenesService = inject(OrdenesService);
+  private readonly _OrdenesService = inject(OrdenesServiceApiService);
   private readonly _usuarioService = inject(UsuariosApiService);
   mostrar_modal = false;
   productoAeliminar:number|any;
   seccionSeleccionada: 'info' | 'mis-productos' | 'vendidos' | 'comprados' = 'info';
-  misCompras:IMisCompras[] = []
-  misVentas:IMisVentas[]=[]
+  misCompras:IComprasUsuario[] = []
+  misVentas:IVentasUsuario[]=[]
   ordenes: OrdenConProductos[] = [];
   infoUsuario:IUsuarioInfo|any;
 
   private readonly _productsApi = inject(ProductosApiService);
-  productos:IProducto2[] = []
+  productos:IProducto[] = []
   ngOnInit():void{
     this._productsApi.getMyProducts().subscribe((data)=>this.productos = data);
     this._OrdenesService.getMisCompras().subscribe((data)=>{
@@ -66,10 +67,10 @@ export class PerfilUsuarioComponent {
       }
     })
   }
-  editarProducto(producto:IProducto2){
+  editarProducto(producto:IProducto){
     this.router.navigate(['/añadir-formulario', producto.productoId]);
   }
-  agruparComprasPorOrden(compras: IMisCompras[]): OrdenConProductos[] {
+  agruparComprasPorOrden(compras: IComprasUsuario[]): OrdenConProductos[] {
     const ordenesMap = new Map<number, OrdenConProductos>();
     for (const compra of compras) {
       if (!ordenesMap.has(compra.ordenId)) {

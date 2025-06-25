@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { IAutentificacionResponse } from './models/autentificacion-response';
-import { IUsuarioLogin, IUsuarioRegistrarse } from './models/IUsuarios';
+import { IAutentificacionResponse } from './models/usuarios/autentificacion-response';
 import { environment } from '../../environments/environment';
+import { IUsuarioLogin } from './models/usuarios/IUsuarioLogin';
+import { IUsuarioRegistrarse } from './models/usuarios/IUsuarioRegistrarse';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AutentificacionService {
+export class AutentificacionApiService {
   hhtpCliente = inject(HttpClient);
   private readonly URL_LOGIN = `${environment.urlApi}/Usuario/login`;
   private readonly URL_REGISTRARSE = `${environment.urlApi}/Usuario/registrar`;

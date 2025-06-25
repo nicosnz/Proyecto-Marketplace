@@ -12,7 +12,7 @@ namespace marketplace_backend.Interfaces
         bool ExisteUsuario(int usuarioID);
         Persona RegistrarNuevoUsuario(Persona nuevaPersona); 
         Persona ObtenerUsuarioPorEmail(string email);
-        UsuarioInfodto ObtenerInfoUsuario(int usuarioID);
+        UsuarioInfoDto ObtenerInfoUsuario(int usuarioID);
 
     }
 }

@@ -11,25 +11,25 @@ namespace marketplace_backend.Services
     {
         private readonly IProductoRepository _productoRepository;
         private readonly IUsuarioRepository _usuarioRepository;
-        private readonly IProductoImagenRepository _productoImagenRepository;
+        private readonly IProductoMongoRepository _productoMongoRepository;
 
-        public ProductoService(IProductoRepository productoRepository, IProductoImagenRepository productoImagenRepository, IUsuarioRepository usuarioRepository)
+        public ProductoService(IProductoRepository productoRepository, IProductoMongoRepository productoImagenRepository, IUsuarioRepository usuarioRepository)
         {
             _productoRepository = productoRepository;
             _usuarioRepository = usuarioRepository;
-            _productoImagenRepository = productoImagenRepository;
+            _productoMongoRepository = productoImagenRepository;
         }
 
-        public List<ProductoConImagendto> ObtenerProductosDisponibles()
+        public List<ProductoConImagenDto> ObtenerProductosDisponibles()
         {
             var productos = _productoRepository.ObtenerTodosProductosDisponibles();
-            var lista = new List<ProductoConImagendto>();
+            var lista = new List<ProductoConImagenDto>();
             foreach (var prod in productos)
             {
                 var vendedor = _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
-                var imagen = _productoImagenRepository.ObtenerPorProductoId(prod.ProductoId).FirstOrDefault();
+                var imagen = _productoMongoRepository.ObtenerProductoPorId(prod.ProductoId).FirstOrDefault();
 
-                lista.Add(new ProductoConImagendto
+                lista.Add(new ProductoConImagenDto
                 {
                     ProductoId = prod.ProductoId,
                     Nombre = prod.ProductoNombre,
@@ -39,8 +39,8 @@ namespace marketplace_backend.Services
                     CategoriaId = prod.CategoriaId,
                     VendedorId = prod.VendedorId,
                     nombreVendedor = vendedor.Nombre,
-                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
-                    Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
+                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Imagen) : null,
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()                
                 });
             }
             return lista;
@@ -51,7 +51,7 @@ namespace marketplace_backend.Services
             return _productoRepository.ObtenerCategorias();
         }
 
-        public List<ProductoConImagendto> ObtenerProductosPorUsuario(int usuarioID)
+        public List<ProductoConImagenDto> ObtenerProductosPorUsuario(int usuarioID)
         {
             if (!_usuarioRepository.ExisteUsuario(usuarioID))
             {
@@ -62,13 +62,13 @@ namespace marketplace_backend.Services
             {
                 throw new ProductosNotFound();
             }
-            var lista = new List<ProductoConImagendto>();
+            var lista = new List<ProductoConImagenDto>();
 
             foreach (var prod in productosUsuario)
             {
-                var imagen = _productoImagenRepository.ObtenerPorProductoId(prod.ProductoId).FirstOrDefault();
+                var imagen = _productoMongoRepository.ObtenerProductoPorId(prod.ProductoId).FirstOrDefault();
 
-                lista.Add(new ProductoConImagendto
+                lista.Add(new ProductoConImagenDto
                 {
                     ProductoId = prod.ProductoId,
                     Nombre = prod.Nombre,
@@ -77,14 +77,14 @@ namespace marketplace_backend.Services
                     Stock = prod.Stock,
                     CategoriaId = (int)prod.CategoriaId!,
                     VendedorId = prod.VendedorId,
-                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
-                    Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
+                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Imagen) : null,
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()                
                 });
             }
             return lista;
         }
 
-        public List<ProductoConImagendto> ObtenerProductosMenosUsuario(int usuarioID)
+        public List<ProductoConImagenDto> ObtenerProductosMenosUsuario(int usuarioID)
         {
             if (!_usuarioRepository.ExisteUsuario(usuarioID))
             {
@@ -96,14 +96,14 @@ namespace marketplace_backend.Services
                 throw new ProductosNotFound();
             }
 
-            var lista = new List<ProductoConImagendto>();
+            var lista = new List<ProductoConImagenDto>();
 
             foreach (var prod in productosNoUsuario)
             {
-                var imagen = _productoImagenRepository.ObtenerPorProductoId(prod.ProductoId).FirstOrDefault();
+                var imagen = _productoMongoRepository.ObtenerProductoPorId(prod.ProductoId).FirstOrDefault();
                 var vendedor = _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
 
-                lista.Add(new ProductoConImagendto
+                lista.Add(new ProductoConImagenDto
                 {
                     ProductoId = prod.ProductoId,
                     Nombre = prod.Nombre,
@@ -113,14 +113,14 @@ namespace marketplace_backend.Services
                     CategoriaId = (int)prod.CategoriaId!,
                     VendedorId = prod.VendedorId,
                     nombreVendedor = vendedor.Nombre,
-                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
-                    Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
+                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Imagen) : null,
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()                
                 });
             }
             return lista;
         }
 
-        public List<ProductoConImagendto> ObtenerProductosPorCategoria(int categoriaID, int usuarioID)
+        public List<ProductoConImagenDto> ObtenerProductosPorCategoria(int categoriaID, int usuarioID)
         {
             if (!_usuarioRepository.ExisteUsuario(usuarioID))
             {
@@ -132,14 +132,14 @@ namespace marketplace_backend.Services
                 throw new ProductosNotFound();
             }
 
-            var lista = new List<ProductoConImagendto>();
+            var lista = new List<ProductoConImagenDto>();
 
             foreach (var prod in productoPorCategoria)
             {
                 var vendedor = _usuarioRepository.ObtenerInfoUsuario(prod.VendedorId);
-                var imagen = _productoImagenRepository.ObtenerPorProductoId(prod.ProductoId).FirstOrDefault();
+                var imagen = _productoMongoRepository.ObtenerProductoPorId(prod.ProductoId).FirstOrDefault();
 
-                lista.Add(new ProductoConImagendto
+                lista.Add(new ProductoConImagenDto
                 {
                     ProductoId = prod.ProductoId,
                     Nombre = prod.Nombre,
@@ -149,39 +149,39 @@ namespace marketplace_backend.Services
                     CategoriaId = (int)prod.CategoriaId!,
                     VendedorId = prod.VendedorId,
                     nombreVendedor = vendedor.Nombre,
-                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
-                    Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
+                    ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Imagen) : null,
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()                
                 });
             }
             return lista;
         }
 
-        public Producto EditarProducto(ProductoEditar dto, int id, int usuarioID)
+        public Producto EditarProducto(ProductoEditar productoAEditar, int productoId, int usuarioID)
         {
             var producto = new Producto
             {
-                ProductoId = id,
-                Nombre = dto.Nombre,
-                Descripcion = dto.Descripcion,
-                Precio = dto.Precio,
-                Stock = dto.Stock,
+                ProductoId = productoId,
+                Nombre = productoAEditar.Nombre,
+                Descripcion = productoAEditar.Descripcion,
+                Precio = productoAEditar.Precio,
+                Stock = productoAEditar.Stock,
                 VendedorId = usuarioID,
-                CategoriaId = dto.CategoriaId
+                CategoriaId = productoAEditar.CategoriaId
             };
 
             var productoNuevo = _productoRepository.EditarProducto(producto);
             return productoNuevo;
         }
 
-        public Producto AñadirProducto(Productodto dto, int usuarioID, IFormFile imagen)
+        public ProductoConImagenDto AñadirProducto(ProductoAñadirDto productoRequest, int usuarioID, IFormFile imagen)
         {
             var nuevoProducto = new Producto
             {
-                Nombre = dto.Nombre,
-                Descripcion = dto.Descripcion,
-                Precio = dto.Precio,
-                Stock = dto.Stock,
-                CategoriaId = dto.CategoriaId,
+                Nombre = productoRequest.Nombre,
+                Descripcion = productoRequest.Descripcion,
+                Precio = productoRequest.Precio,
+                Stock = productoRequest.Stock,
+                CategoriaId = productoRequest.CategoriaId,
                 VendedorId = usuarioID
             };
 
@@ -192,17 +192,34 @@ namespace marketplace_backend.Services
                 using var ms = new MemoryStream();
                 imagen.CopyTo(ms);
 
-                var imagenMongo = new ProductoImagen
+                var imagenMongo = new ProductoImagenConComentarios
                 {
                     ProductoId = productoNuevo.ProductoId,
-                    FileName = imagen.FileName,
-                    ContentType = imagen.ContentType,
-                    Data = ms.ToArray()
+                    NombreArchivo= imagen.FileName,
+                    TipoContenido = imagen.ContentType,
+                    Imagen = ms.ToArray()
                 };
 
-                _productoImagenRepository.Insertar(imagenMongo);
+                _productoMongoRepository.Insertar(imagenMongo);
             }
-            return productoNuevo;
+            var vendedor = _usuarioRepository.ObtenerInfoUsuario(productoNuevo.VendedorId);
+            var imagenProducto = _productoMongoRepository.ObtenerProductoPorId(productoNuevo.ProductoId).FirstOrDefault();
+
+
+            var productoConImagen = new ProductoConImagenDto
+            {
+                ProductoId = productoNuevo.ProductoId,
+                Nombre = productoNuevo.Nombre,
+                Descripcion = productoNuevo.Descripcion!,
+                Precio = productoNuevo.Precio,
+                Stock = productoNuevo.Stock,
+                CategoriaId = (int)productoNuevo.CategoriaId!,
+                VendedorId = productoNuevo.VendedorId,
+                nombreVendedor = vendedor.Nombre,
+                ImagenBase64 = imagenProducto != null ? Convert.ToBase64String(imagenProducto.Imagen) : null,
+                Comentarios = imagenProducto != null ? imagenProducto.Comentarios : new List<ComentarioDto>()                
+            };
+            return productoConImagen;
         }
 
         public bool EliminarProducto(int productoID)
@@ -211,14 +228,14 @@ namespace marketplace_backend.Services
             return isActualizado;
         }
 
-        public ProductoConImagendto ObtenerProducto(int productoID)
+        public ProductoConImagenDto ObtenerProducto(int productoID)
         {
             var productoObtenido = _productoRepository.ObtenerProducto(productoID);
 
             var vendedor = _usuarioRepository.ObtenerInfoUsuario(productoObtenido.VendedorId);
 
-            var imagen = _productoImagenRepository.ObtenerPorProductoId(productoObtenido.ProductoId).FirstOrDefault();
-            var productoConImagen = new ProductoConImagendto
+            var imagen = _productoMongoRepository.ObtenerProductoPorId(productoObtenido.ProductoId).FirstOrDefault();
+            var productoConImagen = new ProductoConImagenDto
             {
                 ProductoId = productoObtenido.ProductoId,
                 Nombre = productoObtenido.Nombre,
@@ -228,8 +245,8 @@ namespace marketplace_backend.Services
                 CategoriaId = (int)productoObtenido.CategoriaId!,
                 VendedorId = productoObtenido.VendedorId,
                 nombreVendedor = vendedor.Nombre,
-                ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Data) : null,
-                Comentarios = imagen != null ? imagen.Comentarios : new List<Comentariodto>()                
+                ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Imagen) : null,
+                Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()                
             };
             return productoConImagen;
         }

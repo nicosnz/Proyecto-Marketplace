@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace marketplace_backend.dtos
 {
-    public class UsuarioRegistraseDto
+    public class UsuarioRegistrarseDto
     {
          public int PersonaId { get; set; }
 

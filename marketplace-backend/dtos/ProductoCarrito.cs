@@ -8,11 +8,8 @@ namespace marketplace_backend.dtos
 {
     public class ProductoCarrito
     {
-        public ProductoConImagendto Producto { get; set; }
-
-
+        public ProductoConImagenDto Producto { get; set; }
         public int Cantidad { get; set; }
-
         public int total { get; set; }
 
     }

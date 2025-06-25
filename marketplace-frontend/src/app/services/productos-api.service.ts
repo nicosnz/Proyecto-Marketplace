@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { IProducto, IProducto2, IProductoEditar } from './models/IProductos';
 import { ICategoria } from './models/ICategoria';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IComentarios } from './models/IComentarios';
+import { IProductoEditar } from './models/productos/IProductoEditar';
+import { IProducto } from './models/productos/IProducto';
 
 @Injectable({
   providedIn: 'root'
@@ -21,27 +22,28 @@ export class ProductosApiService {
   private readonly URL_CATEGORIAS = `${environment.urlApi}/Productos/categorias`;
   private readonly URL_PRODUCTOS_POR_CATEGORIA = `${environment.urlApi}/Productos/categoria`;
   private readonly URL_AÑADIR_COMENTARIO = `${environment.urlApi}/Productos/producto/añadirComentario`;
-  getMyProducts():Observable<IProducto2[]>{
-    return this.httpCliente.get<IProducto2[]>(this.URL_PRODUCTOS_USUARIO);
+
+  getMyProducts():Observable<IProducto[]>{
+    return this.httpCliente.get<IProducto[]>(this.URL_PRODUCTOS_USUARIO);
   }
-  getProducts():Observable<IProducto2[]>{
-    return this.httpCliente.get<IProducto2[]>(this.URL_PRODUCTOS); 
+  getProducts():Observable<IProducto[]>{
+    return this.httpCliente.get<IProducto[]>(this.URL_PRODUCTOS); 
   }
   postProducto(formData:FormData):Observable<IProducto>{
     return this.httpCliente.post<IProducto>(this.URL_AÑADIR_PRODUCTOS,formData)
   }
   getProduct(idProducto:number){
-    return this.httpCliente.get<IProducto2>(`${this.URL_PRODUCTO}/${idProducto}`);
+    return this.httpCliente.get<IProducto>(`${this.URL_PRODUCTO}/${idProducto}`);
 
   }
   getProductosPorCategoria(idCategoria:number){
-    return this.httpCliente.get<IProducto2[]>(`${this.URL_PRODUCTOS_POR_CATEGORIA}/${idCategoria}`);
+    return this.httpCliente.get<IProducto[]>(`${this.URL_PRODUCTOS_POR_CATEGORIA}/${idCategoria}`);
   }
   getCategorias(){
     return this.httpCliente.get<ICategoria[]>(this.URL_CATEGORIAS)
   }
   getProductsCatalogo(){
-    return this.httpCliente.get<IProducto2[]>(this.URL_PRODUCTOS_CATALOGO); 
+    return this.httpCliente.get<IProducto[]>(this.URL_PRODUCTOS_CATALOGO); 
   }
   putProducto(producto:IProductoEditar){
     return this.httpCliente.put<IProductoEditar>(`${this.URL_EDITAR_PRODUCTO}/${producto.productoId}`,producto)
@@ -52,13 +54,11 @@ export class ProductosApiService {
   }
 
   postComentario(idProducto: number, comentario: IComentarios) {
-    console.log("llego");
     
     return this.httpCliente.post(
       `${this.URL_AÑADIR_COMENTARIO}/${idProducto}`,
       comentario
     );
-    // console.log(`${this.URL_AÑADIR_COMENTARIO}/${idProducto}`);
     
   }
 }

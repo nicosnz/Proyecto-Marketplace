@@ -2,25 +2,27 @@ import { Component, inject, OnInit } from '@angular/core';
 import { NavbarComponent } from "../../navBarPage/navbar/navbar.component";
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CarritoService } from '../../../services/carrito.service';
-import { ICarritoProductos, IProducto2 } from '../../../services/models/IProductos';
-import { OrdenesService } from '../../../services/ordenes.service';
-import { IUsuarioCompra } from '../../../services/models/IUsuarios';
 import { Router } from '@angular/router';
+import { OrdenesServiceApiService } from '../../../services/ordenes-api.service';
+import { ICarritoProductos } from '../../../services/models/productos/ICarritoProductos';
+import { IUsuarioCompra } from '../../../services/models/usuarios/IUsuarioCompra';
 
 @Component({
   selector: 'app-formulario-pago',
   imports: [NavbarComponent,ReactiveFormsModule],
-  templateUrl: './formulario-pago.component.html',
-  styleUrl: './formulario-pago.component.scss'
+  templateUrl: './formulario-pago.component.html'
 })
 export class FormularioPagoComponent implements OnInit {
   private readonly _formBuilder = inject(FormBuilder)
   private _carritoService = inject(CarritoService)
-  private _ordenesService = inject(OrdenesService)
+  private _ordenesService = inject(OrdenesServiceApiService)
   private readonly _router = inject(Router)
+  ciudades:string[] = ["Santa Cruz de la Sierra","Cochabamba","Tarija","Potosi","La Paz","Pando","Beni","Oruro","Chuquisaca"]
   productosAcomprar:ICarritoProductos[] = []
   step = 1;
   totalCarrito = 0;
+  mensajeError:string|null = null
+  mensajeExito:string|null = null
   ngOnInit(): void {
     this._carritoService.carritoObservable.subscribe({
       next:(prod)=>{
@@ -34,7 +36,7 @@ export class FormularioPagoComponent implements OnInit {
     })
   }
   formDireccion = this._formBuilder.nonNullable.group({
-      pais: ['',Validators.required],
+      pais: ['Bolivia',Validators.required],
       ciudad : ['',Validators.required],
       direccion : ['',Validators.required],
   })
@@ -61,12 +63,18 @@ export class FormularioPagoComponent implements OnInit {
           }
       this._ordenesService.postOrden(this.productosAcomprar,usuario).subscribe({ 
         next: (respuesta) => {
-        console.log(respuesta);
-          this._router.navigateByUrl('/home');
-          this._carritoService.limpiarCarrito();
+          console.log(respuesta);
+          this.mensajeError = null;
+          this.mensajeExito = "Compra Exitosa";
+          setTimeout(() => {
+            this.mensajeExito = null;
+            this._router.navigateByUrl('/home');
+            this._carritoService.limpiarCarrito();
+          }, 1000);
         },
         error: (err) => {
           console.error( err);
+          this.mensajeError = err.error.mensaje;
         }
       });
 

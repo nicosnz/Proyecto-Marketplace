@@ -2,8 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FooterComponent } from '../../footerPage/footer/footer.component';
 import {  NavbarComponent } from '../../navBarPage/navbar/navbar.component';
 import { ProductosApiService } from '../../../services/productos-api.service';
-import { IProducto2 } from '../../../services/models/IProductos';
 import { ProductoComponent } from '../../tiendaPage/producto/producto.component';
+import { IProducto } from '../../../services/models/productos/IProducto';
+import { ICategoria } from '../../../services/models/ICategoria';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -12,15 +14,22 @@ import { ProductoComponent } from '../../tiendaPage/producto/producto.component'
 })
 export class MenuComponent implements OnInit{
   private readonly _productsApi = inject(ProductosApiService);
+  private router = inject(Router);
+
   get isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
-  productosGenerales:IProducto2[] = []
+  productosGenerales:IProducto[] = []
+  categorias:ICategoria[] = []
+  
   
   ngOnInit(): void {
-    this._productsApi.getProducts().subscribe((data)=>this.productosGenerales = data)
-
+    this._productsApi.getProducts().subscribe((data)=>this.productosGenerales = data);
+    this._productsApi.getCategorias().subscribe((data)=>this.categorias = data);
   }
 
+  seleccionarCategoria(categoria:ICategoria){
+    this.router.navigate(['/tienda'], { queryParams: { categoriaId: categoria.categoriaId } });
+  }
   
 }

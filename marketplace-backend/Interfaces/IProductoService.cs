@@ -9,15 +9,15 @@ namespace marketplace_backend.Interfaces
 {
     public interface IProductoService
     {
-        List<ProductoConImagendto> ObtenerProductosDisponibles();
+        List<ProductoConImagenDto> ObtenerProductosDisponibles();
         List<Categoria> ObtenerCategorias();
-        List<ProductoConImagendto> ObtenerProductosPorUsuario(int usuarioID);
-        List<ProductoConImagendto> ObtenerProductosMenosUsuario(int usuarioID);
-        List<ProductoConImagendto> ObtenerProductosPorCategoria(int categoriaID,int usuarioID);
-        Producto EditarProducto(ProductoEditar dto,int id,int usuarioID);
-        Producto AñadirProducto(Productodto dto, int usuarioID,IFormFile imagen);
+        List<ProductoConImagenDto> ObtenerProductosPorUsuario(int usuarioID);
+        List<ProductoConImagenDto> ObtenerProductosMenosUsuario(int usuarioID);
+        List<ProductoConImagenDto> ObtenerProductosPorCategoria(int categoriaID,int usuarioID);
+        Producto EditarProducto(ProductoEditar productoAEditar,int id,int usuarioID);
+        ProductoConImagenDto AñadirProducto(ProductoAñadirDto productoRequest, int usuarioID,IFormFile imagen);
         bool EliminarProducto(int productoID);
-        ProductoConImagendto ObtenerProducto(int productoID); 
+        ProductoConImagenDto ObtenerProducto(int productoID); 
 
 
 

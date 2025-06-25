@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CarritoService } from '../../../services/carrito.service';
-import { ICarritoProductos, IProducto, IProducto2 } from '../../../services/models/IProductos';
+import { ICarritoProductos } from '../../../services/models/productos/ICarritoProductos';
+import { IProducto } from '../../../services/models/productos/IProducto';
 
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  templateUrl: './navbar.component.html'
 })
 export class NavbarComponent implements OnInit {
   private _carritoService = inject(CarritoService);
@@ -45,7 +45,7 @@ export class NavbarComponent implements OnInit {
       }
     })
   }
-  eliminarCarrito(producto:IProducto2){
+  eliminarCarrito(producto:IProducto){
     this._carritoService.eliminarDelCarrito(producto)
   }
   

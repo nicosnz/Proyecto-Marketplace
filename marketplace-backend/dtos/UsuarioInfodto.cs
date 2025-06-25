@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace marketplace_backend.dtos
 {
     [Keyless]
-    public class UsuarioInfodto
+    public class UsuarioInfoDto
     {
 
         public int PersonaId { get; set; }

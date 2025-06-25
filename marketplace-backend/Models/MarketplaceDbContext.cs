@@ -42,7 +42,7 @@ public partial class MarketplaceDbContext : DbContext
 
         modelBuilder.Entity<DetalleComprasUsuario>().HasNoKey();
         modelBuilder.Entity<ProductosVendidosUsuario>().HasNoKey();
-        modelBuilder.Entity<UsuarioInfodto>().HasNoKey();
+        modelBuilder.Entity<UsuarioInfoDto>().HasNoKey();
         modelBuilder.Entity<Categoria>(entity =>
         {
             entity.HasKey(e => e.CategoriaId).HasName("PK__Categori__F353C1C5CCBE0510");

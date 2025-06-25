@@ -7,6 +7,7 @@ using System.Text;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
+using marketplace_backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -18,16 +19,14 @@ namespace marketplace_backend.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
-        private readonly IConfiguration _configuration;
 
-        public UsuarioController(IUsuarioService usuarioService, IConfiguration configuration)
+        public UsuarioController(IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
-            _configuration = configuration;
         }
 
         [HttpPost("registrar")]
-        public IActionResult RegistrarUsuario([FromBody] UsuarioRegistraseDto usuarioDto)
+        public IActionResult RegistrarUsuario([FromBody] UsuarioRegistrarseDto usuarioDto)
         {
             try
             {
@@ -54,7 +53,7 @@ namespace marketplace_backend.Controllers
                     }
                 });
             }
-            catch (ApplicationException ex)
+            catch (UsuarioDuplicado ex)
             {
                 return BadRequest(new { mensaje = ex.Message });
             }
@@ -67,11 +66,12 @@ namespace marketplace_backend.Controllers
             {
                 var usuario = _usuarioService.IniciarSesion(loginDto.Email, loginDto.PasswordHash);
                 var token = _usuarioService.GenerarToken(usuario);
-                return Ok(new { token });
+                return Ok(new { mensaje = "Ingreso exitoso", token });
             }
-            catch (ApplicationException ex)
+            
+            catch (UsuarioNotFound ex)
             {
-                return Unauthorized(new { mensaje = ex.Message });
+                return NotFound(new { mensaje = ex.Message });
             }
         }
 

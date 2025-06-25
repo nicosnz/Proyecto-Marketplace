@@ -27,16 +27,17 @@ namespace marketplace_backend.Services
         }
         public Persona RegistrarNuevoUsuario(Persona nuevaPersona)
         {
-            try
+            var persona = _usuarioRepository.ObtenerUsuarioPorEmail(nuevaPersona.Email);
+
+            if (persona != null)
             {
-                var textoCifrado = _dataProtector.Protect(nuevaPersona.PasswordHash);
-                nuevaPersona.PasswordHash = textoCifrado;
-                return _usuarioRepository.RegistrarNuevoUsuario(nuevaPersona);
+                throw new UsuarioDuplicado();
             }
-            catch (SqlException ex) when (ex.Message.Contains("El email ya existe"))
-            {
-                throw new ApplicationException("Ya existe un usuario con ese correo.");
-            }
+            var textoCifrado = _dataProtector.Protect(nuevaPersona.PasswordHash);
+            nuevaPersona.PasswordHash = textoCifrado;
+            return _usuarioRepository.RegistrarNuevoUsuario(nuevaPersona);
+            
+            
         }
 
         public Persona IniciarSesion(string email, string password)
@@ -44,17 +45,17 @@ namespace marketplace_backend.Services
             var persona = _usuarioRepository.ObtenerUsuarioPorEmail(email);
 
             if (persona == null)
-                throw new ApplicationException("El usuario no existe o está inactivo.");
+                throw new UsuarioNotFound();
 
             var passwordDesencriptada = _dataProtector.Unprotect(persona.PasswordHash);
 
             if (passwordDesencriptada != password)
-                throw new ApplicationException("Credenciales inválidas.");
+                throw new UsuarioNotFound();
 
             return persona;
         }
 
-        public UsuarioInfodto ObtenerInfoUsuario(int usuarioID)
+        public UsuarioInfoDto ObtenerInfoUsuario(int usuarioID)
         {
             var persona = _usuarioRepository.ObtenerInfoUsuario(usuarioID);
             return persona;

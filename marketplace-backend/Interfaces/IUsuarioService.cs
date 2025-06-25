@@ -11,7 +11,7 @@ namespace marketplace_backend.Interfaces
     {
         Persona RegistrarNuevoUsuario(Persona nuevaPersona);
         Persona IniciarSesion(string email, string password);
-        UsuarioInfodto ObtenerInfoUsuario(int usuarioID);
+        UsuarioInfoDto ObtenerInfoUsuario(int usuarioID);
         string GenerarToken(Persona usuario);
 
 

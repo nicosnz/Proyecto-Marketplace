@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace marketplace_backend.dtos
 {
-    public class Comentariodto
+    public class ComentarioDto
     {
-        public int usuarioId { get; set; }
+        public int UsuarioId { get; set; }
 
-        public string nombreUsuario { get; set; } = null!;
+        public string NombreUsuario { get; set; } = null!;
 
-        public string texto { get; set; } = null!;
+        public string Texto { get; set; } = null!;
     }
 }

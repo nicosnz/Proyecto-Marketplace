@@ -9,9 +9,16 @@
         <li class="flex items-center gap-4 py-4 border-b border-gray-700 last:border-b-0">
           @if (producto.producto.imagenBase64) {
             <img 
-              [src]="producto.producto.imagenBase64" 
-              alt="{{ producto.producto.nombre }}"
-              class="w-16 h-16 object-cover rounded-md border border-gray-800"
+              [src]="'data:image/jpeg;base64,' + producto?.producto?.imagenBase64" 
+              alt="Producto" 
+              class="w-40 h-40 object-contain rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300"
+            />
+          }
+          @else {
+            <img 
+              src="OIP.jpg"
+              alt="Sin imagen"
+              class="w-40 h-40 object-contain rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300"
             />
           }
           <div class="flex-1 min-w-0">

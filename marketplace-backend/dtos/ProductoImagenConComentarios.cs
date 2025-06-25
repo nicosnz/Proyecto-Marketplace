@@ -7,7 +7,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace marketplace_backend.dtos
 {
-    public class ProductoImagen
+    public class ProductoImagenConComentarios
     {
 
         [BsonId]
@@ -15,10 +15,10 @@ namespace marketplace_backend.dtos
         [BsonElement("_id")]
         public string Id { get; set; } = default!;
         public int ProductoId { get; set; } = default!;
-        public string FileName { get; set; } = default!;
-        public string ContentType { get; set; } = default!;
-        public byte[] Data { get; set; } = default!;
-        public List<Comentariodto> Comentarios { get; set; } = new List<Comentariodto>();
+        public string NombreArchivo{ get; set; } = default!;
+        public string TipoContenido { get; set; } = default!;
+        public byte[] Imagen { get; set; } = default!;
+        public List<ComentarioDto> Comentarios { get; set; } = new List<ComentarioDto>();
 
     }
 }

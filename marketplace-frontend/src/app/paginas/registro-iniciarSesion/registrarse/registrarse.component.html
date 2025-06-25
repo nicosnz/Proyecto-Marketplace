@@ -1,7 +1,16 @@
 <div class="min-h-screen flex items-center justify-center bg-black p-4">
   <form class="bg-primario p-8 rounded-2xl shadow-md w-full max-w-md space-y-6 font-primario"[formGroup]="formGroup">
     <h2 class="text-2xl font-bold text-center text-gray-800">Crear una cuenta</h2>
-
+    @if (mensajeError) {
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        {{ mensajeError }}
+      </div>
+    }
+    @if (mensajeExito) {
+      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+        {{ mensajeExito }}
+      </div>
+    }
     <div>
       <label for="name" class="block text-sm font-medium text-gray-700"
               [class.text-red-700]="formGroup.controls.nombre.invalid && formGroup.controls.nombre.touched"
@@ -15,27 +24,34 @@
     </div>
 
     <div>
-      <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+      <label for="email" class="block text-sm font-medium text-gray-700" [class.text-red-700]="formGroup.controls.email.invalid && formGroup.controls.email.touched">Correo electrónico</label>
       <input type="email" id="email" name="email" required formControlName="email"
-        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" />
+        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" 
+        [class.border-red-500]="formGroup.controls.email.invalid && formGroup.controls.email.touched"
+        [class.border-gray-300]="!(formGroup.controls.email.invalid && formGroup.controls.email.touched)"/>
     </div>
 
     <div>
-      <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-      <input type="password" id="password" name="password" required formControlName="contraseña"
-        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" />
+      <label for="password" class="block text-sm font-medium text-gray-700"
+                    [class.text-red-700]="formGroup.controls.password.invalid && formGroup.controls.password.touched"
+          >Contraseña</label>
+      <input type="password" id="password" name="password" required formControlName="password"
+        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" 
+        [class.border-red-500]="formGroup.controls.password.invalid && formGroup.controls.password.touched"
+        [class.border-gray-300]="!(formGroup.controls.password.invalid && formGroup.controls.password.touched)"/>
     </div>
 
     <div>
-      <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirmar contraseña</label>
-      <input type="password" id="confirm-password" name="confirm-password" required formControlName="repetirContraseña"
-        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black" />
+      <label for="confirm-password" class="block text-sm font-medium text-gray-700"
+                          [class.text-red-700]="formGroup.controls.repetirPassword.invalid && formGroup.controls.repetirPassword.touched"
+            >Confirmar contraseña</label>
+      <input type="password" id="confirm-password" name="confirm-password" required formControlName="repetirPassword"
+        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-black"
+        [class.border-red-500]="formGroup.controls.repetirPassword.invalid && formGroup.controls.repetirPassword.touched"
+        [class.border-gray-300]="!(formGroup.controls.repetirPassword.invalid && formGroup.controls.repetirPassword.touched)" />
     </div>
 
-    <!-- <button type="submit"  [disabled]="formGroup.valid" (click)="clickeo()"
-      class="w-full bg-black cursor-pointer text-white py-2 rounded-lg hover:bg-zinc-500 transition duration-300" >
-      Registrarse
-    </button> -->
+   
     <button
       [disabled]="formGroup.invalid" (click)="registrarse()"
       class="bg-black text-white p-4 rounded-xl w-full cursor-pointer font-primario

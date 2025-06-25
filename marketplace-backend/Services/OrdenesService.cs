@@ -26,8 +26,17 @@ namespace marketplace_backend.Services
         {
             foreach (var item in productoCarritos)
             {
+                if (item.Producto.Stock < item.Cantidad)
+                {
+                    throw new ProductoSinStock(item.Producto.Nombre);
+                }
+            }
+            foreach (var item in productoCarritos)
+            {
+                
                 _ordenesRepository.AgregarProductoADetalleOrden(ordenId, item.Producto.ProductoId, item.Cantidad);
             }
+
         }
         public List<DetalleComprasUsuario> ObtenerComprasUsuario(int usuarioID)
         {

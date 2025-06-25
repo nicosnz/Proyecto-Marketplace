@@ -43,9 +43,9 @@ namespace marketplace_backend.Repositorios
             return resultado.FirstOrDefault()!;
         }
 
-        public UsuarioInfodto ObtenerInfoUsuario(int usuarioID)
+        public UsuarioInfoDto ObtenerInfoUsuario(int usuarioID)
         {
-            var resultado = _context.Set<UsuarioInfodto>()
+            var resultado = _context.Set<UsuarioInfoDto>()
                 .FromSqlInterpolated($"EXEC dbo.sp_ObtenerInfoUsuario @usuarioId = {usuarioID}")
                 .AsNoTracking()
                 .ToList();

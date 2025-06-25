@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace marketplace_backend.dtos
 {
-    public class Productodto
+    public class ProductoAñadirDto
     {
         public int ProductoId { get; set; }
-
-
         public int? CategoriaId { get; set; }
 
         public string Nombre { get; set; } = null!;

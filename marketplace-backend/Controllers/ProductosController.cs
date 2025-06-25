@@ -16,16 +16,16 @@ namespace marketplace_backend.Controllers
     public class ProductosController : ControllerBase
     {
         private readonly IProductoService _productoService;
-        private readonly IProductoImagenService _productoServiceImagen;
+        private readonly IProductoMongoService _productoMongoService ;
 
-        public ProductosController(IProductoService productoService, IProductoImagenService productoImagenService)
+        public ProductosController(IProductoService productoService, IProductoMongoService productoMongoService)
         {
             _productoService = productoService;
-            _productoServiceImagen = productoImagenService;
+            _productoMongoService = productoMongoService;
         }
 
         [HttpGet]
-        public ActionResult<List<ProductoConImagendto>> ObtenerProductosDisponibles()
+        public ActionResult<List<ProductoConImagenDto>> ObtenerProductosDisponibles()
         {
             var productos = _productoService.ObtenerProductosDisponibles();
             return Ok(productos);
@@ -40,7 +40,7 @@ namespace marketplace_backend.Controllers
 
         [Authorize]
         [HttpGet("mis-productos")]
-        public ActionResult<List<ProductoConImagendto>> ObtenerProductosDisponiblesPorUsuario()
+        public ActionResult<List<ProductoConImagenDto>> ObtenerProductosDisponiblesPorUsuario()
         {
             try
             {
@@ -67,7 +67,7 @@ namespace marketplace_backend.Controllers
 
         [Authorize]
         [HttpGet("catalogo")]
-        public ActionResult<List<ProductoConImagendto>> ObtenerProductosMenosUsuario()
+        public ActionResult<List<ProductoConImagenDto>> ObtenerProductosMenosUsuario()
         {
             try
             {
@@ -89,7 +89,7 @@ namespace marketplace_backend.Controllers
 
         [HttpGet("categoria/{id}")]
         [Authorize]
-        public ActionResult<List<ProductoConImagendto>> ObtenerProductosPorCategoria(int id)
+        public ActionResult<List<ProductoConImagenDto>> ObtenerProductosPorCategoria(int id)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace marketplace_backend.Controllers
 
         [HttpPost("añadir")]
         [Authorize]
-        public ActionResult AñadirProducto([FromForm] Productodto dto, [FromForm] IFormFile imagen)
+        public ActionResult AñadirProducto([FromForm] ProductoAñadirDto productoNuevo, [FromForm] IFormFile imagen)
         {
             try
             {
@@ -123,7 +123,7 @@ namespace marketplace_backend.Controllers
                 if (userId == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
 
-                var productoCreado = _productoService.AñadirProducto(dto, userId.Value, imagen);
+                var productoCreado = _productoService.AñadirProducto(productoNuevo, userId.Value, imagen);
                 return Ok(productoCreado);
             }
             catch (Exception ex)
@@ -134,7 +134,7 @@ namespace marketplace_backend.Controllers
 
         [HttpPut("editar/{id}")]
         [Authorize]
-        public ActionResult EditarProducto([FromBody] ProductoEditar dto, [FromRoute] int id)
+        public ActionResult EditarProducto([FromBody] ProductoEditar productoAEditar, [FromRoute] int id)
         {
             try
             {
@@ -142,7 +142,7 @@ namespace marketplace_backend.Controllers
                 if (userId == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
 
-                var productoEditado = _productoService.EditarProducto(dto, id, (int)userId);
+                var productoEditado = _productoService.EditarProducto(productoAEditar, id, (int)userId);
                 return Ok(productoEditado);
             }
             catch (Exception ex)
@@ -181,11 +181,10 @@ namespace marketplace_backend.Controllers
         }
 
         [HttpPost("producto/añadirComentario/{id}")]
-        public IActionResult AñadirComentario(int id, Comentariodto comentariodto)
+        public IActionResult AñadirComentario(int id, ComentarioDto comentario)
         {
-            Console.WriteLine("POST AñadirComentario ejecutado con id: " + id);
             var userId = (int)ObtenerUsuarioIdDesdeToken()!;
-            _productoServiceImagen.AgregarComentario(id, comentariodto, userId);
+            _productoMongoService.AgregarComentario(id, comentario, userId);
 
             return Ok();
         }

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using marketplace_backend.dtos;
 using marketplace_backend.Interfaces;
 using marketplace_backend.Models;
+using marketplace_backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,11 +28,7 @@ namespace marketplace_backend.Controllers
         {
             try
             {
-                foreach (var item in orden.ProductoCarrito)
-                {
-                    Console.WriteLine(item.Producto.Nombre);
-                    Console.WriteLine(item.Cantidad);
-                }
+
                 int idUsuario = (int)ObtenerUsuarioIdDesdeToken()!;
                 if (idUsuario == null)
                     return Unauthorized(new { mensaje = "Token inválido" });
@@ -41,12 +38,9 @@ namespace marketplace_backend.Controllers
                 return Ok();
 
             }
-            catch (System.Exception ex)
+            catch (ProductoSinStock ex)
             {
-                Console.WriteLine("error en ordenes");
-                Console.WriteLine(ex.ToString()); // Esto mostrará el stacktrace completo
-                return BadRequest(new { mensaje = ex.Message });
-
+                return  BadRequest(new { mensaje = ex.Message });
             }
         }
 
@@ -84,8 +78,7 @@ namespace marketplace_backend.Controllers
             }
             catch (System.Exception ex)
             {
-                Console.WriteLine("error en ordenes");
-                Console.WriteLine(ex.ToString()); // Esto mostrará el stacktrace completo
+                
                 return BadRequest(new { mensaje = ex.Message });
             }
         }

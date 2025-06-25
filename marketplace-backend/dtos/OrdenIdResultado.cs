@@ -8,7 +8,7 @@ namespace marketplace_backend.dtos
     public class OrdenIdResultado
     {
         
-            public int OrdenId { get; set; }
+        public int OrdenId { get; set; }
         
     }
 }

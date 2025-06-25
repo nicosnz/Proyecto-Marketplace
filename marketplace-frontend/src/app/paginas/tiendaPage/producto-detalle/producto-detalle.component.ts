@@ -1,24 +1,21 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
-import { IProducto, IProducto2 } from '../../../services/models/IProductos';
+import { Component, inject, OnInit } from '@angular/core';
 import { ProductosApiService } from '../../../services/productos-api.service';
-import { routes } from '../../../app.routes';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavbarComponent } from "../../navBarPage/navbar/navbar.component";
-import { DetalleOrdenComponent } from "../../pagos/detalle-orden/detalle-orden.component";
 import { FooterComponent } from "../../footerPage/footer/footer.component";
 import { NgClass } from '@angular/common';
 import { CarritoService } from '../../../services/carrito.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IComentarios } from '../../../services/models/IComentarios';
+import { IProducto } from '../../../services/models/productos/IProducto';
 
 @Component({
   selector: 'app-producto-detalle',
   imports: [NavbarComponent,FooterComponent,NgClass,ReactiveFormsModule],
-  templateUrl: './producto-detalle.component.html',
-  styleUrl: './producto-detalle.component.scss'
+  templateUrl: './producto-detalle.component.html'
 })
 export class ProductoDetalleComponent implements OnInit {
-  producto?:IProducto2;
+  producto?:IProducto;
   private _carritoService = inject(CarritoService);
   private readonly _formBuilder = inject(FormBuilder);
   private _productsService = inject(ProductosApiService)

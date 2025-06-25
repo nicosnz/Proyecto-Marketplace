@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ICarritoProductos, IProducto2 } from './models/IProductos';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject} from 'rxjs';
+import { ICarritoProductos } from './models/productos/ICarritoProductos';
+import { IProducto } from './models/productos/IProducto';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class CarritoService {
   carritoObservable = new BehaviorSubject<ICarritoProductos[]>([])
   totalCarritoObservable = new BehaviorSubject<number>(0)
 
-  añadirCarrito(producto:IProducto2){
+  añadirCarrito(producto:IProducto){
     let idProducto = producto.productoId;
     let indiceProducto = this._productosCarrito.findIndex(p=>p.producto.productoId === idProducto);
     if(indiceProducto === -1){
@@ -37,7 +38,7 @@ export class CarritoService {
     
   }
   
-  eliminarDelCarrito(producto:IProducto2){
+  eliminarDelCarrito(producto:IProducto){
     let idProducto = producto.productoId
     let indiceProducto = this._productosCarrito.findIndex(p=>p.producto.productoId === idProducto);
     this.contador = this.contador - this._productosCarrito[indiceProducto].cantidad 

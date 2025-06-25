@@ -1,14 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ICarritoProductos } from '../../../services/models/IProductos';
 import { CarritoService } from '../../../services/carrito.service';
 import { NavbarComponent } from "../../navBarPage/navbar/navbar.component";
 import { RouterLink } from '@angular/router';
+import { ICarritoProductos } from '../../../services/models/productos/ICarritoProductos';
 
 @Component({
   selector: 'app-detalle-orden',
   imports: [NavbarComponent,RouterLink],
-  templateUrl: './detalle-orden.component.html',
-  styleUrl: './detalle-orden.component.scss'
+  templateUrl: './detalle-orden.component.html'
 })
 export class DetalleOrdenComponent implements OnInit {
   private _carritoService = inject(CarritoService);

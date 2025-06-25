@@ -13,20 +13,21 @@
           <input formControlName="pais" type="text"
             class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             [class.border-red-500]="formDireccion.get('pais')?.invalid && formDireccion.get('pais')?.touched"
-            required>
+            required readonly [disabled]="true">
           @if (formDireccion.get('pais')?.invalid && formDireccion.get('pais')?.touched) {
             <div class="text-red-400 text-xs mt-1">El país es obligatorio</div>
           }
         </div>
         <div class="mb-4">
           <label class="block text-gray-200 mb-1">Ciudad</label>
-          <input formControlName="ciudad" type="text"
-            class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            [class.border-red-500]="formDireccion.get('ciudad')?.invalid && formDireccion.get('ciudad')?.touched"
-            required>
-          @if (formDireccion.get('ciudad')?.invalid && formDireccion.get('ciudad')?.touched) {
-            <div class="text-red-400 text-xs mt-1">La ciudad es obligatoria</div>
-          }
+            <select id="ciudad"
+              class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              formControlName="ciudad">
+              <option value="" disabled selected>Selecciona una ciudad</option>
+              @for (ciudad of ciudades; track $index) {
+                <option [value]="ciudad">{{ ciudad }}</option>
+              }
+            </select>
         </div>
         
         <div class="mb-4">
@@ -68,6 +69,16 @@
   @if (step === 2) {
     <form [formGroup]="formPago" (ngSubmit)="finalizar()" novalidate>
       <h2 class="text-2xl font-bold text-white mb-6">Detalles de Pago</h2>
+      @if (mensajeError) {
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {{ mensajeError }}
+        </div>
+      }
+      @if (mensajeExito) {
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+          {{ mensajeExito }}
+        </div>
+      }
       <div class="mb-4">
         <label class="block text-gray-200 mb-1">Nombre en la tarjeta</label>
         <input formControlName="nombreTarjeta" type="text"
