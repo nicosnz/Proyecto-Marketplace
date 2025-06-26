@@ -40,7 +40,7 @@ namespace marketplace_backend.Services
                     VendedorId = prod.VendedorId,
                     nombreVendedor = vendedor.Nombre,
                     ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Imagen) : null,
-                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()                
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()
                 });
             }
             return lista;
@@ -78,7 +78,7 @@ namespace marketplace_backend.Services
                     CategoriaId = (int)prod.CategoriaId!,
                     VendedorId = prod.VendedorId,
                     ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Imagen) : null,
-                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()                
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()
                 });
             }
             return lista;
@@ -114,7 +114,7 @@ namespace marketplace_backend.Services
                     VendedorId = prod.VendedorId,
                     nombreVendedor = vendedor.Nombre,
                     ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Imagen) : null,
-                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()                
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()
                 });
             }
             return lista;
@@ -150,7 +150,7 @@ namespace marketplace_backend.Services
                     VendedorId = prod.VendedorId,
                     nombreVendedor = vendedor.Nombre,
                     ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Imagen) : null,
-                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()                
+                    Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()
                 });
             }
             return lista;
@@ -195,7 +195,7 @@ namespace marketplace_backend.Services
                 var imagenMongo = new ProductoImagenConComentarios
                 {
                     ProductoId = productoNuevo.ProductoId,
-                    NombreArchivo= imagen.FileName,
+                    NombreArchivo = imagen.FileName,
                     TipoContenido = imagen.ContentType,
                     Imagen = ms.ToArray()
                 };
@@ -217,7 +217,7 @@ namespace marketplace_backend.Services
                 VendedorId = productoNuevo.VendedorId,
                 nombreVendedor = vendedor.Nombre,
                 ImagenBase64 = imagenProducto != null ? Convert.ToBase64String(imagenProducto.Imagen) : null,
-                Comentarios = imagenProducto != null ? imagenProducto.Comentarios : new List<ComentarioDto>()                
+                Comentarios = imagenProducto != null ? imagenProducto.Comentarios : new List<ComentarioDto>()
             };
             return productoConImagen;
         }
@@ -246,9 +246,21 @@ namespace marketplace_backend.Services
                 VendedorId = productoObtenido.VendedorId,
                 nombreVendedor = vendedor.Nombre,
                 ImagenBase64 = imagen != null ? Convert.ToBase64String(imagen.Imagen) : null,
-                Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()                
+                Comentarios = imagen != null ? imagen.Comentarios : new List<ComentarioDto>()
             };
             return productoConImagen;
         }
+         public void AñadirAFavoritos(int productoId,int usuarioId)
+        {
+            
+            _productoRepository.AñadirAFavoritos(productoId,usuarioId );
+        }
+
+        public void QuitarDeFavoritos(int productoId,int usuarioId)
+        {
+            
+            _productoRepository.QuitarDeFavoritos(productoId,usuarioId );
+        }
+
     }
 }

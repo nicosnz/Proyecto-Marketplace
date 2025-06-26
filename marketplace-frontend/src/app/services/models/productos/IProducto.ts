@@ -23,6 +23,7 @@ export interface IProducto {
   vendedorId: number;
   nombreVendedor: string,
   imagenBase64: string | null;
+  esFavorito: true | null;
   comentarios:IComentarios[];
 }
 

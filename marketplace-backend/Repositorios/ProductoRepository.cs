@@ -75,5 +75,19 @@ namespace marketplace_backend.Repositorios
                 .ToList();
             return productoObtenido.FirstOrDefault()!;
         }
+        public void AñadirAFavoritos(int productoID,int usuarioID )
+        {
+            _context.Database.ExecuteSqlInterpolated(
+                $"EXEC sp_AgregarAFavoritos @UsuarioId = {usuarioID}, @ProductoId = {productoID}"
+            );
+        }
+
+        public void QuitarDeFavoritos(int productoID,int usuarioID )
+        {
+            _context.Database.ExecuteSqlInterpolated(
+                $"EXEC sp_QuitarDeFavoritos @UsuarioId = {usuarioID}, @ProductoId = {productoID}"
+            );
+        }
+
     }
 }

@@ -19,6 +19,7 @@ export class MenuComponent implements OnInit{
   get isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
+  productosGeneralesLog:IProducto[] = []
   productosGenerales:IProducto[] = []
   categorias:ICategoria[] = []
   agregarProducto(){
@@ -32,6 +33,7 @@ export class MenuComponent implements OnInit{
   }
   
   ngOnInit(): void {
+    this._productsApi.getProductsCatalogo().subscribe((data)=>this.productosGeneralesLog = data);
     this._productsApi.getProducts().subscribe((data)=>this.productosGenerales = data);
     this._productsApi.getCategorias().subscribe((data)=>this.categorias = data);
   }

@@ -16,6 +16,7 @@ namespace marketplace_backend.dtos
         public int VendedorId { get; set; }
         public string? nombreVendedor { get; set; }
         public string? ImagenBase64 { get; set; }
+        public bool? esFavorito { get; set; }
         public List<ComentarioDto> Comentarios { get; set; } = new List<ComentarioDto>();
 
     }

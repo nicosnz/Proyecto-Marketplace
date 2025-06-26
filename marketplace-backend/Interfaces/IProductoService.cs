@@ -13,11 +13,13 @@ namespace marketplace_backend.Interfaces
         List<Categoria> ObtenerCategorias();
         List<ProductoConImagenDto> ObtenerProductosPorUsuario(int usuarioID);
         List<ProductoConImagenDto> ObtenerProductosMenosUsuario(int usuarioID);
-        List<ProductoConImagenDto> ObtenerProductosPorCategoria(int categoriaID,int usuarioID);
-        Producto EditarProducto(ProductoEditar productoAEditar,int id,int usuarioID);
-        ProductoConImagenDto AñadirProducto(ProductoAñadirDto productoRequest, int usuarioID,IFormFile imagen);
+        List<ProductoConImagenDto> ObtenerProductosPorCategoria(int categoriaID, int usuarioID);
+        Producto EditarProducto(ProductoEditar productoAEditar, int id, int usuarioID);
+        ProductoConImagenDto AñadirProducto(ProductoAñadirDto productoRequest, int usuarioID, IFormFile imagen);
         bool EliminarProducto(int productoID);
-        ProductoConImagenDto ObtenerProducto(int productoID); 
+        ProductoConImagenDto ObtenerProducto(int productoID);
+        void AñadirAFavoritos(int productoId, int usuarioId);
+        void QuitarDeFavoritos(int productoID, int usuarioID);
 
 
 

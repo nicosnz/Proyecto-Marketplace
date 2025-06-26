@@ -22,6 +22,8 @@ export class ProductosApiService {
   private readonly URL_CATEGORIAS = `${environment.urlApi}/Productos/categorias`;
   private readonly URL_PRODUCTOS_POR_CATEGORIA = `${environment.urlApi}/Productos/categoria`;
   private readonly URL_AÑADIR_COMENTARIO = `${environment.urlApi}/Productos/producto/añadirComentario`;
+  private readonly URL_AÑADIR_FAVORITO = `${environment.urlApi}/Productos/añadirAfavoritos`;
+  private readonly URL_ELIMINAR_FAVORITO = `${environment.urlApi}/Productos/eliminarDeFavoritos`;
 
   getMyProducts():Observable<IProducto[]>{
     return this.httpCliente.get<IProducto[]>(this.URL_PRODUCTOS_USUARIO);
@@ -51,6 +53,13 @@ export class ProductosApiService {
   }
   deleteProducto(idProducto:number){
     return this.httpCliente.delete(`${this.URL_ELIMINAR_PRODUCTO}/${idProducto}`);
+  }
+  postFavoritos(idProducto:number){
+    return this.httpCliente.post(`${this.URL_AÑADIR_FAVORITO}/${idProducto}`,{})
+  
+  }
+  deleteFavoritos(idProducto:number){
+    return this.httpCliente.delete(`${this.URL_ELIMINAR_FAVORITO}/${idProducto}`);
   }
 
   postComentario(idProducto: number, comentario: IComentarios) {

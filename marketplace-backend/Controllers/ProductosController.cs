@@ -16,7 +16,7 @@ namespace marketplace_backend.Controllers
     public class ProductosController : ControllerBase
     {
         private readonly IProductoService _productoService;
-        private readonly IProductoMongoService _productoMongoService ;
+        private readonly IProductoMongoService _productoMongoService;
 
         public ProductosController(IProductoService productoService, IProductoMongoService productoMongoService)
         {
@@ -188,11 +188,58 @@ namespace marketplace_backend.Controllers
 
             return Ok();
         }
+        [Authorize]
+        [HttpPost("añadirAfavoritos/{id}")]
+        public IActionResult AgregarAFavoritos([FromRoute] int id)
+        {
+            try
+            {
+                var userId = ObtenerUsuarioIdDesdeToken();
+                if (userId == null)
+                    return Unauthorized(new { mensaje = "Token inválido" });
+
+                _productoService.AñadirAFavoritos(userId.Value, id);
+                return Ok(new { mensaje = "Producto añadido a favoritos" });
+            }
+            catch (UsuarioNotFound ex)
+            {
+                return NotFound(new { mensaje = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("eliminarDefavoritos/{id}")]
+        public IActionResult QuitarDeFavoritos([FromRoute] int id)
+        {
+            try
+            {
+                var userId = ObtenerUsuarioIdDesdeToken();
+                if (userId == null)
+                    return Unauthorized(new { mensaje = "Token inválido" });
+
+                _productoService.QuitarDeFavoritos(userId.Value, id);
+                return Ok(new { mensaje = "Producto eliminado de favoritos" });
+            }
+            catch (UsuarioNotFound ex)
+            {
+                return NotFound(new { mensaje = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
 
         private int? ObtenerUsuarioIdDesdeToken()
         {
             var claim = User.FindFirst(ClaimTypes.NameIdentifier);
             return claim != null ? int.Parse(claim.Value) : (int?)null;
         }
+
     }
 }

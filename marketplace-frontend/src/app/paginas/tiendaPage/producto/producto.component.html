@@ -1,7 +1,20 @@
-<!-- app-producto.component.html -->
 <div class="group relative w-72 bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
 
-  <!-- Imagen centrada y con tamaño controlado -->
+  <button 
+    class="absolute top-3 right-3 z-10 p-2 bg-white bg-opacity-80 rounded-full shadow hover:bg-yellow-100 transition"
+    (click)="Favorito()"
+    [attr.aria-label]="esFavorito ? 'Quitar de favoritos' : 'Añadir a favoritos'"
+    [disabled]="!isLoggedIn"
+    type="button"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+      [attr.fill]="esFavorito ? '#FFD700' : 'none'"
+      stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z"/>
+    </svg>
+  </button>
+
   <div class="h-52 w-full flex justify-center items-center bg-gray-100">
     @if (producto?.imagenBase64) {
       <img 
@@ -18,30 +31,27 @@
     }
   </div>
 
-  <!-- Contenido -->
   <div class="p-5 flex flex-col justify-between h-60">
     <div>
-    <a [routerLink]="['/producto-detalle',producto?.productoId]" 
-      class="block text-lg text-gray-900 font-semibold font-primario truncate tracking-tight hover:text-yellow-500 transition"
-    >
-      {{ producto?.nombre }}
-    </a>
-    <p class="text-xl font-bold text-yellow-500 mt-1">
-      Bs. {{ producto?.precio }}
-    </p>
-    <!-- Info vendedor bonita -->
-    <div class="flex items-center gap-4 mt-4">
-      <img 
-        src="profile.jpg"
-        alt="Imagen del vendedor"
-        class="w-12 h-12 rounded-full shadow-md border-2 border-yellow-400 object-cover"
-      />
-      <span class="text-lg font-semibold text-gray-800 dark:text-gray-500 font-primario">
-        {{ producto?.nombreVendedor }}
-      </span>
+      <a [routerLink]="['/producto-detalle',producto?.productoId]" 
+        class="block text-lg text-gray-900 font-semibold font-primario truncate tracking-tight hover:text-yellow-500 transition"
+      >
+        {{ producto?.nombre }}
+      </a>
+      <p class="text-xl font-bold text-yellow-500 mt-1">
+        Bs. {{ producto?.precio }}
+      </p>
+      <div class="flex items-center gap-4 mt-4">
+        <img 
+          src="profile.jpg"
+          alt="Imagen del vendedor"
+          class="w-12 h-12 rounded-full shadow-md border-2 border-yellow-400 object-cover"
+        />
+        <span class="text-lg font-semibold text-gray-800 dark:text-gray-500 font-primario">
+          {{ producto?.nombreVendedor }}
+        </span>
+      </div>
     </div>
-    <!-- Si quieres poner más info aquí, puedes seguir -->
-  </div>
     <button class="mt-4 bg-gray-900 text-white py-2 rounded-xl font-medium hover:bg-black transition-all duration-200 cursor-pointer" [disabled]="producto?.stock ===0" (click)="agregarCarrito()">
       + Agregar al carrito
     </button>

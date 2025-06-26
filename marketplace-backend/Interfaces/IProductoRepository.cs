@@ -16,6 +16,8 @@ namespace marketplace_backend.Interfaces
         Producto EditarProducto(Producto producto);
         Producto AñadirProducto(Producto producto, int usuarioID); 
         Producto ObtenerProducto(int productoID); 
+        void AñadirAFavoritos(int productoID,int usuarioID); 
+        void QuitarDeFavoritos(int productoID,int usuarioID); 
         bool EliminarProducto(int productoID);
 
     }
